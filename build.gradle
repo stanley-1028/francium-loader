@@ -1,0 +1,77 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'maven-publish'
+}
+
+group = 'com.francium'
+version = '1.0.0-alpha'
+
+application {
+    mainClass = 'com.francium.bootstrap.FranciumBootstrap'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+allprojects {
+    group = rootProject.group
+    version = rootProject.version
+
+    repositories {
+        mavenCentral()
+        maven { url = 'https://maven.fabricmc.net/' }
+        maven { url = 'https://libraries.minecraft.net/' }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release = 21
+        options.compilerArgs += ['-Xlint:-unchecked', '-Xlint:-deprecation']
+    }
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events "passed", "skipped", "failed"
+            showStandardStreams = true
+        }
+    }
+}
+
+// Common test dependency for all subprojects
+subprojects {
+    apply plugin: 'java'
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    }
+}
+
+// Distribution JAR that includes all subprojects
+tasks.register('fatJar', Jar) {
+    archiveClassifier.set('all')
+    manifest {
+        attributes 'Main-Class': application.mainClass.get(),
+                   'Implementation-Title': 'Francium Mod Loader',
+                   'Implementation-Version': archiveVersion.get()
+    }
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}

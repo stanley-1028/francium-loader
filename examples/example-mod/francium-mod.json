@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "example-mod",
+  "name": "Francium Example Mod",
+  "version": "1.0.0",
+  "description": "A sample mod demonstrating Francium Mod Loader's native format.",
+  "authors": ["YourName"],
+  "license": "MIT",
+  "mcVersion": "1.21",
+  "mainClass": "com.example.ExampleMod",
+  "dependencies": {
+    "fabric-api": ">=0.100.0"
+  },
+  "optionalDependencies": {
+    "sodium": ">=0.5.0"
+  },
+  "entrypoints": {
+    "main": "com.example.ExampleMod::onInitialize",
+    "client": "com.example.ExampleMod::onInitializeClient"
+  },
+  "mixins": [],
+  "custom": {
+    "website": "https://example.com",
+    "issues": "https://github.com/example/example-mod/issues"
+  }
+}

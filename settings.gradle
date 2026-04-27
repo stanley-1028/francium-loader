@@ -1,0 +1,8 @@
+rootProject.name = 'francium-loader'
+
+include 'francium-core'
+include 'francium-ai-bridge'
+include 'francium-resolver'
+include 'francium-manager'
+include 'francium-profiler'
+include 'francium-server'

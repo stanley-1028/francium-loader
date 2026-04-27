@@ -1,0 +1,69 @@
+# loader.toml — Francium Mod Loader Configuration
+# 
+# Copy this file to config/francium/loader.toml in your Minecraft directory
+# All values shown are the defaults
+
+# ─── Parallel Loading ───────────────────────────────────────────
+# Maximum mods to load in parallel within a single layer.
+# Default: number of available CPU cores
+maxParallelMods = 8
+
+# Maximum seconds to wait for a single layer to complete loading.
+# If a layer times out, the mods in that layer are skipped.
+layerTimeoutSeconds = 120
+
+# ─── AI Version Bridge ──────────────────────────────────────────
+# Enable automatic bytecode adaptation for cross-version mod compatibility.
+# When enabled, mods compiled for older MC versions can run on newer ones.
+aiBridgeEnabled = true
+
+# Minimum confidence threshold (0.0-1.0) for AI-generated method mappings.
+# Mappings below this threshold are reported but not applied automatically.
+aiConfidenceThreshold = 0.85
+
+# Report-only mode: AI bridge analyzes compatibility but does not generate
+# adapters. Useful for checking which mods need manual updates.
+aiBridgeReportOnly = false
+
+# ─── Memory Management ──────────────────────────────────────────
+# Enable ClassLoader leak detection. Tracks whether mod ClassLoaders
+# are properly garbage collected after mod unload.
+memoryLeakDetection = true
+
+# Memory warning threshold in megabytes. When heap usage exceeds this,
+# a warning is logged and (if aggressiveGC is on) GC is triggered.
+memoryWarningThresholdMB = 512
+
+# Aggressive GC mode: triggers manual System.gc() when heap exceeds
+# warning threshold. May cause stuttering; disable for smoother gameplay.
+aggressiveGC = false
+
+# ─── Server Sync ─────────────────────────────────────────────────
+# Enable automatic mod list synchronization with servers.
+# When connecting to a Francium server, your mods are automatically
+# compared and synchronized.
+serverSyncEnabled = true
+
+# Server sync URL. Leave empty to use the server-provided URL.
+serverSyncUrl = ""
+
+# Automatically download missing/outdated mods when joining a server.
+# Disable to review changes before downloading.
+autoDownloadMods = false
+
+# ─── Package Registry ───────────────────────────────────────────
+# Primary mod registry URL for 'francium install' and 'francium search'.
+registryUrl = "https://registry.francium.dev/v1"
+
+# Additional registries to search (like apt sources.list).
+additionalRegistries = []
+
+# ─── Debug & Logging ────────────────────────────────────────────
+# Enable verbose logging. Shows detailed per-mod load information.
+verboseLogging = false
+
+# Enable load profiling. Measures per-mod and per-layer load times.
+profileLoading = true
+
+# Log level: DEBUG, INFO, WARN, ERROR
+logLevel = "INFO"
