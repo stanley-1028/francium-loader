@@ -1,0 +1,4 @@
+dependencies {
+    // Netty for server-client communication
+    implementation 'io.netty:netty-all:4.1.114.Final'
+}

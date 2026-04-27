@@ -1,0 +1,11 @@
+dependencies {
+    // All submodules as runtime dependencies (FranciumLoader integrates them all)
+    implementation project(':francium-ai-bridge')
+    implementation project(':francium-resolver')
+    implementation project(':francium-manager')
+    implementation project(':francium-profiler')
+    implementation project(':francium-server')
+
+    // Minecraft LaunchWrapper (compileOnly; provided by Minecraft at runtime)
+    compileOnly 'net.minecraft:launchwrapper:1.12'
+}
