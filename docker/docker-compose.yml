@@ -1,0 +1,68 @@
+# ═══════════════════════════════════════════════════════════
+#  Francium Server — Docker Compose
+#
+#  啟動: docker compose up -d
+#  查看: docker compose logs -f
+#  停止: docker compose down
+#
+#  「伺服器同步不該靠 Discord 傳檔案。讓 Francium 替你搞定。」
+# ═══════════════════════════════════════════════════════════
+
+version: "3.9"
+
+services:
+  francium-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: francium-server:1.0.0-alpha
+    container_name: francium-server
+    restart: unless-stopped
+
+    ports:
+      - "25566:25566"   # Mod sync protocol
+      - "25567:25567"   # Registry API (optional)
+
+    volumes:
+      # Persistent data (mod lists, cache, sync state)
+      - francium-data:/app/data
+      # Mod files — mount your server's mods/ directory here
+      - francium-mods:/app/mods
+      # Optional: custom config
+      - ./config:/app/config:ro
+
+    environment:
+      - FRANCIUM_DATA_DIR=/app/data
+      - FRANCIUM_CONFIG_DIR=/app/config
+      - FRANCIUM_MODS_DIR=/app/mods
+      # Override JVM options if needed:
+      # - JAVA_OPTS=-Xms256M -Xmx1G -XX:+UseZGC -XX:+ZGenerational
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 256M
+
+    # Health check via the embedded HTTP endpoint
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:25566/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+    networks:
+      - francium-net
+
+volumes:
+  francium-data:
+    driver: local
+  francium-mods:
+    driver: local
+
+networks:
+  francium-net:
+    driver: bridge

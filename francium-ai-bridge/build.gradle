@@ -1,3 +1,5 @@
+apply plugin: 'java'
+
 dependencies {
     // ASM bytecode manipulation library
     implementation 'org.ow2.asm:asm:9.7'

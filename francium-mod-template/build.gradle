@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'com.example'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' }
+    maven { url = 'https://libraries.minecraft.net/' }
+    // Francium Loader via JitPack (auto-builds from GitHub releases)
+    maven { url = 'https://jitpack.io' }
+}
+
+dependencies {
+    // ═══════════════════════════════════════════════════════
+    //  Francium Mod Loader — the ONLY dependency you need
+    // ═══════════════════════════════════════════════════════
+    //
+    // Option A: JitPack (recommended — auto-resolves from GitHub releases)
+    compileOnly 'com.github.stanley-1028:francium-loader:1.0.0-alpha'
+    //
+    // Option B: Local build (uncomment if you built francium-loader locally)
+    // compileOnly files('../francium-loader/francium-core/build/libs/francium-core-1.0.0-alpha.jar')
+    //
+    // Option C: Published Maven artifact (after JitPack release)
+    // compileOnly 'com.francium:francium-loader:1.0.0-alpha'
+
+    // ─── Optional: Minecraft Mappings ─────────────────────
+    // Uncomment if you need direct Minecraft class references:
+    // compileOnly 'net.fabricmc:yarn:1.21+build.1'
+    // compileOnly 'net.minecraft:client:1.21:mojang'
+
+    // ─── Testing ──────────────────────────────────────────
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+}
+
+// ══════════════════════════════════════════════════
+//  Francium Mod Manifest — auto-packaged with your JAR
+// ══════════════════════════════════════════════════
+
+processResources {
+    filesMatching('francium-mod.json') {
+        expand(project.properties)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// Fat JAR with all runtime deps (optional)
+tasks.register('fatJar', Jar) {
+    archiveClassifier.set('all')
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

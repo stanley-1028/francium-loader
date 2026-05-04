@@ -1,3 +1,5 @@
+apply plugin: 'java'
+
 dependencies {
     // No external dependencies — uses JMX and standard Java APIs
 }

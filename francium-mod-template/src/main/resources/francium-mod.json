@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "${modId}",
+  "name": "${modName}",
+  "version": "${modVersion}",
+  "description": "${modDescription}",
+  "authors": ["${modAuthors}"],
+  "license": "MIT",
+  "mcVersion": "${mcVersion}",
+  "mainClass": "${mainClass}",
+  "dependencies": {},
+  "optionalDependencies": {},
+  "entrypoints": {
+    "main": "com.example.ExampleMod::onInitialize",
+    "client": "com.example.ExampleMod::onInitializeClient"
+  },
+  "mixins": [],
+  "custom": {}
+}

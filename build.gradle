@@ -68,10 +68,65 @@ tasks.register('fatJar', Jar) {
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
 }
 
+// ══════════════════════════════════════════════════
+//  Publishing — JitPack & Maven Central
+// ══════════════════════════════════════════════════
+//  JitPack: 自动从 GitHub Releases tag 构建
+//    Tag 格式: v1.0.0-alpha → compileOnly 'com.github.stanley-1028:francium-loader:1.0.0-alpha'
+//  发布步骤:
+//    1. git tag v1.0.0-alpha
+//    2. git push origin v1.0.0-alpha
+//    3. JitPack 自动构建: https://jitpack.io/#stanley-1028/francium-loader
+//
+//  Maven Central: 正式发布（未来）
+//    需要 Sonatype 账号 + GPG 签名 + 完整的 Javadoc
+
+ext {
+    pomName = 'Francium Mod Loader'
+    pomDescription = 'Next-gen Minecraft mod loader: DAG parallel loading, SAT dependency resolution, AI cross-version bridging'
+    pomUrl = 'https://github.com/stanley-1028/francium-loader'
+    pomScm = 'scm:git:git://github.com/stanley-1028/francium-loader.git'
+    pomLicense = 'MIT'
+    pomLicenseUrl = 'https://opensource.org/licenses/MIT'
+    pomDeveloperId = 'stanley-1028'
+    pomDeveloperName = 'stanley1028'
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+
+            pom {
+                name = rootProject.ext.pomName
+                description = rootProject.ext.pomDescription
+                url = rootProject.ext.pomUrl
+
+                licenses {
+                    license {
+                        name = rootProject.ext.pomLicense
+                        url = rootProject.ext.pomLicenseUrl
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = rootProject.ext.pomDeveloperId
+                        name = rootProject.ext.pomDeveloperName
+                    }
+                }
+
+                scm {
+                    connection = rootProject.ext.pomScm
+                    developerConnection = rootProject.ext.pomScm
+                    url = rootProject.ext.pomUrl
+                }
+            }
         }
+    }
+
+    // 本地仓库（供 JitPack 使用）
+    repositories {
+        mavenLocal()
     }
 }

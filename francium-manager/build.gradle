@@ -1,3 +1,5 @@
+apply plugin: 'java'
+
 dependencies {
     // JSON parsing for registry API responses
     implementation 'com.google.code.gson:gson:2.11.0'

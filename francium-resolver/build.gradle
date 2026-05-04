@@ -1,3 +1,5 @@
+apply plugin: 'java'
+
 dependencies {
     // No external dependencies — pure Java SAT solver
 }

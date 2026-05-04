@@ -1,0 +1,22 @@
+# ═══════════════════════════════════════════════════════════
+#  JitPack Configuration for Francium Mod Loader
+#
+#  每次推送 GitHub Release tag 后，JitPack 自动构建并发布。
+#  Tag 格式: v1.0.0-alpha, v1.0.0, v1.1.0 等
+#
+#  使用方: compileOnly 'com.github.stanley-1028:francium-loader:Tag'
+#  详见: https://jitpack.io/docs/
+# ═══════════════════════════════════════════════════════════
+
+# JDK 版本：Francium 需要 Java 21+
+jdk:
+  - openjdk21
+
+# 安装前步骤（可选）
+# before_install:
+#   - chmod +x gradlew
+
+# 构建命令
+install:
+  # 跳过 javadoc（JitPack 默认行为有时会因为 javadoc 错误而失败）
+  - ./gradlew clean build publishToMavenLocal -x javadoc -x sign

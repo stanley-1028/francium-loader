@@ -143,6 +143,13 @@ public class MemoryManager {
         return new ArrayList<>(perModMemory.values());
     }
 
+    /**
+     * 獲取洩漏報告列表。
+     */
+    public List<LeakReport> getLeakReports() {
+        return new ArrayList<>(leakReports);
+    }
+
     public void shutdown() {
         monitor.shutdown();
         forceGC();

@@ -1,3 +1,5 @@
+apply plugin: 'java'
+
 dependencies {
     // All submodules as runtime dependencies (FranciumLoader integrates them all)
     implementation project(':francium-ai-bridge')

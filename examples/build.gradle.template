@@ -1,0 +1,55 @@
+// Francium Mod 开发模板
+// 复制此文件到你的项目，修改 modId 和 mainClass 即可开始开发
+
+plugins {
+    id 'java'
+}
+
+group = 'com.example'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    // Francium Loader API (即将发布到 Maven Central / JitPack)
+    // maven { url = 'https://jitpack.io' }
+}
+
+dependencies {
+    // Francium Loader API
+    // implementation 'com.github.stanley-1028:francium-loader:1.0.0'
+
+    // 如果你需要 Mixin
+    // implementation 'org.spongepowered:mixin:0.8.5'
+
+    // 测试
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// 打包为可发布的 JAR
+jar {
+    manifest {
+        attributes(
+            'Francium-Mod-Id': 'my-mod',
+            'Francium-Mod-Version': archiveVersion.get()
+        )
+    }
+    from('src/main/resources') {
+        include 'francium-mod.json'
+    }
+}

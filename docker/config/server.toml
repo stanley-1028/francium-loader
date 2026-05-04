@@ -1,0 +1,46 @@
+# ═══════════════════════════════════════════════════════════
+#  Francium Server Configuration
+#
+#  容器路徑: /app/config/server.toml
+#  掛載方式: -v ./config:/app/config:ro
+# ═══════════════════════════════════════════════════════════
+
+[server]
+# 監聽地址與端口
+host = "0.0.0.0"
+modSyncPort = 25566
+registryPort = 25567
+
+[sync]
+# 模組同步設定
+requireSignature = true           # 要求伺服器模組清單附數位簽章
+autoDownloadClientMods = true     # 客戶端自動下載缺失模組
+syncIntervalMinutes = 60          # 定期比對間隔
+maxModSizeMB = 500                # 單個模組最大尺寸
+
+[security]
+# 安全驗證
+verifySha256 = true               # SHA256 校驗所有模組
+minimumSigningKeyBits = 256       # 最小簽章密鑰強度
+allowUnsignedMods = false         # 是否允許未簽名模組
+blocklistEnabled = true           # 啟用已知惡意模組黑名單
+
+[network]
+# 網路設定
+maxConnections = 100              # 最大同時連線數
+connectionTimeoutSeconds = 30     # 連線超時
+maxDownloadConcurrency = 4        # 同時下載數
+downloadTimeoutSeconds = 300      # 下載超時 (5分鐘)
+
+[logging]
+# 日誌
+level = "INFO"                    # TRACE | DEBUG | INFO | WARN | ERROR
+logDir = "/app/data/logs"
+maxLogSizeMB = 50
+maxLogFiles = 10
+
+[storage]
+# 儲存設定
+modCacheDir = "/app/cache"        # 模組快取目錄
+maxCacheSizeGB = 20               # 快取上限
+cleanupIntervalHours = 24         # 清理間隔
