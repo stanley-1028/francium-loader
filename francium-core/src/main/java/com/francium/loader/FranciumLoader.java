@@ -57,6 +57,9 @@ public class FranciumLoader {
 
     // 加載階段計時
     private final Map<String, Long> phaseTimings = new LinkedHashMap<>();
+    
+    // 發現結果緩存，供後續階段使用
+    private DiscoveryResult lastDiscoveryResult;
 
     public enum LoaderState {
         INIT, DISCOVERING, RESOLVING, BRIDGING, LOADING, READY, ERROR
@@ -138,20 +141,20 @@ public class FranciumLoader {
         // Phase 1: DISCOVERING
         state = LoaderState.DISCOVERING;
         long t1 = System.currentTimeMillis();
-        DiscoveryResult discovered = discoverPhase();
+        lastDiscoveryResult = discoverPhase();
         phaseTimings.put("discovery", System.currentTimeMillis() - t1);
 
         // Phase 2: RESOLVING
         state = LoaderState.RESOLVING;
         long t2 = System.currentTimeMillis();
-        resolvePhase(discovered);
+        resolvePhase(lastDiscoveryResult);
         phaseTimings.put("resolution", System.currentTimeMillis() - t2);
 
         // Phase 3: BRIDGING
         state = LoaderState.BRIDGING;
         long t3 = System.currentTimeMillis();
         if (config.aiBridgeEnabled) {
-            bridgePhase(discovered);
+            bridgePhase(lastDiscoveryResult);
         }
         phaseTimings.put("bridging", System.currentTimeMillis() - t3);
 
@@ -160,23 +163,24 @@ public class FranciumLoader {
         long t4 = System.currentTimeMillis();
         // 啟動記憶體監控
         memoryManager.start();
-        LoadReport report = loadingPhase();
+        lastReport = loadingPhase();
         phaseTimings.put("loading", System.currentTimeMillis() - t4);
 
         // Phase 5: READY
         state = LoaderState.READY;
-        report.totalLoadTimeMs = System.currentTimeMillis() - totalStart;
+        lastReport.totalLoadTimeMs = System.currentTimeMillis() - totalStart;
 
         // 觸發生命週期回調
         fireExtension("preLaunch");
         fireExtension("postLaunch");
 
-        return report;
+        return lastReport;
     }
 
     // ─── Phase Implementations ───
 
     private DiscoveryResult discoverPhase() throws Exception {
+        Objects.requireNonNull(classLoader, "classLoader not initialized");
         DiscoveryResult result = classLoader.discoverMods();
         System.out.printf("Fr: Discovered %d mods in %d JARs (%d skipped)%n",
             result.found.size(), result.totalJars, result.skipped.size());
@@ -184,7 +188,6 @@ public class FranciumLoader {
         // 安全驗證每個 JAR
         if (validator != null) {
             for (var manifest : result.found) {
-                // 驗證僅作記錄，不阻擋加載
                 var validation = validator.validate(
                     modsDir.resolve(manifest.modId() + "-" + manifest.version() + ".jar"));
                 if (!validation.passed) {
@@ -196,10 +199,21 @@ public class FranciumLoader {
         return result;
     }
 
+    /**
+     * 依賴解析階段。
+     * 使用 SAT 求解器解析模組依賴關係，並將結果加入 DAG。
+     */
     private void resolvePhase(DiscoveryResult discovered) {
+        Objects.requireNonNull(resolver, "SAT resolver not initialized");
+        
+        // 如果沒有發現結果，嘗試掃描
+        if (discovered == null || discovered.found.isEmpty()) {
+            System.out.println("Fr: No mods to resolve (discovery returned empty)");
+            return;
+        }
+
         // 向 SAT resolver 註冊所有發現的模組
         for (var manifest : discovered.found) {
-            // 每個 mod 有一個可用版本 (當前找到的版本)
             SemanticVersion sv = SemanticVersion.tryParse(manifest.version());
             if (sv != null) {
                 resolver.registerVersions(manifest.modId(), List.of(sv));
@@ -282,6 +296,7 @@ public class FranciumLoader {
     }
 
     private LoadReport loadingPhase() throws Exception {
+        Objects.requireNonNull(classLoader, "classLoader not initialized in loading phase");
         return classLoader.loadAll();
     }
 
@@ -409,19 +424,20 @@ public class FranciumLoader {
         if (classLoader == null) initialize();
         state = LoaderState.DISCOVERING;
         long t = System.currentTimeMillis();
-        discoverPhase();
+        lastDiscoveryResult = discoverPhase();
         phaseTimings.put("discovery", System.currentTimeMillis() - t);
     }
 
-    /** Phase 2: resolve dependencies */
+    /** Phase 2: resolve dependencies using cached discovery result */
     public void resolveDependencies() throws Exception {
         state = LoaderState.RESOLVING;
         long t = System.currentTimeMillis();
-        resolvePhase(null);
+        // Use cached discovery result instead of null
+        resolvePhase(lastDiscoveryResult);
         phaseTimings.put("resolution", System.currentTimeMillis() - t);
     }
 
-    /** Phase 3: build DAG */
+    /** Phase 3: build DAG from resolved dependencies */
     public void buildLoadGraph() {
         state = LoaderState.RESOLVING;
         modGraph.buildLayers();
@@ -430,19 +446,23 @@ public class FranciumLoader {
     /** Phase 4: load all mods */
     public void loadMods() throws Exception {
         state = LoaderState.LOADING;
-        lastReport = classLoader != null ? classLoader.loadAll() : null;
+        lastReport = loadingPhase();
         state = LoaderState.READY;
     }
 
     /** Inject Francium ClassLoader into LaunchClassLoader chain */
     public void injectInto(Object launchClassLoader) {
-        // LaunchWrapper: add Francium classloader as a transformer/exclusion
-        // For now, register Francium-loaded classes in the exclusion list
+        if (launchClassLoader == null) {
+            System.err.println("[Francium] Cannot inject into null LaunchClassLoader");
+            return;
+        }
         try {
             java.lang.reflect.Method addExclusion = launchClassLoader.getClass()
                 .getMethod("addClassLoaderExclusion", String.class);
             addExclusion.invoke(launchClassLoader, "com.francium.");
             System.out.println("[Francium] Registered classloader exclusion for com.francium.*");
+        } catch (NoSuchMethodException e) {
+            System.out.println("[Francium] LaunchWrapper not detected; skipping exclusion registration");
         } catch (Exception e) {
             System.out.println("[Francium] LaunchWrapper exclusion registration skipped: " + e.getMessage());
         }
@@ -451,20 +471,28 @@ public class FranciumLoader {
     public int getLoadedModCount() {
         if (lastReport != null)
             return lastReport.layerDetails.stream().mapToInt(d -> d.success + d.failed).sum();
-        return modGraph != null ? modGraph.getLayers().stream().mapToInt(Set::size).sum() : 0;
+        return modGraph != null && modGraph.getLayerCount() > 0
+            ? modGraph.getLayers().stream().mapToInt(Set::size).sum()
+            : 0;
     }
 
-    private ParallelModClassLoader.LoadReport lastReport;
+    private LoadReport lastReport;
 
     /** Full status report */
     public FranciumReport getReport() {
         FranciumReport r = new FranciumReport();
-        r.layers = modGraph != null ? modGraph.getLayers().size() : 0;
-        r.maxParallel = modGraph != null
-            ? modGraph.getLayers().stream().mapToInt(Set::size).max().orElse(0) : 0;
+        if (modGraph != null) {
+            r.layers = modGraph.getLayerCount();
+            r.maxParallel = modGraph.getLayerCount() > 0
+                ? modGraph.getLayers().stream().mapToInt(Set::size).max().orElse(0)
+                : 0;
+        }
         r.totalMods = getLoadedModCount();
         r.loadedMods = r.totalMods;
         r.failedMods = 0;
+        if (lastReport != null) {
+            r.failedMods = lastReport.layerDetails.stream().mapToInt(d -> d.failed).sum();
+        }
         r.satTimeMs = phaseTimings.getOrDefault("resolution", 0L);
         r.loadTimeMs = phaseTimings.getOrDefault("loading", 0L);
         r.totalTimeMs = phaseTimings.values().stream().mapToLong(Long::longValue).sum();

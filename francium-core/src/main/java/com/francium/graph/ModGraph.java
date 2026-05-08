@@ -59,8 +59,9 @@ public class ModGraph {
             adjacency.putIfAbsent(depId, new LinkedHashSet<>());
             reverseAdjacency.putIfAbsent(depId, new LinkedHashSet<>());
             // edge direction: dependency → depender (B must load before A)
-            adjacency.get(depId).add(nodeId);
-            reverseAdjacency.get(nodeId).add(depId);
+            // adjacency[A] = {B} means A must load after B
+            adjacency.get(nodeId).add(depId);
+            reverseAdjacency.get(depId).add(nodeId);
         }
         
         return true;
@@ -88,26 +89,32 @@ public class ModGraph {
             return;
         }
         
-        // 計算入度
+        // 計算入度: inDegree[node] = 節點依賴的數量
+        // adjacency[A] = {B, C} 表示 A 依賴 B 和 C (B, C 必須在 A 之前加載)
+        // 所以 A 的入度 = |adjacency[A]|
         Map<String, Integer> inDegree = new HashMap<>();
-        for (String v : adjacency.keySet()) {
-            inDegree.put(v, 0);
-        }
-        for (var entry : adjacency.entrySet()) {
-            for (String dep : entry.getValue()) {
-                inDegree.merge(dep, 0, Integer::sum);
-                inDegree.merge(entry.getKey(), 0, Integer::sum);
-                inDegree.put(dep, inDegree.get(dep) + 1);
-            }
+        
+        // 初始化所有節點的入度
+        for (String node : adjacency.keySet()) {
+            inDegree.put(node, 0);
         }
         
-        // BFS 分層
+        // 計算入度: 遍歷所有邊，對每個節點統計其依賴數量
+        for (var entry : adjacency.entrySet()) {
+            String node = entry.getKey();
+            Set<String> deps = entry.getValue();
+            // node 依賴 deps 中的所有節點
+            // demoters: node 的入度 = deps 的大小
+            inDegree.put(node, deps.size());
+        }
+        
+        // BFS 分層 (Kahn's algorithm)
         List<Set<String>> result = new ArrayList<>();
         Map<String, Integer> nodeLayer = new HashMap<>();
         longestPath = new HashMap<>();
-        Queue<String> queue = new ArrayDeque<>();
+        Deque<String> queue = new ArrayDeque<>();
         
-        // 入度 = 0 → Layer 0
+        // 入度 = 0 → Layer 0 (沒有依賴的節點)
         for (var entry : inDegree.entrySet()) {
             if (entry.getValue() == 0) {
                 queue.add(entry.getKey());
@@ -117,37 +124,41 @@ public class ModGraph {
         }
         
         if (queue.isEmpty() && !adjacency.isEmpty()) {
+            // 所有節點都有依賴 → 存在環
             throw new CircularDependencyException(detectCycles());
         }
         
         Map<Integer, Set<String>> layerMap = new LinkedHashMap<>();
+        int processedCount = 0;
         
         while (!queue.isEmpty()) {
             String node = queue.poll();
             int layer = nodeLayer.get(node);
+            processedCount++;
             
             layerMap.computeIfAbsent(layer, k -> new LinkedHashSet<>()).add(node);
             
-            // 處理此節點的依賴對象 (通過鄰接表: node → dependency)
-            Set<String> deps = adjacency.get(node);
-            if (deps != null) {
-                for (String dep : deps) {
-                    int newDegree = inDegree.get(dep) - 1;
-                    inDegree.put(dep, newDegree);
+            // 處理依賴此節點的其他節點 (透過 reverseAdjacency)
+            Set<String> dependers = reverseAdjacency.get(node);
+            if (dependers != null) {
+                for (String depender : dependers) {
+                    // depender 依賴 node，node 已加載 → depender 的入度減 1
+                    int newDegree = inDegree.get(depender) - 1;
+                    inDegree.put(depender, newDegree);
                     
                     int newPath = longestPath.getOrDefault(node, 0) + 1;
-                    longestPath.merge(dep, newPath, Math::max);
+                    longestPath.merge(depender, newPath, Math::max);
                     
                     if (newDegree == 0) {
-                        nodeLayer.put(dep, layer + 1);
-                        queue.add(dep);
+                        nodeLayer.put(depender, layer + 1);
+                        queue.add(depender);
                     }
                 }
             }
         }
         
-        // 檢查未處理節點
-        if (nodeLayer.size() < adjacency.size()) {
+        // 檢查是否有未處理的節點 (環檢測)
+        if (processedCount < adjacency.size()) {
             throw new CircularDependencyException(detectCycles());
         }
         
