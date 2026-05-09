@@ -14,7 +14,7 @@ We welcome contributions of all kinds.
 
 ```bash
 # Clone the repository
-git clone https://github.com/francium-loader/francium.git
+git clone https://github.com/stanley-1028/francium-loader.git
 cd francium
 
 # Generate the Gradle wrapper jar (first time only)

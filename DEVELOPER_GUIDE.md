@@ -57,7 +57,7 @@ public class MyMod {
 cp build/libs/my-awesome-mod-1.0.0.jar ~/.minecraft/mods/
 ```
 
-然后使用 Salute Launcher 启动 Minecraft——Francium 会自动发现并加载你的模组。
+然后使用 Nova Launcher 启动 Minecraft——Francium 会自动发现并加载你的模组。
 
 ---
 

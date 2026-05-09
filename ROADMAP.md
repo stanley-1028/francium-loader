@@ -18,7 +18,7 @@
 | CI | ✅ |
 | 一鍵安裝 | ✅ `install-francium.bat` |
 | 一鍵 Demo | ✅ `demo.bat` |
-| 文件 | ❌ |
+| 文件 | ✅ |
 | Maven Central 發布 | ❌ |
 | Nova Launcher 整合 | ❌ 代碼橋接未驗證 |
 
