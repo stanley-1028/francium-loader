@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.francium'
-version = '1.0.0-alpha'
+version = '1.0.0'
 
 application {
     mainClass = 'com.francium.bootstrap.FranciumBootstrap'
