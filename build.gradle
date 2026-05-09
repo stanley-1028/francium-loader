@@ -61,9 +61,14 @@ tasks.register('fatJar', Jar) {
                    'Implementation-Title': 'Francium Mod Loader',
                    'Implementation-Version': archiveVersion.get()
     }
+    dependsOn subprojects.collect { it.tasks.withType(Jar) }
     dependsOn configurations.runtimeClasspath
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    subprojects.each { sub ->
+        from(sub.sourceSets.main.output)
     }
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
 }
