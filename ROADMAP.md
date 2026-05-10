@@ -40,18 +40,18 @@
 ## 🟡 P1：開發者體驗
 
 - [ ] Nova Launcher 整合端到端驗證
-- [ ] 範例模組 (Hello World Francium Mod)
-- [ ] Gradle 模板專案
-- [ ] 模組開發者文件
+- [x] 範例模組 (Hello World Francium Mod)
+- [x] Gradle 模板專案 (francium-mod-template)
+- [x] 模組開發者文件 (DEVELOPER_GUIDE.md)
 - [ ] API Javadoc
 
 ---
 
 ## 🟢 P2：生態與分發
 
-- [ ] JitPack 發布 (`com.github.stanley-1028:francium-loader`)
+- [x] JitPack 發布 (`com.github.stanley-1028:francium-loader`)
 - [ ] Maven Central 發布
-- [ ] GitHub Releases
+- [x] GitHub Releases (v1.0.0)
 - [ ] 社群文檔 (Discord/Reddit)
 
 ---

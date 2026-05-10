@@ -2,6 +2,16 @@
 
 All notable changes to Francium Mod Loader.
 
+## [1.0.0] — 2026-05-10
+
+### Added
+- GitHub Release v1.0.0 with fat JAR artifact
+- JitPack publishing support (tag-based auto-build)
+
+### Updated
+- ROADMAP milestones: P1 developer experience, P2 distribution marked complete
+- All module tests passing (70/70)
+
 ## [1.0.0-alpha] — Unreleased
 
 ### Added
