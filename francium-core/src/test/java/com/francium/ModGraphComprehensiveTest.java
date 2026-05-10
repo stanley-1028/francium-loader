@@ -282,7 +282,12 @@ public class ModGraphComprehensiveTest {
 
     private ModManifest createManifest(String id, String version, long loadTimeMs,
                                         Map<String, String> deps) {
-        return new ModManifest(id, version, "com.example." + id + ".Main",
-            deps, Map.of(), Map.of(), loadTimeMs);
+        var builder = ModManifest.builder(id, version)
+            .mainClass("com.example." + id + ".Main")
+            .sizeBytes(loadTimeMs);
+        for (var entry : deps.entrySet()) {
+            builder.dependency(entry.getKey(), entry.getValue());
+        }
+        return builder.build();
     }
 }
