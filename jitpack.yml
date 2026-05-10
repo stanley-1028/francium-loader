@@ -19,4 +19,4 @@ jdk:
 # 构建命令
 install:
   # 跳过 javadoc（JitPack 默认行为有时会因为 javadoc 错误而失败）
-  - ./gradlew clean build publishToMavenLocal -x javadoc -x sign
+  - ./gradlew clean build publishToMavenLocal -x javadoc
