@@ -1,6 +1,12 @@
 # Changelog
 
-All notable changes to Francium Mod Loader.
+All notable changes to Francium Mod Loader will be documented in this file.
+
+## [1.0.1] — 2026-05-11
+
+### Fixed
+- README.md: git clone URL updated for clarity
+- Documentation improvements and minor typo fixes
 
 ## [1.0.0] — 2026-05-10
 
