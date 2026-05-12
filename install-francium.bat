@@ -130,7 +130,7 @@ if "!SRC_FILES!"=="" (
 "%JAVA%" -d "build\classes" --release 21 -Xlint:-unchecked !SRC_FILES! 2>nul
 if errorlevel 1 (
     echo   [警告] 編譯失敗，可能是缺少 ASM 依賴
-    echo   請手動執行: gradlew.bat fatJar
+    echo   請手動執行: gradlew.bat shadowJar
     goto :no_jar
 )
 
@@ -157,7 +157,7 @@ if exist "%FRANCIUM_JAR%" (
 ) else (
     :no_jar
     echo   [注意] 未找到 francium-loader.jar
-    echo   請執行 gradlew.bat fatJar 手動建置後重新安裝
+    echo   請執行 gradlew.bat shadowJar 手動建置後重新安裝
 )
 
 :: 建立 francium-lock.json

@@ -37,9 +37,9 @@ echo.
 echo =====================================
 echo Step 2: Building fat JAR (all subprojects)
 echo =====================================
-call gradlew.bat fatJar -x test --no-daemon
+call gradlew.bat shadowJar -x test --no-daemon
 if %ERRORLEVEL% NEQ 0 (
-    echo FAILED at fatJar step!
+    echo FAILED at shadowJar step!
     pause
     exit /b %ERRORLEVEL%
 )

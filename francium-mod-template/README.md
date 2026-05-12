@@ -143,7 +143,7 @@ Francium 偵測到目標是 MC 1.21 →
 ./gradlew test
 
 # 打包成 fat jar（含所有依賴）
-./gradlew fatJar
+./gradlew shadowJar
 
 # 清理
 ./gradlew clean

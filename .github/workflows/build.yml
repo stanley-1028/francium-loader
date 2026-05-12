@@ -1,4 +1,4 @@
-name: Build & Test
+name: Build, Test & Release
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         java: ['21', '22', '23']
       fail-fast: false
 
@@ -37,8 +37,8 @@ jobs:
       - name: Run all tests
         run: ./gradlew test --no-daemon
 
-      - name: Build JAR
-        run: ./gradlew jar --no-daemon
+      - name: Build Shadow JAR
+        run: ./gradlew shadowJar --no-daemon
 
       - name: Upload test results
         if: always()
@@ -67,17 +67,20 @@ jobs:
           distribution: 'temurin'
 
       - name: Core build & test (no external deps)
+        shell: bash
         run: |
           chmod +x ./build.sh
           ./build.sh
 
-  # ─── Release (tag push only) ────────────────────────
-  release:
+  # ─── Native Packages (Win/Mac/Linux) ───────────────
+  package:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [gradle-build, standalone-build]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    needs: gradle-build
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -86,13 +89,43 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
+          java-version: 21
 
-      - name: Build fat JAR
-        run: ./gradlew fatJar --no-daemon
+      - name: Build shadow JAR
+        run: ./gradlew shadowJar --no-daemon
 
-      - name: Build distributions
-        run: ./gradlew jar sourcesJar javadocJar --no-daemon
+      - name: Build native installer
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            ./gradlew jpackageExe --no-daemon
+          elif [ "${{ matrix.os }}" = "macos-latest" ]; then
+            ./gradlew jpackageDmg --no-daemon
+          elif [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+            ./gradlew distPortableZip --no-daemon
+          fi
+
+      - name: Upload native package
+        uses: actions/upload-artifact@v4
+        with:
+          name: francium-native-${{ matrix.os }}
+          path: |
+            build/jpackage-output/*
+            build/distributions/*.zip
+
+  # ─── Release (tag push only) ────────────────────────
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [gradle-build, standalone-build, package]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
 
       - name: Generate release notes
         id: notes
@@ -111,4 +144,5 @@ jobs:
           draft: false
           prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') }}
           files: |
-            **/build/libs/*.jar
+            francium-jar-*/*.jar
+            francium-native-*/*

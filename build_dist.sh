@@ -47,8 +47,8 @@ echo ""
 echo "====================================="
 echo "Step 2: Building fat JAR (all subprojects)"
 echo "====================================="
-./gradlew fatJar -x test --no-daemon
-echo "  ✓ fatJar done"
+./gradlew shadowJar -x test --no-daemon
+echo "  ✓ shadowJar done"
 
 # Find the fat jar
 FAT_JAR=$(ls build/libs/*-all.jar 2>/dev/null | head -1)
