@@ -26,46 +26,36 @@ if not defined JAVA (
     exit /b 1
 )
 
-:: 執行 FranciumDemo
-set "DEMO_FILE=%FRANCIUM_DIR%FranciumDemo.java"
-
-if exist "%DEMO_FILE%" (
-    echo   正在編譯並啟動展示...
-    echo.
-
-    :: First compile the demo (it depends on other francium classes)
-    set "BUILD_DIR=%FRANCIUM_DIR%build\classes"
-    set "SRC_DIR=%FRANCIUM_DIR%build\demo-src"
-    if not exist "%SRC_DIR%\com\francium\demo" mkdir "%SRC_DIR%\com\francium\demo"
-    copy /y "%DEMO_FILE%" "%SRC_DIR%\com\francium\demo\FranciumDemo.java" >nul
-
-    :: Compile demo + dependency sources
-    "%JAVA%" -d "%BUILD_DIR%" --release 21 -Xlint:-unchecked ^
-        -sourcepath "%SRC_DIR%" ^
-        francium-resolver\src\main\java\com\franciumesolver\model\SemanticVersion.java ^
-        francium-resolver\src\main\java\com\franciumesolver\model\DependencyConstraint.java ^
-        francium-resolver\src\main\java\com\franciumesolver\sat\SATDependencyResolver.java ^
-        francium-ai-bridge\src\main\java\com\francium\ai\mapping\MethodSignature.java ^
-        francium-ai-bridge\src\main\java\com\francium\ai\mapping\MappingDatabase.java ^
-        francium-ai-bridge\src\main\java\com\francium\ai\predictor\CompatibilityPredictor.java ^
-        francium-core\src\main\java\com\francium\graph\ModGraph.java ^
-        francium-core\src\main\java\com\francium\loader\ModManifest.java ^
-        francium-core\src\main\java\com\francium\loader\LoaderConfig.java ^
-        francium-core\src\main\java\com\francium\classloader\ParallelModClassLoader.java ^
-        francium-profiler\src\main\java\com\francium\profiler\memory\MemoryManager.java ^
-        francium-server\src\main\java\com\francium\server\sync\ServerSyncProtocol.java ^
-        francium-server\src\main\java\com\francium\server\validate\ModValidator.java ^
-        "%SRC_DIR%\com\francium\demo\FranciumDemo.java" 2>nul
-
-    if errorlevel 1 (
-        echo   [注意] 編譯過程有警告，但可能仍可執行
-    )
-
-    "%JAVA%" -cp "%BUILD_DIR%" com.francium.demo.FranciumDemo
-) else (
-    echo   [錯誤] 找不到 FranciumDemo.java
+:: ===== 方法1: 使用 Gradle 已編譯的 class =====
+if exist "%FRANCIUM_DIR%build\classes\java\main" (
+    echo   使用 Gradle 已編譯的 class 執行展示...
+    "%JAVA%" -cp "%FRANCIUM_DIR%build\classes\java\main" com.francium.demo.FranciumDemo 2>nul
+    if !ERRORLEVEL! EQU 0 goto :done
 )
 
+:: ===== 方法2: 使用 build.bat 先編譯核心模組 =====
+echo   正在編譯核心模組...
+call "%FRANCIUM_DIR%build.bat" 2>nul
+if exist "%FRANCIUM_DIR%build\classes" (
+    echo   執行展示...
+    "%JAVA%" -cp "%FRANCIUM_DIR%build\classes" com.francium.demo.FranciumDemo 2>nul
+    if !ERRORLEVEL! EQU 0 goto :done
+)
+
+:: ===== 方法3: 用 Java 直接執行 FranciumDemo.java =====
+if exist "%FRANCIUM_DIR%FranciumDemo.java" (
+    echo   使用 Java 直接執行展示...
+    "%JAVA%" "%FRANCIUM_DIR%FranciumDemo.java" 2>nul
+    if !ERRORLEVEL! EQU 0 goto :done
+)
+
+:: ===== 所有方法都失敗 =====
+echo   [注意] 無法自動執行展示。
+echo   請先執行 gradlew.bat shadowJar 建置後再試。
+echo   或直接執行: java FranciumDemo.java
+
+:done
 echo.
 echo   展示結束。按任意鍵關閉...
 pause >nul
+endlocal
