@@ -73,20 +73,26 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Cache ASM jars
+        uses: actions/cache@v4
+        with:
+          path: build/lib
+          key: asm-${{ runner.os }}-9.7
+
       - name: Make build.sh executable
         run: chmod +x ./build.sh
 
       - name: Core build & test (no external deps)
         shell: bash
         run: |
-          # Retry ASM download up to 3 times (Maven Central can be flaky)
+          # Retry ASM download up to 3 times with longer timeout
           for i in 1 2 3; do
-            ./build.sh && break
+            ASM_DOWNLOAD_TIMEOUT=30 ./build.sh && break
             if [ $i -lt 3 ]; then
-              echo "Retry $i/3 failed, waiting 5s..."
-              sleep 5
+              echo "⚠ Attempt $i failed, waiting 10s before retry..."
+              sleep 10
             else
-              echo "All 3 attempts failed"
+              echo "❌ All 3 attempts failed"
               exit 1
             fi
           done
@@ -128,6 +134,24 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+
+      - name: Install jpackage system dependencies
+        shell: bash
+        run: |
+          case "${{ matrix.os }}" in
+            macos-latest)
+              echo "macOS: jpackage included in JDK - no extra deps needed"
+              # Ensure jpackage is available
+              java_home=$(/usr/libexec/java_home 2>/dev/null || echo "$JAVA_HOME")
+              echo "JAVA_HOME=$java_home"
+              ls "$java_home/bin/jpackage" 2>/dev/null && echo "jpackage found" || echo "jpackage NOT found"
+              ;;
+            ubuntu-latest)
+              echo "Linux: Installing jpackage dependencies..."
+              sudo apt-get update -qq
+              sudo apt-get install -y -qq dpkg-dev fakeroot rpm
+              ;;
+          esac
 
       - name: Build shadow JAR
         run: ./gradlew shadowJar --no-daemon
