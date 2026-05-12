@@ -1,4 +1,5 @@
 #!/bin/bash
+# LF line endings enforced by .gitattributes
 # ============================================
 #  Francium Mod Loader — Distribution Builder (Linux/macOS)
 #  Builds: fat JAR + portable ZIP + shell launcher

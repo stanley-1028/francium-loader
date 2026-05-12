@@ -5,6 +5,8 @@ out/
 .project
 .settings/
 bin/
+!bin/*.sh
+!bin/*.bat
 
 # Gradle
 .gradle/
