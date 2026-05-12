@@ -13,11 +13,17 @@ application {
 }
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
     withSourcesJar()
     withJavadocJar()
+}
+
+// Use JDK 21 source/target compatibility without toolchain enforcement.
+// Toolchain auto-detection varies across CI platforms (Linux/macOS/Windows),
+// so we let the CI-provided JDK handle compilation directly.
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+    options.encoding = 'UTF-8'
+    logger.lifecycle("Compiling with: ${javaCompiler.map { it.metadata.installationPath }.getOrElse('CI JDK')}")
 }
 
 allprojects {
