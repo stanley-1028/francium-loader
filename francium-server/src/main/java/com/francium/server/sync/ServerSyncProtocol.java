@@ -32,22 +32,56 @@ public class ServerSyncProtocol {
         public String signature; // 伺服器簽名
         
         public byte[] toJson() {
-            // 簡化: 實際使用 Gson
             StringBuilder sb = new StringBuilder();
-            sb.append("{\"serverId\":\"").append(serverId).append("\",");
-            sb.append("\"mcVersion\":\"").append(mcVersion).append("\",");
+            sb.append("{\"serverId\":").append(jsonEscape(serverId)).append(",");
+            sb.append("\"mcVersion\":").append(jsonEscape(mcVersion)).append(",");
+            sb.append("\"timestamp\":").append(timestamp).append(",");
             sb.append("\"mods\":[");
-            for (int i = 0; i < mods.size(); i++) {
-                if (i > 0) sb.append(",");
-                sb.append(mods.get(i).toJson());
+            if (mods != null) {
+                for (int i = 0; i < mods.size(); i++) {
+                    if (i > 0) sb.append(",");
+                    sb.append(mods.get(i).toJson());
+                }
             }
-            sb.append("]}");
+            sb.append("]");
+            if (signature != null) sb.append(",\"signature\":").append(jsonEscape(signature));
+            sb.append("}");
             return sb.toString().getBytes(StandardCharsets.UTF_8);
         }
         
         public static ServerModList fromJson(String json) {
-            // 簡化實現；實際使用 Gson
-            return new ServerModList();
+            if (json == null || json.isBlank()) return new ServerModList();
+            ServerModList list = new ServerModList();
+            list.mods = new ArrayList<>();
+            try {
+                // Simple JSON parsing without external dependencies
+                list.serverId = extractString(json, "serverId");
+                list.mcVersion = extractString(json, "mcVersion");
+                list.franciumVersion = extractString(json, "franciumVersion");
+                list.signature = extractString(json, "signature");
+                list.timestamp = extractLong(json, "timestamp", 0L);
+                
+                // Parse mods array
+                String modsArray = extractArray(json, "mods");
+                if (modsArray != null && !modsArray.equals("[]")) {
+                    List<String> modObjects = splitJsonObjects(modsArray);
+                    for (String modJson : modObjects) {
+                        ServerModEntry entry = new ServerModEntry();
+                        entry.modId = extractString(modJson, "id");
+                        entry.name = extractString(modJson, "name");
+                        entry.version = extractString(modJson, "ver");
+                        entry.sha256 = extractString(modJson, "sha256");
+                        entry.downloadUrl = extractString(modJson, "downloadUrl");
+                        entry.required = extractBool(modJson, "required", true);
+                        entry.serverOnly = extractBool(modJson, "serverOnly", false);
+                        entry.size = extractLong(modJson, "size", 0L);
+                        list.mods.add(entry);
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("[ServerSync] Failed to parse mod list: " + e.getMessage());
+            }
+            return list;
         }
     }
 
@@ -66,9 +100,13 @@ public class ServerSyncProtocol {
         public String configTemplate; // 伺服器推薦的設定檔 (base64)
         
         public String toJson() {
-            return String.format(
-                "{\"id\":\"%s\",\"ver\":\"%s\",\"sha256\":\"%s\",\"required\":%b,\"serverOnly\":%b}",
-                modId, version, sha256, required, serverOnly);
+            return "{" +
+                "\"id\":" + jsonEscape(modId) + "," +
+                "\"ver\":" + jsonEscape(version) + "," +
+                "\"sha256\":" + jsonEscape(sha256) + "," +
+                "\"required\":" + required + "," +
+                "\"serverOnly\":" + serverOnly +
+                "}";
         }
     }
 
@@ -195,5 +233,71 @@ public class ServerSyncProtocol {
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) sb.append(String.format("%02x", b));
         return sb.toString();
+    }
+    
+    private static String jsonEscape(String s) {
+        if (s == null) return "null";
+        return "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    }
+    
+    private static String extractString(String json, String key) {
+        String search = "\"" + key + "\":\"";
+        int start = json.indexOf(search);
+        if (start < 0) return "";
+        start += search.length();
+        int end = json.indexOf("\"", start);
+        if (end < 0) return "";
+        return json.substring(start, end).replace("\\\"", "\"").replace("\\\\", "\\");
+    }
+    
+    private static long extractLong(String json, String key, long def) {
+        String search = "\"" + key + "\":";
+        int start = json.indexOf(search);
+        if (start < 0) return def;
+        start += search.length();
+        int end = json.indexOf(",", start);
+        if (end < 0) end = json.indexOf("}", start);
+        if (end < 0) return def;
+        try { return Long.parseLong(json.substring(start, end).trim()); }
+        catch (NumberFormatException e) { return def; }
+    }
+    
+    private static boolean extractBool(String json, String key, boolean def) {
+        String search = "\"" + key + "\":";
+        int start = json.indexOf(search);
+        if (start < 0) return def;
+        start += search.length();
+        if (json.substring(start).startsWith("true")) return true;
+        if (json.substring(start).startsWith("false")) return false;
+        return def;
+    }
+    
+    private static String extractArray(String json, String key) {
+        String search = "\"" + key + "\":[";
+        int start = json.indexOf(search);
+        if (start < 0) return "[]";
+        start += search.length() - 1;
+        int depth = 0;
+        for (int i = start; i < json.length(); i++) {
+            char c = json.charAt(i);
+            if (c == '[') depth++;
+            else if (c == ']') { depth--; if (depth == 0) return json.substring(start, i + 1); }
+        }
+        return "[]";
+    }
+    
+    private static List<String> splitJsonObjects(String array) {
+        List<String> objects = new ArrayList<>();
+        if (array == null || array.length() < 2) return objects;
+        String inner = array.substring(1, array.length() - 1).trim();
+        if (inner.isEmpty()) return objects;
+        int depth = 0;
+        int objStart = -1;
+        for (int i = 0; i < inner.length(); i++) {
+            char c = inner.charAt(i);
+            if (c == '{') { if (depth == 0) objStart = i; depth++; }
+            else if (c == '}') { depth--; if (depth == 0 && objStart >= 0) { objects.add(inner.substring(objStart, i + 1)); objStart = -1; } }
+        }
+        return objects;
     }
 }
