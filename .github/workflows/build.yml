@@ -140,6 +140,9 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
       - name: Install jpackage system dependencies
         shell: bash
         run: |
