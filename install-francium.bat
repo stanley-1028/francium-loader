@@ -15,7 +15,8 @@ title Francium Mod Loader - 一鍵安裝
 :: =====================================================
 
 set "FRANCIUM_DIR=%~dp0"
-set "FRANCIUM_JAR=%FRANCIUM_DIR%build\libs\francium-loader-standalone.jar"
+for %%f in ("%FRANCIUM_DIR%build\libs\francium-loader-*-all.jar") do set "FRANCIUM_JAR=%%f"
+if not defined FRANCIUM_JAR set "FRANCIUM_JAR=%FRANCIUM_DIR%build\libs\francium-loader-standalone.jar"
 set "FRANCIUM_CONFIG_DIR=%FRANCIUM_DIR%config\francium"
 
 echo.
@@ -79,7 +80,7 @@ if exist "%FRANCIUM_JAR%" (
 if exist "%FRANCIUM_DIR%gradlew.bat" (
     echo   正在使用 Gradle 建置...
     cd /d "%FRANCIUM_DIR%"
-    call gradlew.bat fatJar --no-daemon -q 2>nul
+    call gradlew.bat shadowJar --no-daemon -q 2>nul
     if exist "%FRANCIUM_JAR%" (
         echo   [OK] 建置完成
         goto :install

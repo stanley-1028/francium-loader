@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'com.francium'
@@ -53,38 +54,204 @@ subprojects {
     }
 }
 
-// Distribution JAR that includes all subprojects
-tasks.register('fatJar', Jar) {
+// ══════════════════════════════════════════════════
+//  Shadow JAR (replaces old fatJar)
+// ══════════════════════════════════════════════════
+shadowJar {
     archiveClassifier.set('all')
+    mergeServiceFiles()
     manifest {
         attributes 'Main-Class': application.mainClass.get(),
                    'Implementation-Title': 'Francium Mod Loader',
                    'Implementation-Version': archiveVersion.get()
     }
-    dependsOn subprojects.collect { it.tasks.withType(Jar) }
-    dependsOn configurations.runtimeClasspath
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    // Include all subproject outputs
     from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        subprojects.collect { it.sourceSets.main.output }
     }
-    subprojects.each { sub ->
-        from(sub.sourceSets.main.output)
-    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+}
+
+// Keep old fatJar as alias for shadowJar
+tasks.register('fatJar') {
+    dependsOn shadowJar
+}
+
+// ══════════════════════════════════════════════════
+//  Cross-Platform Native Builds (jpackage)
+// ══════════════════════════════════════════════════
+
+// Helper to detect current OS
+def osWindows = System.properties['os.name'].toLowerCase().contains('win')
+def osMac = System.properties['os.name'].toLowerCase().contains('mac')
+def osLinux = System.properties['os.name'].toLowerCase().contains('nux') ||
+              System.properties['os.name'].toLowerCase().contains('nix')
+
+// Determine JAVA_HOME
+def javaHome = System.getProperty('java.home')
+def jdkHome = javaHome.endsWith('jre') ? new File(javaHome).parent : javaHome
+
+// ═══ 1. Windows: jpackage EXE installer ═══
+tasks.register('jpackageExe', Exec) {
+    description = 'Create Windows .exe installer for Francium CLI'
+    dependsOn shadowJar
+    group = 'distribution'
+
+    def inputDir = layout.buildDirectory.dir('jpackage-input')
+    def outputDir = layout.buildDirectory.dir('jpackage-output')
+
+    doFirst {
+        def inDir = inputDir.get().asFile
+        def outDir = outputDir.get().asFile
+        inDir.mkdirs()
+        if (outDir.exists()) outDir.deleteDir()
+        outDir.mkdirs()
+        copy {
+            from shadowJar.archiveFile
+            into inDir
+        }
+    }
+
+    commandLine "${jdkHome}/bin/jpackage",
+        '--type', 'exe',
+        '--name', 'FranciumLoader',
+        '--app-version', version,
+        '--vendor', 'Francium',
+        '--description', 'Next-gen Minecraft mod loader: DAG parallel loading, AI cross-version bridging',
+        '--input', inputDir.get().asFile.absolutePath,
+        '--main-jar', shadowJar.archiveFile.get().asFile.name,
+        '--main-class', 'com.francium.bootstrap.FranciumBootstrap',
+        '--java-options', '-Xmx2g',
+        '--dest', outputDir.get().asFile.absolutePath
+
+    onlyIf { osWindows }
+
+    doLast {
+        println "  ✅ Windows installer: ${outputDir.get().asFile}\\FranciumLoader-${version}.exe"
+    }
+}
+
+// ═══ 2. macOS: jpackage DMG installer ═══
+tasks.register('jpackageDmg', Exec) {
+    description = 'Create macOS .dmg installer for Francium CLI'
+    dependsOn shadowJar
+    group = 'distribution'
+
+    def inputDir = layout.buildDirectory.dir('jpackage-input')
+    def outputDir = layout.buildDirectory.dir('jpackage-output')
+
+    doFirst {
+        def inDir = inputDir.get().asFile
+        def outDir = outputDir.get().asFile
+        inDir.mkdirs()
+        if (outDir.exists()) outDir.deleteDir()
+        outDir.mkdirs()
+        copy {
+            from shadowJar.archiveFile
+            into inDir
+        }
+    }
+
+    commandLine "${jdkHome}/bin/jpackage",
+        '--type', 'dmg',
+        '--name', 'FranciumLoader',
+        '--app-version', version,
+        '--vendor', 'Francium',
+        '--description', 'Next-gen Minecraft mod loader',
+        '--input', inputDir.get().asFile.absolutePath,
+        '--main-jar', shadowJar.archiveFile.get().asFile.name,
+        '--main-class', 'com.francium.bootstrap.FranciumBootstrap',
+        '--java-options', '-Xmx2g',
+        '--mac-package-identifier', 'com.francium.loader',
+        '--mac-package-name', 'Francium Loader',
+        '--dest', outputDir.get().asFile.absolutePath
+
+    onlyIf { osMac }
+
+    doLast {
+        println "  ✅ macOS DMG: ${outputDir.get().asFile}/FranciumLoader-${version}.dmg"
+    }
+}
+
+// ═══ 3. Linux: jpackage AppImage ═══
+tasks.register('jpackageAppImage', Exec) {
+    description = 'Create Linux AppImage for Francium CLI'
+    dependsOn shadowJar
+    group = 'distribution'
+
+    def inputDir = layout.buildDirectory.dir('jpackage-input')
+    def outputDir = layout.buildDirectory.dir('jpackage-output')
+
+    doFirst {
+        def inDir = inputDir.get().asFile
+        def outDir = outputDir.get().asFile
+        inDir.mkdirs()
+        if (outDir.exists()) outDir.deleteDir()
+        outDir.mkdirs()
+        copy {
+            from shadowJar.archiveFile
+            into inDir
+        }
+    }
+
+    commandLine "${jdkHome}/bin/jpackage",
+        '--type', 'app-image',
+        '--name', 'FranciumLoader',
+        '--app-version', version,
+        '--vendor', 'Francium',
+        '--description', 'Next-gen Minecraft mod loader',
+        '--input', inputDir.get().asFile.absolutePath,
+        '--main-jar', shadowJar.archiveFile.get().asFile.name,
+        '--main-class', 'com.francium.bootstrap.FranciumBootstrap',
+        '--java-options', '-Xmx2g',
+        '--dest', outputDir.get().asFile.absolutePath,
+        '--linux-package-name', 'francium-loader',
+        '--linux-app-category', 'Game'
+
+    onlyIf { osLinux }
+
+    doLast {
+        println "  ✅ Linux AppImage: ${outputDir.get().asFile}/FranciumLoader"
+    }
+}
+
+// ═══ 4. Portable ZIP distributions ═══
+tasks.register('distPortableZip', Zip) {
+    description = 'Portable ZIP: unzip and run Francium CLI'
+    dependsOn shadowJar
+    group = 'distribution'
+
+    archiveClassifier.set('portable')
+    destinationDirectory.set(layout.buildDirectory.dir('distributions'))
+
+    from(shadowJar.outputs) { into 'lib/' }
+    from('.') { include 'README.md'; include 'LICENSE'; include 'CHANGELOG.md' }
+    from('bin/') { into 'bin/' }
+
+    doLast {
+        println "  ✅ Portable ZIP: ${archiveFile.get().asFile}"
+    }
+}
+
+// ═══ 5. All-in-one build ═══
+tasks.register('buildNative') {
+    description = 'Build native installer for current platform'
+    group = 'distribution'
+    if (osWindows) {
+        dependsOn jpackageExe
+    } else if (osMac) {
+        dependsOn jpackageDmg
+    } else if (osLinux) {
+        dependsOn jpackageAppImage
+    } else {
+        dependsOn distPortableZip
+    }
 }
 
 // ══════════════════════════════════════════════════
 //  Publishing — JitPack & Maven Central
 // ══════════════════════════════════════════════════
-//  JitPack: 自动从 GitHub Releases tag 构建
-//    Tag 格式: v1.0.0-alpha → compileOnly 'com.github.stanley-1028:francium-loader:1.0.0-alpha'
-//  发布步骤:
-//    1. git tag v1.0.0-alpha
-//    2. git push origin v1.0.0-alpha
-//    3. JitPack 自动构建: https://jitpack.io/#stanley-1028/francium-loader
-//
-//  Maven Central: 正式发布（未来）
-//    需要 Sonatype 账号 + GPG 签名 + 完整的 Javadoc
 
 ext {
     pomName = 'Francium Mod Loader'
@@ -130,7 +297,6 @@ publishing {
         }
     }
 
-    // 本地仓库（供 JitPack 使用）
     repositories {
         mavenLocal()
     }
