@@ -81,7 +81,7 @@ CORE_FILES=(
     francium-server/src/main/java/com/francium/server/sync/ServerSyncProtocol.java
     francium-server/src/main/java/com/francium/server/validate/ModValidator.java
     # Manager
-    francium-manager/src/main/java/com/francium/manager/package/PackageManager.java
+    francium-manager/src/main/java/com/francium/manager/PackageManager.java
 )
 
 TEST_FILES=(

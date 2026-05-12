@@ -4,6 +4,7 @@ import com.francium.graph.ModGraph;
 import com.francium.loader.ModManifest;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
@@ -194,14 +195,20 @@ public class ParallelModClassLoader extends URLClassLoader {
             try {
                 ModLoadResult result = futures.get(j).get();
                 detail.results.add(result);
-                loadStatuses.put(result.modId, LoadStatus.LOADED);
-                loadTimes.put(result.modId, result.loadTimeMs);
+                if (result != null) {
+                    loadStatuses.put(result.modId, LoadStatus.LOADED);
+                    loadTimes.put(result.modId, result.loadTimeMs);
+                }
                 detail.success++;
             } catch (ExecutionException e) {
-                // 某個模組加載失敗
+                // 某個模組加載失敗 — 從 layerMods 提取 modId
                 Throwable cause = e.getCause();
-                detail.failures.add(new LoadFailure("unknown", cause));
+                String failedModId = layerMods.size() > j 
+                    ? layerMods.toArray(new String[0])[j] : "unknown";
+                loadStatuses.put(failedModId, LoadStatus.FAILED);
+                detail.failures.add(new LoadFailure(failedModId, cause));
                 detail.failed++;
+                System.err.println("  ⚠ Mod load failed: " + failedModId + " - " + cause.getMessage());
             }
         }
         
@@ -226,7 +233,9 @@ public class ParallelModClassLoader extends URLClassLoader {
         
         URL[] urls = paths.stream()
             .map(p -> { try { return p.toUri().toURL(); } 
-                        catch (Exception e) { throw new RuntimeException(e); }})
+                        catch (MalformedURLException e) { 
+                            throw new RuntimeException("Invalid JAR path: " + p + " - " + e.getMessage(), e); 
+                        }})
             .toArray(URL[]::new);
         
         ModClassLoader modLoader = new ModClassLoader(urls, this);
