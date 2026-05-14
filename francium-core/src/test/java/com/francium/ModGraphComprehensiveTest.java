@@ -288,6 +288,8 @@ public class ModGraphComprehensiveTest {
         for (var entry : deps.entrySet()) {
             builder.dependency(entry.getKey(), entry.getValue());
         }
-        return builder.build();
+        ModManifest m = builder.build();
+        m.setEstimatedLoadTimeMs(loadTimeMs);
+        return m;
     }
 }
