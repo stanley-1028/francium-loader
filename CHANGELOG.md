@@ -2,6 +2,23 @@
 
 All notable changes to Francium Mod Loader will be documented in this file.
 
+## [1.2.1] — 2026-05-14
+
+### Changed
+- **Dockerfile rewritten** — Multi-stage build with layer caching optimization
+  - Builder stage: cache Gradle dependencies first, then copy and build source
+  - Runtime stage: security-hardened with non-root user, ZGC tuning, health check
+  - Proper OCI labels (version, source, description)
+- **Docker entrypoint** — Moved JVM opts/config to external `entrypoint.sh`
+- **JUnit 5 upgrade** — 5.10.2 → 5.11.3 with explicit `useJUnitPlatform()` in build.gradle
+- **Build quality** — ModGraphComprehensiveTest uses explicit types for better IDE support
+
+### Fixed
+- CI: chmod +x gradlew for Linux/macOS package jobs
+- CI: standalone-build fallback with retry + curl pre-install
+- CI: ASM cache + jpackage system deps for macOS/Linux
+- ServerSyncProtocol.fromJson() returning empty objects; toJson() manual JSON security
+
 ## [1.0.1] — 2026-05-11
 
 ### Fixed

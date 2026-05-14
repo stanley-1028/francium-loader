@@ -1,68 +1,64 @@
 # ═══════════════════════════════════════════════════════════
-#  Francium Server — Docker Image
+#  Francium Server — Dockerfile
 #
-#  一條命令部署 Francium 模組同步伺服器。
-#  Build: docker build -t francium-server:1.0.0-alpha .
-#  Run:   docker compose up -d
+#  構建: docker build -f docker/Dockerfile -t francium-server:1.0.0-alpha .
+#  「不要在伺服器上手動裝 Java。讓 Docker 替你打工。」
 # ═══════════════════════════════════════════════════════════
 
-# ── Stage 1: Build ──────────────────────────────────────
+# ─── Stage 1: Build ─────────────────────────────────────
 FROM eclipse-temurin:21-jdk-alpine AS builder
 
-WORKDIR /app
+WORKDIR /workspace
 
-# Copy Gradle wrapper and build files
-COPY gradlew gradlew.bat ./
+# Cache Gradle dependencies first (layer optimization)
+COPY gradlew gradlew.bat settings.gradle build.gradle ./
 COPY gradle/ gradle/
-COPY build.gradle settings.gradle ./
-COPY francium-core/ francium-core/
-COPY francium-resolver/ francium-resolver/
-COPY francium-ai-bridge/ francium-ai-bridge/
-COPY francium-profiler/ francium-profiler/
-COPY francium-server/ francium-server/
+RUN chmod +x gradlew && ./gradlew --no-daemon --version
 
-# Build the server module (skip tests that need Minecraft)
-RUN chmod +x gradlew && \
-    ./gradlew :francium-server:build -x test -x javadoc && \
-    cp francium-server/build/libs/francium-server-*.jar francium-server.jar
+# Copy source and build
+COPY . .
+RUN chmod +x gradlew && ./gradlew --no-daemon :francium-server:build -x test
 
-# ── Stage 2: Runtime ────────────────────────────────────
+# ─── Stage 2: Runtime ───────────────────────────────────
 FROM eclipse-temurin:21-jre-alpine
 
 LABEL org.opencontainers.image.title="Francium Server"
-LABEL org.opencontainers.image.description="Mod sync server for Francium Mod Loader"
+LABEL org.opencontainers.image.description="Minecraft mod sync server — DAG parallel, SAT resolver, AI bridge"
 LABEL org.opencontainers.image.source="https://github.com/stanley-1028/francium-loader"
 LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.version="1.0.0-alpha"
 
-# Create non-root user
+# Security: non-root user
 RUN addgroup -S francium && adduser -S francium -G francium
 
-# Create directories
-RUN mkdir -p /app/data /app/config /app/mods /app/cache && \
+# Create data directories
+RUN mkdir -p /app/data /app/config /app/mods && \
     chown -R francium:francium /app
 
+# Copy the built JAR from builder stage
+COPY --from=builder /workspace/francium-server/build/libs/francium-server-*.jar /app/francium-server.jar
+
+# Copy entrypoint
+COPY docker/docker-entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+# Optional: copy default config
+# COPY docker/config/ /app/config/
+
 WORKDIR /app
-
-# Copy server JAR from build stage
-COPY --from=builder /app/francium-server.jar /app/francium-server.jar
-COPY --from=builder /app/docker/config/server.toml /app/config/server.toml 2>/dev/null || true
-
-# Health check script
-RUN echo '#!/bin/sh\n\
-wget -q -O- http://localhost:25566/health || exit 1' > /app/healthcheck.sh && \
-    chmod +x /app/healthcheck.sh && \
-    chown francium:francium /app/healthcheck.sh
-
 USER francium
+
+# JVM tuning for Minecraft mod sync workloads:
+# - ZGC: low pause times, important for real-time game servers
+# - Generational ZGC: better throughput for young-gen-heavy workloads
+ENV JAVA_OPTS="-Xms256M -Xmx1G -XX:+UseZGC -XX:+ZGenerational"
+ENV FRANCIUM_DATA_DIR=/app/data
+ENV FRANCIUM_CONFIG_DIR=/app/config
+ENV FRANCIUM_MODS_DIR=/app/mods
 
 EXPOSE 25566 25567
 
-# JVM tuning for server environments
-# ZGC: low-latency GC, ideal for long-running server processes
-# -XX:MaxDirectMemorySize: prevent native memory leaks from Netty
-ENV JAVA_OPTS="-Xms256M -Xmx1G -XX:+UseZGC -XX:+ZGenerational -XX:MaxDirectMemorySize=128M"
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 --start-period=15s \
+    CMD wget -q -O- http://localhost:25566/health || exit 1
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-    CMD ["/app/healthcheck.sh"]
-
-ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar /app/francium-server.jar"]
+ENTRYPOINT ["/app/entrypoint.sh"]
