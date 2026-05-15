@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/stanley-1028/francium-loader/discussions
+    about: Ask questions and discuss features
+  - name: 📖 Documentation
+    url: https://github.com/stanley-1028/francium-loader#readme
+    about: Read the documentation first

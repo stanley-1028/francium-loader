@@ -1,0 +1,64 @@
+# JReleaser configuration for Francium Loader
+# Run: ./gradlew jreleaserFullRelease
+# Requires: GITHUB_TOKEN environment variable
+
+project:
+  name: francium-loader
+  description: Francium Loader - Next-gen Minecraft mod loader
+  longDescription: A high-performance Minecraft mod loader with DAG parallel loading, SAT dependency resolution, and AI cross-version bytecode bridging
+  license: MIT
+  authors:
+    - stanley-1028
+  links:
+    homepage: https://github.com/stanley-1028/francium-loader
+  inceptionYear: 2024
+  java:
+    groupId: com.francium
+    artifactId: francium-loader
+    version: 21
+
+release:
+  github:
+    owner: stanley-1028
+    name: francium-loader
+    overwrite: true
+    skipTag: false
+    tagName: "{{projectVersion}}"
+    releaseName: "Francium Loader {{projectVersion}}"
+    changelog:
+      formatted: ALWAYS
+      preset: conventional-commits
+      contributors:
+        enabled: true
+      hide:
+        categories:
+          - "merge"
+      categories:
+        - title: "Features"
+          labels:
+            - "feat"
+        - title: "Bug Fixes"
+          labels:
+            - "fix"
+        - title: "Documentation"
+          labels:
+            - "docs"
+        - title: "Code Quality"
+          labels:
+            - "refactor"
+            - "perf"
+            - "test"
+    milestone:
+      close: true
+    sign: false
+
+distributions:
+  francium:
+    type: JAVA_BINARY
+    stereos:
+      - ALL
+    artifacts:
+      - path: build/libs/francium-loader-shadow.jar
+        platform: all
+        extraProperties:
+          label: "Shadow JAR"
