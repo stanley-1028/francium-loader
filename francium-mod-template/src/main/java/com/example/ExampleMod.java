@@ -1,5 +1,8 @@
 package com.example;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * ExampleMod — Your Francium mod starts here!
  *
@@ -13,6 +16,8 @@ package com.example;
  *                                        your code runs here
  */
 public class ExampleMod {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExampleMod.class);
 
     private static final String MOD_ID = "example-mod";
     private static final String MOD_NAME = "Example Mod";
@@ -51,6 +56,6 @@ public class ExampleMod {
     // ─── Utility ────────────────────────────────────────
 
     private static void log(String msg) {
-        System.out.println("[" + MOD_ID + "] " + msg);
+        LOGGER.info("[" + MOD_ID + "] " + msg);
     }
 }

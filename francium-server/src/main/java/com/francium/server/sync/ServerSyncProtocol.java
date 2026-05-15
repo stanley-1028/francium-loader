@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 伺服器-用戶端模組同步協議。
@@ -19,6 +21,8 @@ import java.security.*;
  */
 public class ServerSyncProtocol {
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerSyncProtocol.class);
+
     /**
      * 伺服器端 mod 清單。
      */
@@ -79,7 +83,7 @@ public class ServerSyncProtocol {
                     }
                 }
             } catch (Exception e) {
-                System.err.println("[ServerSync] Failed to parse mod list: " + e.getMessage());
+                LOGGER.error("[ServerSync] Failed to parse mod list: " + e.getMessage());
             }
             return list;
         }

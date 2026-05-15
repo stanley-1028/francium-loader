@@ -8,6 +8,8 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 效能報告視覺化引擎。
@@ -30,6 +32,8 @@ import java.time.Instant;
  * 就是一個 HTML 檔案，雙擊打開就能看。
  */
 public class ReportViewer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReportViewer.class);
 
     private static final String TEMPLATE_PATH = "/francium/profiler/dashboard.html";
 
@@ -60,7 +64,7 @@ public class ReportViewer {
         Files.createDirectories(outputPath.getParent());
         Files.writeString(outputPath, dashboard);
 
-        System.out.println("Fr Visualizer: Dashboard saved to " + outputPath.toAbsolutePath());
+        LOGGER.info("Fr Visualizer: Dashboard saved to " + outputPath.toAbsolutePath());
     }
 
     /**
@@ -82,10 +86,10 @@ public class ReportViewer {
 
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             Desktop.getDesktop().browse(dashboardPath.toUri());
-            System.out.println("Fr Visualizer: Opening dashboard in browser...");
+            LOGGER.info("Fr Visualizer: Opening dashboard in browser...");
         } else {
-            System.out.println("Fr Visualizer: Dashboard ready at " + dashboardPath.toAbsolutePath());
-            System.out.println("  Open this file in your browser to view the report.");
+            LOGGER.info("Fr Visualizer: Dashboard ready at " + dashboardPath.toAbsolutePath());
+            LOGGER.info("  Open this file in your browser to view the report.");
         }
     }
 

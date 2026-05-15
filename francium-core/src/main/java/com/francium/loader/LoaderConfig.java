@@ -3,11 +3,15 @@ package com.francium.loader;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 加載器設定，支援 TOML-like 格式。
  */
 public class LoaderConfig {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoaderConfig.class);
+
     // 並行配置
     public int maxParallelMods = Runtime.getRuntime().availableProcessors();
     public int layerTimeoutSeconds = 120;
@@ -73,7 +77,7 @@ public class LoaderConfig {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Failed to load config: " + e.getMessage());
+            LOGGER.error("Failed to load config: " + e.getMessage());
         }
         
         return config;

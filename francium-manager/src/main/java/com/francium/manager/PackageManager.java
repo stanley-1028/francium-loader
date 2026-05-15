@@ -8,6 +8,8 @@ import java.net.URI;
 import java.net.http.*;
 import java.net.http.HttpResponse.BodyHandlers;
 import com.google.gson.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Francium 套件管理器。
@@ -23,6 +25,8 @@ import com.google.gson.*;
  * - 模組驗證 (SHA256 + 數位簽章)
  */
 public class PackageManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PackageManager.class);
+
     private final Path modsDir;
     private final Path cacheDir;
     private final Path lockFile;
@@ -195,7 +199,7 @@ public class PackageManager {
             try {
                 fetchRegistryIndex(registry);
             } catch (Exception e) {
-                System.err.println("Failed to fetch registry " + registry + ": " + e.getMessage());
+                LOGGER.error("Failed to fetch registry " + registry + ": " + e.getMessage());
             }
         }
         lastCacheUpdate = now;

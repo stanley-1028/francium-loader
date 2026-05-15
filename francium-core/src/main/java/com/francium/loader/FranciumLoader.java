@@ -15,6 +15,8 @@ import com.francium.server.validate.ModValidator;
 
 import java.nio.file.Path;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Francium Mod Loader 主入口。
@@ -35,6 +37,8 @@ import java.util.*;
  * 8. 版本斷層 → AI 橋接即時適配
  */
 public class FranciumLoader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FranciumLoader.class);
+
     private final Path gameDir;
     private final Path modsDir;
     private final Path configDir;
@@ -120,7 +124,7 @@ public class FranciumLoader {
             java.nio.file.Files.createDirectories(configDir);
             java.nio.file.Files.createDirectories(cacheDir);
         } catch (java.io.IOException e) {
-            System.err.println("Fr: Failed to create directories: " + e.getMessage());
+            LOGGER.error("Fr: Failed to create directories: " + e.getMessage());
         }
     }
 
@@ -182,8 +186,8 @@ public class FranciumLoader {
     private DiscoveryResult discoverPhase() throws Exception {
         Objects.requireNonNull(classLoader, "classLoader not initialized");
         DiscoveryResult result = classLoader.discoverMods();
-        System.out.printf("Fr: Discovered %d mods in %d JARs (%d skipped)%n",
-            result.found.size(), result.totalJars, result.skipped.size());
+        LOGGER.info(String.format("Fr: Discovered %d mods in %d JARs (%d skipped)%n",
+            result.found.size(), result.totalJars, result.skipped.size()));
 
         // 安全驗證每個 JAR
         if (validator != null) {
@@ -191,7 +195,7 @@ public class FranciumLoader {
                 var validation = validator.validate(
                     modsDir.resolve(manifest.modId() + "-" + manifest.version() + ".jar"));
                 if (!validation.passed) {
-                    System.err.println("Fr Security WARNING: " + validation);
+                    LOGGER.warn("Fr Security WARNING: " + validation);
                 }
             }
         }
@@ -208,7 +212,7 @@ public class FranciumLoader {
         
         // 如果沒有發現結果，嘗試掃描
         if (discovered == null || discovered.found.isEmpty()) {
-            System.out.println("Fr: No mods to resolve (discovery returned empty)");
+            LOGGER.info("Fr: No mods to resolve (discovery returned empty)");
             return;
         }
 
@@ -249,12 +253,12 @@ public class FranciumLoader {
                     modGraph.addMod(manifest.get(), entry.getValue().toString());
                 }
             }
-            System.out.printf("Fr: Dependencies resolved for %d mods (%dms, %d nodes explored)%n",
-                resolveResult.solution.size(), resolveResult.solveTimeMs, resolveResult.nodesExplored);
+            LOGGER.info(String.format("Fr: Dependencies resolved for %d mods (%dms, %d nodes explored)%n",
+                resolveResult.solution.size(), resolveResult.solveTimeMs, resolveResult.nodesExplored));
         } else {
-            System.err.println("Fr: Dependency resolution FAILED");
+            LOGGER.error("Fr: Dependency resolution FAILED");
             for (String err : resolveResult.errors) {
-                System.err.println("  " + err);
+                LOGGER.warn("  " + err);
             }
             // 仍然嘗試加載所有 mod（最佳努力）
             for (var manifest : discovered.found) {
@@ -275,11 +279,11 @@ public class FranciumLoader {
 
         try {
             var summary = versionBridge.bridgeAll(modPaths);
-            System.out.printf("Fr: AI Bridge - %d/%d mods compatible, %d adapters generated (%.0f%% overall)%n",
+            LOGGER.info(String.format("Fr: AI Bridge - %d/%d mods compatible, %d adapters generated (%.0f%% overall)%n",
                 summary.reports.stream().filter(r -> r.isFullyCompatible()).count(),
                 summary.reports.size(),
                 summary.adaptersGenerated,
-                summary.overallCompatibility * 100);
+                summary.overallCompatibility * 100));
 
             // 如果生成了 adapter，把它們寫入 cache 目錄
             for (var entry : summary.adapterBytes.entrySet()) {
@@ -287,11 +291,11 @@ public class FranciumLoader {
                 try {
                     java.nio.file.Files.write(adapterPath, entry.getValue());
                 } catch (java.io.IOException e) {
-                    System.err.println("Fr: Failed to write adapter for " + entry.getKey());
+                    LOGGER.error("Fr: Failed to write adapter for " + entry.getKey());
                 }
             }
         } catch (Exception e) {
-            System.err.println("Fr: AI Bridge analysis failed: " + e.getMessage());
+            LOGGER.error("Fr: AI Bridge analysis failed: " + e.getMessage());
         }
     }
 
@@ -332,7 +336,7 @@ public class FranciumLoader {
         if (callbacks != null) {
             for (Runnable cb : callbacks) {
                 try { cb.run(); } catch (Exception e) {
-                    System.err.println("Extension " + point + " failed: " + e.getMessage());
+                    LOGGER.error("Extension " + point + " failed: " + e.getMessage());
                 }
             }
         }
@@ -453,18 +457,18 @@ public class FranciumLoader {
     /** Inject Francium ClassLoader into LaunchClassLoader chain */
     public void injectInto(Object launchClassLoader) {
         if (launchClassLoader == null) {
-            System.err.println("[Francium] Cannot inject into null LaunchClassLoader");
+            LOGGER.warn("[Francium] Cannot inject into null LaunchClassLoader");
             return;
         }
         try {
             java.lang.reflect.Method addExclusion = launchClassLoader.getClass()
                 .getMethod("addClassLoaderExclusion", String.class);
             addExclusion.invoke(launchClassLoader, "com.francium.");
-            System.out.println("[Francium] Registered classloader exclusion for com.francium.*");
+            LOGGER.info("[Francium] Registered classloader exclusion for com.francium.*");
         } catch (NoSuchMethodException e) {
-            System.out.println("[Francium] LaunchWrapper not detected; skipping exclusion registration");
+            LOGGER.info("[Francium] LaunchWrapper not detected; skipping exclusion registration");
         } catch (Exception e) {
-            System.out.println("[Francium] LaunchWrapper exclusion registration skipped: " + e.getMessage());
+            LOGGER.info("[Francium] LaunchWrapper exclusion registration skipped: " + e.getMessage());
         }
     }
 

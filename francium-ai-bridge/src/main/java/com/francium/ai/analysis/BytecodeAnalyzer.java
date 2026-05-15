@@ -8,6 +8,8 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.jar.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 字節碼分析器，用 ASM 解析模組 JAR 中的所有類別。
@@ -19,6 +21,8 @@ import java.util.jar.*;
  * 4. 檢測可能的不相容呼叫模式
  */
 public class BytecodeAnalyzer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BytecodeAnalyzer.class);
 
     /**
      * 提取模組中所有的外部方法呼叫。
@@ -48,7 +52,7 @@ public class BytecodeAnalyzer {
                     try {
                         analyzeClass(jar.getInputStream(e), internalClasses, calls);
                     } catch (IOException ex) {
-                        System.err.println("Failed to analyze: " + e.getName());
+                        LOGGER.error("Failed to analyze: " + e.getName());
                     }
                 });
         }

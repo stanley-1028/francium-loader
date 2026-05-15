@@ -5,6 +5,8 @@ import java.lang.ref.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 記憶體管理器 - 解決 Minecraft 模組生態中最頑固的效能問題。
@@ -17,6 +19,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * 5. 每模組記憶體統計: 追蹤哪個模組消耗最多記憶體
  */
 public class MemoryManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MemoryManager.class);
+
     private final long warningThresholdBytes;
     private final boolean aggressiveGC;
     private final boolean leakDetection;
@@ -66,7 +70,7 @@ public class MemoryManager {
         monitor.scheduleAtFixedRate(this::checkMemory, 5, 10, TimeUnit.SECONDS);
         monitor.scheduleAtFixedRate(this::checkLeaks, 30, 30, TimeUnit.SECONDS);
         
-        System.out.println("Fr Memory: Monitoring started (warning=" 
+        LOGGER.info("Fr Memory: Monitoring started (warning=" 
             + (warningThresholdBytes / 1024 / 1024) + "MB, aggressiveGC=" + aggressiveGC + ")");
     }
 
@@ -203,7 +207,7 @@ public class MemoryManager {
                     );
                     leakReports.add(report);
                     
-                    System.err.println("Fr Memory LEAK suspected: " + modId 
+                    LOGGER.warn("Fr Memory LEAK suspected: " + modId 
                         + " (" + (report.estimatedLeakBytes / 1024 / 1024) + "MB)");
                 }
             }

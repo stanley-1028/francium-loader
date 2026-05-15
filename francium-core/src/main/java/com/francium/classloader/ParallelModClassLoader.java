@@ -12,6 +12,8 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.jar.JarFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 基於 DAG 的並行模組類加載器。
@@ -25,6 +27,8 @@ import java.util.jar.JarFile;
  * 效能: N 個模組，L 層，加速比 = N/L (理想情況)
  */
 public class ParallelModClassLoader extends URLClassLoader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParallelModClassLoader.class);
+
     private final ModGraph modGraph;
     private final Path modsDirectory;
     private final Map<String, ModClassLoader> modLoaders;
@@ -125,7 +129,7 @@ public class ParallelModClassLoader extends URLClassLoader {
         LoadReport report = new LoadReport();
         long totalStart = System.currentTimeMillis();
         
-        System.out.println("Fr: Loading " + modGraph.getModCount() + " mods in " 
+        LOGGER.info("Fr: Loading " + modGraph.getModCount() + " mods in " 
             + layers.size() + " layers (estimated speedup: " 
             + String.format("%.1fx", modGraph.getSpeedupRatio()) + ")");
         
@@ -208,13 +212,13 @@ public class ParallelModClassLoader extends URLClassLoader {
                 loadStatuses.put(failedModId, LoadStatus.FAILED);
                 detail.failures.add(new LoadFailure(failedModId, cause));
                 detail.failed++;
-                System.err.println("  ⚠ Mod load failed: " + failedModId + " - " + cause.getMessage());
+                LOGGER.error("  ⚠ Mod load failed: " + failedModId + " - " + cause.getMessage());
             }
         }
         
         detail.layerTimeMs = System.currentTimeMillis() - layerStart;
-        System.out.printf("  Layer %d: %d mods loaded in %dms (%d success, %d failed)\n",
-            layerIndex, detail.modCount, detail.layerTimeMs, detail.success, detail.failed);
+        LOGGER.info(String.format("  Layer %d: %d mods loaded in %dms (%d success, %d failed)\n",
+            layerIndex, detail.modCount, detail.layerTimeMs, detail.success, detail.failed));
         
         return detail;
     }

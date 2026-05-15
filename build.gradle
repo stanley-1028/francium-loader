@@ -54,9 +54,23 @@ allprojects {
 // Common test dependency for all subprojects
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'jacoco'
 
     dependencies {
         testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+        implementation 'org.slf4j:slf4j-api:2.0.17'
+    }
+
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.required = true
+            html.required = true
+        }
+    }
+
+    test {
+        finalizedBy jacocoTestReport
     }
 }
 

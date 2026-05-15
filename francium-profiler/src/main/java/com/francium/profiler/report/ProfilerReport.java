@@ -7,6 +7,8 @@ import java.nio.file.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 效能報告生成器 — 把冰冷的數字變成精美的 HTML 和 JSON 報告。
@@ -18,6 +20,8 @@ import java.util.*;
  *  - JSON: 結構化數據，給 CI/CD 或 Grafana 用
  */
 public class ProfilerReport {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProfilerReport.class);
 
     private final MemoryManager memoryManager;
     private final List<MemoryManager.MemorySnapshot> snapshots;
@@ -155,7 +159,7 @@ public class ProfilerReport {
         // JSON
         Files.writeString(dir.resolve("francium-profiler-report.json"), toJson());
 
-        System.out.println("Fr Profiler: Report saved to " + dir.toAbsolutePath());
+        LOGGER.info("Fr Profiler: Report saved to " + dir.toAbsolutePath());
     }
 
     // ─── HTML rendering helpers ──────────────────────────

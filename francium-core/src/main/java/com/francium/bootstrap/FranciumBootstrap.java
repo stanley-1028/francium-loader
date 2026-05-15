@@ -7,6 +7,8 @@ import com.francium.classloader.ParallelModClassLoader.LoadReport;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Francium Mod Loader 啟動入口。
@@ -20,24 +22,26 @@ import java.util.Arrays;
  * </pre>
  */
 public class FranciumBootstrap {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FranciumBootstrap.class);
+
     private static final String VERSION = "1.2.0";
     private static final String BANNER = """
-          ______                     _                  \s
-         |  ____|                   (_)                 \s
-         | |__ __ _ _ __   ___ _   _ _  ___ _ __ ___    \s
-         |  __/ _` | '_ \\ / __| | | | |/ __| '_ ` _ \\   \s
-         | | | (_| | | | | (__| |_| | | (__| | | | | |  \s
-         |_|  \\__,_|_| |_|\\___|\\__,_|_|\\___|_| |_| |_|  \s
+          ______                     _                 \s
+         |  ____|                   (_)                \s
+         | |__ __ _ _ __   ___ _   _ _  ___ _ __ ___   \s
+         |  __/ _` | '_ \\ / __| | | | |/ __| '_ ` _ \\  \s
+         | | | (_| | | | | (__| |_| | | (__| | | | | | \s
+         |_|  \\__,_|_| |_|\\___|\\__,_|_|\\___|_| |_| |_| \s
                                                         \s
          下一代 Minecraft 模組加載器 - AI 驅動的版本橋接與 DAG 並行加載
         """;
 
     public static void main(String[] args) {
-        System.out.println(BANNER);
-        System.out.println("  Version: " + VERSION);
-        System.out.println("  Java: " + System.getProperty("java.version"));
-        System.out.println("  OS: " + System.getProperty("os.name"));
-        System.out.println();
+        LOGGER.info(BANNER);
+        LOGGER.info("  Version: " + VERSION);
+        LOGGER.info("  Java: " + System.getProperty("java.version"));
+        LOGGER.info("  OS: " + System.getProperty("os.name"));
+        LOGGER.info("");
 
         // 解析命令列參數
         Path gameDir = Paths.get(System.getProperty("user.home"), ".minecraft");
@@ -62,9 +66,9 @@ public class FranciumBootstrap {
         }
 
         // 啟動加載器
-        System.out.println("Initializing Francium Mod Loader...");
-        System.out.println("  Game directory: " + gameDir.toAbsolutePath());
-        System.out.println();
+        LOGGER.info("Initializing Francium Mod Loader...");
+        LOGGER.info("  Game directory: " + gameDir.toAbsolutePath());
+        LOGGER.info("");
 
         FranciumLoader loader = new FranciumLoader(gameDir);
 
@@ -72,45 +76,45 @@ public class FranciumBootstrap {
             loader.loadConfig();
             loader.initialize();
 
-            System.out.println("Launching...");
-            System.out.println();
+            LOGGER.info("Launching...");
+            LOGGER.info("");
 
             LoadReport report = loader.launch();
 
-            System.out.println();
-            System.out.println(report);
+            LOGGER.info("");
+            LOGGER.info("{}", report);
 
             // 輸出各階段計時
-            System.out.println();
-            System.out.println("Phase timings:");
+            LOGGER.info("");
+            LOGGER.info("Phase timings:");
             for (var entry : loader.phaseTimings().entrySet()) {
-                System.out.printf("  %-12s %dms%n", entry.getKey() + ":", entry.getValue());
+                LOGGER.info(String.format("  %-12s %dms%n", entry.getKey() + ":", entry.getValue()));
             }
 
             // 記憶體快照
             var memSnapshot = loader.getMemorySnapshot();
             if (memSnapshot != null) {
-                System.out.println();
-                System.out.println(memSnapshot);
+                LOGGER.info("");
+                LOGGER.info("{}", memSnapshot);
             }
 
             // 註冊關閉鉤子
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                System.out.println("\nShutting down Francium...");
+                LOGGER.info("\\nShutting down Francium...");
                 loader.shutdown();
             }));
 
         } catch (Exception e) {
-            System.err.println();
-            System.err.println("FATAL: Failed to launch Francium Mod Loader");
-            System.err.println("  " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.warn("");
+            LOGGER.error("FATAL: Failed to launch Francium Mod Loader");
+            LOGGER.warn("  " + e.getMessage());
+            LOGGER.error("Exception", e);
             System.exit(1);
         }
     }
 
     private static void printHelp() {
-        System.out.println("""
+        LOGGER.info("""
             Usage: francium-loader [options]
                         
             Options:
