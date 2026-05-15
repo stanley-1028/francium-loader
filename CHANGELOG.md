@@ -2,6 +2,17 @@
 
 All notable changes to Francium Mod Loader will be documented in this file.
 
+## [1.2.3] — 2026-05-15
+
+### Fixed
+- Version bump from 1.2.1 to 1.2.3 to match release tagging
+
+## [1.2.2] — 2026-05-15
+
+### Fixed
+- CI: standalone-build fallback with retry + curl pre-install
+- ServerSyncProtocol.fromJson() returning empty objects; toJson() manual JSON security
+
 ## [1.2.1] — 2026-05-14
 
 ### Changed
