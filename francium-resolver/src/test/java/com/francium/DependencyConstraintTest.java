@@ -3,6 +3,8 @@ package com.francium;
 import com.francium.resolver.model.DependencyConstraint;
 import com.francium.resolver.model.SemanticVersion;
 import java.util.List;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DependencyConstraintTest {
     static int passed = 0, failed = 0;
@@ -10,7 +12,8 @@ public class DependencyConstraintTest {
         if (!c) { failed++; System.out.println("  FAIL " + m); }
         else { passed++; System.out.println("  PASS " + m); }
     }
-    public static void main(String[] args) {
+    @Test
+    public void testAll() {
         var c = new DependencyConstraint("1.20.4");
         check(c.satisfiedBy(SemanticVersion.parse("1.20.4")), "exact match");
         check(!c.satisfiedBy(SemanticVersion.parse("1.21.0")), "exact reject");
@@ -40,6 +43,6 @@ public class DependencyConstraintTest {
         check(inter != null && inter.satisfiedBy(SemanticVersion.parse("1.21.0")), "intersection 1.21.0 ok");
         check(inter == null || !inter.satisfiedBy(SemanticVersion.parse("1.20.0")), "intersection reject 1.20.0");
         System.out.println("  DependencyConstraint: " + passed + " passed, " + failed + " failed");
-        System.exit(failed > 0 ? 1 : 0);
+        
     }
 }

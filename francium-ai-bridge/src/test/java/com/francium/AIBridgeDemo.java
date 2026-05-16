@@ -1,5 +1,6 @@
 package com.francium;
 
+import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -515,5 +516,10 @@ public class AIBridgeDemo {
         System.out.println();
         System.out.println("  「不要等到模组更新，让 AI 替你桥接未来。」");
         System.out.println();
+    }
+
+    @Test
+    public void testDemo() {
+        main(new String[]{});
     }
 }

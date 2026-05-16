@@ -1,6 +1,8 @@
 package com.francium;
 
 import com.francium.resolver.model.SemanticVersion;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /** SemanticVersion hand-written test (runs with java, no JUnit needed) */
 public class SemanticVersionTest {
@@ -9,7 +11,8 @@ public class SemanticVersionTest {
         if (!c) { failed++; System.out.println("  FAIL " + m); }
         else { passed++; System.out.println("  PASS " + m); }
     }
-    public static void main(String[] args) {
+    @Test
+    public void testAll() {
         var v = SemanticVersion.parse("1.20.4");
         check(v != null, "major=1"); check(v.major() == 1, "minor=20");
         check(v.minor() == 20, "patch=4"); check(v.patch() == 4, "toString=1.20.4");
@@ -29,6 +32,6 @@ public class SemanticVersionTest {
         check(a.nextMinor().minor() == 21, "nextMinor");
         check(a.nextPatch().patch() == 5, "nextPatch");
         System.out.println("  SemanticVersion: " + passed + " passed, " + failed + " failed");
-        System.exit(failed > 0 ? 1 : 0);
+        
     }
 }

@@ -3,6 +3,8 @@ package com.francium;
 import com.francium.ai.mapping.MethodSignature;
 import com.francium.ai.predictor.CompatibilityPredictor;
 import java.util.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * 版本橋接器端到端測試
@@ -18,7 +20,8 @@ public class CrossVersionTest {
         else   { failed++; System.out.println("  FAIL " + m); }
     }
 
-    public static void main(String[] args) {
+    @Test
+    public void testAll() {
         System.out.println("==========================================");
         System.out.println("  Francium AI Version Bridge");
         System.out.println("  Minecraft 1.20.4 -> 1.21");

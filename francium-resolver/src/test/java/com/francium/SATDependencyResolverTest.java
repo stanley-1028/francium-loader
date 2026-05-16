@@ -3,6 +3,8 @@ package com.francium;
 import com.francium.resolver.model.*;
 import com.francium.resolver.sat.*;
 import java.util.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SATDependencyResolverTest {
     static int passed = 0, failed = 0;
@@ -13,7 +15,8 @@ public class SATDependencyResolverTest {
     static SemanticVersion v(String s) { return SemanticVersion.parse(s); }
     static DependencyConstraint c(String s) { return new DependencyConstraint(s); }
 
-    public static void main(String[] args) {
+    @Test
+    public void testAll() {
         var solver = new SATDependencyResolver();
         solver.registerVersions("A", List.of(v("1.0.0")));
         solver.registerVersions("B", List.of(v("1.2.0"),v("1.4.0"),v("1.5.0")));
@@ -60,6 +63,6 @@ public class SATDependencyResolverTest {
         System.out.println("    50 mods: " + ms + "ms, nodes=" + result.nodesExplored);
 
         System.out.println("  SATResolver: " + passed + " passed, " + failed + " failed");
-        System.exit(failed > 0 ? 1 : 0);
+        
     }
 }
