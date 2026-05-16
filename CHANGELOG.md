@@ -8,13 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - Updated shadow plugin to `com.gradleup.shadow` 9.4.1 (migrated from unmaintained `com.github.johnrengelman.shadow`)
-- Updated Gradle wrapper to 8.13
-- Updated JUnit Jupiter to 5.11.4 (compatible with Gradle 8.x embedded launcher)
+- Updated Gradle wrapper to 9.5.1 (via Dependabot)
+- Updated JUnit Jupiter to 5.11.4 (compatible with Gradle 8.x+ embedded launcher)
 - Updated SLF4J to 2.0.18 (consistent across all submodules, via Dependabot)
 - Updated Logback to 1.5.32 (consistent across all submodules, via Dependabot)
 - Updated ASM to 9.10 (bytecode manipulation, via Dependabot)
 - Updated Gson to 2.14.0 (JSON parsing, via Dependabot)
 - Updated Netty to 4.2.13.Final (server communication, via Dependabot)
+- Updated CI workflow actions: checkout@v6, setup-java@v5, setup-gradle@v6, upload-artifact@v7, download-artifact@v8, action-gh-release@v3
 - Version bumped to 1.5.0
 
 ### Fixed
