@@ -4,6 +4,17 @@ All notable changes to francium-loader will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.6.0] — 2026-05-16
+
+### Fixed
+- Shadow JAR now includes all transitive dependencies (SLF4J, Logback, Gson, ASM, Netty) — was only 88 entries, now bundles 5,492+ entries with full runtime classpath
+- Converted hand-written `main()` test in ModGraphTest to proper JUnit 5 `@Test` methods (Gradle 9.x fails on empty test suites)
+- Added `failOnNoDiscoveredTests = false` for AIBridgeDemo.java (demo class with `main()`, not a JUnit test)
+- Linux CI: changed jpackage from `app-image` (directory) to `deb` installer with menu shortcut and package metadata
+
+### Changed
+- Version bumped to 1.6.0
+
 ## [1.5.0] — 2026-05-16
 
 ### Changed

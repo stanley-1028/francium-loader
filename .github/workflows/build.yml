@@ -126,7 +126,7 @@ jobs:
             portable-ext: zip
           - os: ubuntu-latest
             pkg-suffix: linux-x64
-            jpackage-type: app-image
+            jpackage-type: deb
             portable-ext: tar.gz
       fail-fast: false
     runs-on: ${{ matrix.os }}
@@ -176,7 +176,7 @@ jobs:
               ./gradlew jpackageDmg --no-daemon
               ;;
             ubuntu-latest)
-              ./gradlew distPortableZip --no-daemon
+              ./gradlew distPortableZip jpackageAppImage --no-daemon
               ;;
           esac
 
