@@ -58,7 +58,7 @@ subprojects {
 
     dependencies {
         testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
-        implementation 'org.slf4j:slf4j-api:2.0.17'
+        implementation 'org.slf4j:slf4j-api:2.0.18'
     }
 
     jacocoTestReport {
