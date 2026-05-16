@@ -2,11 +2,11 @@ plugins {
     id 'java'
     id 'application'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '9.4.1'
 }
 
 group = 'com.francium'
-version = '1.3.0'
+version = '1.5.0'
 
 application {
     mainClass = 'com.francium.bootstrap.FranciumBootstrap'
@@ -57,7 +57,7 @@ subprojects {
     apply plugin: 'jacoco'
 
     dependencies {
-        testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
         implementation 'org.slf4j:slf4j-api:2.0.18'
     }
 
@@ -235,9 +235,7 @@ tasks.register('jpackageAppImage', Exec) {
         '--main-jar', shadowJar.archiveFile.get().asFile.name,
         '--main-class', 'com.francium.bootstrap.FranciumBootstrap',
         '--java-options', '-Xmx2g',
-        '--dest', outputDir.get().asFile.absolutePath,
-        '--linux-package-name', 'francium-loader',
-        '--linux-app-category', 'Game'
+        '--dest', outputDir.get().asFile.absolutePath
 
     onlyIf { osLinux }
 

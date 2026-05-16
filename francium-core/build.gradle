@@ -15,8 +15,8 @@ dependencies {
     // Minecraft LaunchWrapper (compileOnly; provided by Minecraft at runtime)
     compileOnly 'net.minecraft:launchwrapper:1.12'
 
-    // JUnit 5 for testing
-    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
+    // JUnit for testing
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
 }
 
 test {
