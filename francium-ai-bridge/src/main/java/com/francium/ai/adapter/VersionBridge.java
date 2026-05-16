@@ -100,7 +100,8 @@ public class VersionBridge {
         report.directMatchCount = directMatch;
         report.mappedCount = needMapping;
         report.unresolvableCount = unresolvable;
-        report.compatibilityScore = (float)(directMatch + needMapping) / externalCalls.size();
+        report.compatibilityScore = externalCalls.isEmpty() ? 1.0f
+            : (float)(directMatch + needMapping) / externalCalls.size();
         
         reports.add(report);
         return report;

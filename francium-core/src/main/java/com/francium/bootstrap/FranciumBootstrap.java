@@ -24,7 +24,12 @@ import org.slf4j.LoggerFactory;
 public class FranciumBootstrap {
     private static final Logger LOGGER = LoggerFactory.getLogger(FranciumBootstrap.class);
 
-    private static final String VERSION = "1.2.0";
+    private static final String VERSION;
+
+    static {
+        String v = FranciumBootstrap.class.getPackage().getImplementationVersion();
+        VERSION = (v != null) ? v : "1.6.0-dev";
+    }
     private static final String BANNER = """
           ______                     _                 \s
          |  ____|                   (_)                \s
@@ -132,7 +137,7 @@ public class FranciumBootstrap {
             Environment:
               FRANCIUM_GAME_DIR       Alternative way to set game directory
                         
-            For more information: https://github.com/francium-loader/francium
+            For more information: https://github.com/stanley-1028/francium-loader
             """);
     }
 }

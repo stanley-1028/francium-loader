@@ -7,13 +7,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [1.6.0] — 2026-05-16
 
 ### Fixed
+- **Robustness: Invalid/empty JARs no longer crash the loader** — corrupted JAR files are now gracefully skipped with a warning instead of throwing ZipException to the top-level
+- **Duplicate mod registration** when JAR contains both `francium-mod.json` and `fabric.mod.json` — now only the first found manifest format is used per JAR
+- **JAR path discovery for validator and AI Bridge** — `discoverPhase()` and `bridgePhase()` now use the actual JAR path from discovery instead of guessing `modId-version.jar` which never existed
+- **AI Bridge NaN% displayed** when mod has zero external API calls — compatibility score defaults to 100% for mods that don't need bridging
 - Shadow JAR now includes all transitive dependencies (SLF4J, Logback, Gson, ASM, Netty) — was only 88 entries, now bundles 5,492+ entries with full runtime classpath
 - Converted hand-written `main()` test in ModGraphTest to proper JUnit 5 `@Test` methods (Gradle 9.x fails on empty test suites)
-- Added `failOnNoDiscoveredTests = false` for AIBridgeDemo.java (demo class with `main()`, not a JUnit test)
 - Linux CI: changed jpackage from `app-image` (directory) to `deb` installer with menu shortcut and package metadata
 
 ### Changed
 - Version bumped to 1.6.0
+- `FranciumBootstrap.VERSION` now reads from JAR manifest (`Implementation-Version`) instead of hardcoded `"1.2.0"`
+
+### Changed
+- Version bumped to 1.6.0
+- `FranciumBootstrap.VERSION` now reads from JAR manifest (`Implementation-Version`) instead of hardcoded `"1.2.0"`
 
 ## [1.5.0] — 2026-05-16
 

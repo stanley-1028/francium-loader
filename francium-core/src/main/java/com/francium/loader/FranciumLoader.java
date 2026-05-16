@@ -192,10 +192,12 @@ public class FranciumLoader {
         // 安全驗證每個 JAR
         if (validator != null) {
             for (var manifest : result.found) {
-                var validation = validator.validate(
-                    modsDir.resolve(manifest.modId() + "-" + manifest.version() + ".jar"));
-                if (!validation.passed) {
-                    LOGGER.warn("Fr Security WARNING: " + validation);
+                Path jarPath = manifest.jarSourcePath;
+                if (jarPath != null && java.nio.file.Files.exists(jarPath)) {
+                    var validation = validator.validate(jarPath);
+                    if (!validation.passed) {
+                        LOGGER.warn("Fr Security WARNING: " + validation);
+                    }
                 }
             }
         }
@@ -271,8 +273,8 @@ public class FranciumLoader {
     private void bridgePhase(DiscoveryResult discovered) {
         Map<String, Path> modPaths = new LinkedHashMap<>();
         for (var manifest : discovered.found) {
-            Path jarPath = modsDir.resolve(manifest.modId() + "-" + manifest.version() + ".jar");
-            if (java.nio.file.Files.exists(jarPath)) {
+            Path jarPath = manifest.jarSourcePath;
+            if (jarPath != null && java.nio.file.Files.exists(jarPath)) {
                 modPaths.put(manifest.modId(), jarPath);
             }
         }

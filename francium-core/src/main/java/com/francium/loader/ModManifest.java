@@ -1,6 +1,7 @@
 package com.francium.loader;
 
 import java.util.*;
+import java.nio.file.Path;
 
 /**
  * 模組清單 - 描述單個模組的完整元數據。
@@ -43,6 +44,9 @@ public class ModManifest {
     // 簽名驗證
     private String signature;
     private String publicKeyFingerprint;
+
+    // 實際 JAR 檔案路徑 (由 discoverMods 設定，用於驗證和橋接)
+    public transient Path jarSourcePath;
 
     public ModManifest() {}
 

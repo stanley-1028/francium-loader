@@ -73,39 +73,73 @@ public class ParallelModClassLoader extends URLClassLoader {
         
         File[] jarFiles = dir.listFiles((d, name) -> name.endsWith(".jar"));
         if (jarFiles == null) return result;
-        
+        result.totalJars = jarFiles.length;
+
         for (File jarFile : jarFiles) {
+            // Skip empty/corrupt JARs gracefully instead of crashing the whole loader
+            if (jarFile.length() == 0) {
+                LOGGER.warn("  Skipping empty JAR: {}", jarFile.getName());
+                result.skipped.add(jarFile.getName());
+                continue;
+            }
             try (JarFile jar = new JarFile(jarFile)) {
-                // 讀取 francium-mod.json (Francium 格式)
+                // Priority order: francium-mod.json > fabric.mod.json > mods.toml
+                // Only the FIRST found format is used per JAR to avoid duplicate registration.
+                boolean registered = false;
+
+                // 1. Francium native format
                 var entry = jar.getJarEntry("francium-mod.json");
-                if (entry != null) {
+                if (entry != null && !registered) {
                     try (InputStream is = jar.getInputStream(entry)) {
                         ModManifest manifest = ModManifest.fromJson(new String(is.readAllBytes()));
-                        modPaths.computeIfAbsent(manifest.modId(), k -> new ArrayList<>())
-                                .add(jarFile.toPath());
-                        result.found.add(manifest);
+                        if (manifest != null) {
+                            manifest.jarSourcePath = jarFile.toPath();
+                            modPaths.computeIfAbsent(manifest.modId(), k -> new ArrayList<>())
+                                    .add(jarFile.toPath());
+                            result.found.add(manifest);
+                            registered = true;
+                        }
                     }
                 }
-                // 向後兼容: 讀取 fabric.mod.json
+                // 2. Backward compat: Fabric format
                 entry = jar.getJarEntry("fabric.mod.json");
-                if (entry != null) {
+                if (entry != null && !registered) {
                     try (InputStream is = jar.getInputStream(entry)) {
                         ModManifest manifest = ModManifest.fromFabricJson(new String(is.readAllBytes()));
-                        modPaths.computeIfAbsent(manifest.modId(), k -> new ArrayList<>())
-                                .add(jarFile.toPath());
-                        result.found.add(manifest);
+                        if (manifest != null) {
+                            manifest.jarSourcePath = jarFile.toPath();
+                            modPaths.computeIfAbsent(manifest.modId(), k -> new ArrayList<>())
+                                    .add(jarFile.toPath());
+                            result.found.add(manifest);
+                            registered = true;
+                        }
                     }
                 }
-                // 向後兼容: 讀取 META-INF/mods.toml (Forge)
+                // 3. Backward compat: Forge/NeoForge format
                 entry = jar.getJarEntry("META-INF/mods.toml");
-                if (entry != null) {
+                if (entry != null && !registered) {
                     try (InputStream is = jar.getInputStream(entry)) {
                         ModManifest manifest = ModManifest.fromForgeToml(new String(is.readAllBytes()));
-                        modPaths.computeIfAbsent(manifest.modId(), k -> new ArrayList<>())
-                                .add(jarFile.toPath());
-                        result.found.add(manifest);
+                        if (manifest != null) {
+                            manifest.jarSourcePath = jarFile.toPath();
+                            modPaths.computeIfAbsent(manifest.modId(), k -> new ArrayList<>())
+                                    .add(jarFile.toPath());
+                            result.found.add(manifest);
+                            registered = true;
+                        }
                     }
                 }
+
+                if (!registered) {
+                    LOGGER.debug("  No recognized mod manifest in: {}", jarFile.getName());
+                    result.skipped.add(jarFile.getName());
+                }
+            } catch (java.util.zip.ZipException e) {
+                LOGGER.warn("  Corrupt or invalid JAR, skipping: {} - {}", jarFile.getName(), e.getMessage());
+                result.skipped.add(jarFile.getName());
+            } catch (IOException e) {
+                LOGGER.warn("  IO error reading JAR, skipping: {} - {}", jarFile.getName(), e.getMessage());
+                result.skipped.add(jarFile.getName());
             }
         }
         return result;
