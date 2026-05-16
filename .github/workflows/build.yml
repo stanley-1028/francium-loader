@@ -49,13 +49,13 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-results-${{ matrix.os }}-jdk${{ matrix.java }}
           path: '**/build/test-results/**/*.xml'
 
       - name: Upload JAR
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: francium-jar-${{ matrix.os }}-jdk${{ matrix.java }}
           path: '**/build/libs/*.jar'
@@ -103,7 +103,7 @@ jobs:
           done
 
       - name: Upload standalone JAR
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: francium-standalone-jar
           path: build/libs/*.jar
@@ -189,7 +189,7 @@ jobs:
           done
 
       - name: Upload native package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: francium-${{ matrix.pkg-suffix }}
           path: |
