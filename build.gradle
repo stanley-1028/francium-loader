@@ -143,12 +143,22 @@ tasks.register('jpackageExe', Exec) {
         '--main-jar', shadowJar.archiveFile.get().asFile.name,
         '--main-class', 'com.francium.bootstrap.FranciumBootstrap',
         '--java-options', '-Xmx2g',
+        '--win-menu',
+        '--win-menu-group', 'Francium',
+        '--win-shortcut',
+        '--win-dir-chooser',
+        '--win-per-user-install',
+        '--win-upgrade-uuid', 'f2a1b8c0-6e4f-4a7d-b3c9-2f5d8e7a0b1c',
+        '--license-file', file('jpackage-resources/LICENSE.txt').absolutePath,
+        '--about-url', 'https://github.com/stanley-1028/francium-loader',
+        '--copyright', 'Copyright (c) 2024-2025 stanley-1028',
         '--dest', outputDir.get().asFile.absolutePath
 
     onlyIf { osWindows }
 
     doLast {
         println "  ✅ Windows installer: ${outputDir.get().asFile}\\FranciumLoader-${version}.exe"
+        println "     Features: desktop shortcut, start menu, per-user install, license agreement"
     }
 }
 

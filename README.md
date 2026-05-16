@@ -165,26 +165,39 @@ francium install                     # 從 lock 文件恢復
 
 ---
 
-## 快速開始 / Quick Start
+## 快速安裝 / Quick Install 🚀
+
+### 一鍵安裝 (Windows)
+
+[![Download Latest](https://img.shields.io/github/v/release/stanley-1028/francium-loader?label=Download%20Francium%20Loader&color=3366CC&style=for-the-badge)](https://github.com/stanley-1028/francium-loader/releases/latest)
+
+1. 前往 [Releases 頁面](https://github.com/stanley-1028/francium-loader/releases/latest)
+2. 下載 `FranciumLoader-x.x.x.exe`
+3. **雙擊安裝** — 自動加入 PATH 環境變數，打開終端即可用 `francium` 命令
+4. 安裝完成後在命令提示字元或 PowerShell 中輸入 `francium --help`
+
+### 便攜版
+
+下載 `FranciumLoader-x.x.x-portable.zip`，解壓後使用 `bin/francium` 命令。
+
+### macOS / Linux
+
+下載對應 DMG / AppImage，或直接使用 shadow JAR。
+
+<details>
+<summary>從源碼構建 / Build from Source</summary>
+
+```bash
+git clone https://github.com/stanley-1028/francium-loader.git
+cd francium-loader
+./gradlew build
+```
+
+</details>
 
 ### 前置需求 / Prerequisites
 - Java 21+
 - Minecraft 1.20.4+（理論支援任意版本）
-
-### 構建 / Build
-
-```bash
-# 完整構建（含測試）
-./gradlew build
-
-# 獨立編譯核心模組（無需 Gradle，適用於 CI）
-bash build.sh        # macOS/Linux
-build.bat            # Windows
-
-# 創建分發包
-bash build_dist.sh   # macOS/Linux
-build_dist.bat       # Windows
-```
 
 ### 運行 Demo / Run Demo
 
