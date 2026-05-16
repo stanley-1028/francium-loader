@@ -184,7 +184,7 @@ jobs:
         shell: bash
         run: |
           echo "=== SHA256 Checksums ==="
-          find build/ -type f \( -name "*.exe" -o -name "*.dmg" -o -name "*.zip" -o -name "*.tar.gz" \) | while read f; do
+          find build/ -type f \( -name "*.exe" -o -name "*.dmg" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*.deb" \) | while read f; do
             sha256sum "$f" | tee -a build/checksums-${{ matrix.pkg-suffix }}.sha256
           done
 
@@ -221,6 +221,7 @@ jobs:
           find . -name "*.jar" -path "*/francium-jar-*" -exec cp {} release/ \;
           find . -name "*.exe" -exec cp {} release/ \;
           find . -name "*.dmg" -exec cp {} release/ \;
+          find . -name "*.deb" -exec cp {} release/ \;
           find . -name "*.zip" -exec cp {} release/ \;
           find . -name "*.sha256" -exec cp {} release/ \;
           ls -la release/
