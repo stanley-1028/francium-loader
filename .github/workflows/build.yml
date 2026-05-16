@@ -176,7 +176,7 @@ jobs:
               ./gradlew jpackageDmg --no-daemon
               ;;
             ubuntu-latest)
-              ./gradlew distPortableZip jpackageAppImage --no-daemon
+              ./gradlew distPortableZip jpackageDeb --no-daemon
               ;;
           esac
 
