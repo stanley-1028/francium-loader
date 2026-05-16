@@ -4,6 +4,19 @@ All notable changes to francium-loader will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.0.0] — 2026-05-17
+
+### Added
+- **Java Agent support** — Francium-loader can now be used as a `-javaagent` JVM argument. The `FranciumAgent.premain()` hooks into the JVM at startup to inject mod JARs into the system classpath and process Mixin configurations before any Minecraft classes are loaded
+- **Mixin 0.8.7 integration** — `org.spongepowered:mixin` is shaded into the JAR. Fabric mods with `mixins.json` configs are automatically detected and their mixin classes registered. Compatible with Fabric mod format (`fabric.mod.json`)
+- **MixinConfigProcessor** — scans mod JARs for `mixins.json`, `francium.mixins.json`, and `modid.mixins.json`, registers all `mixins/client/server` entries for runtime class transformation
+- **Mixin manifest entries**: `Premain-Class`, `Agent-Class`, `Can-Retransform-Classes`, `Can-Set-Native-Method-Prefix`
+
+### Changed
+- Version bumped to 2.0.0 (major — breaking new features for Fabric mod compatibility)
+- Shadow JAR now includes SpongePowered Mixin 0.8.7
+- Added SpongePowered Maven repository for dependency resolution
+
 ## [1.6.0] — 2026-05-16
 
 ### Fixed
@@ -14,10 +27,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Shadow JAR now includes all transitive dependencies (SLF4J, Logback, Gson, ASM, Netty) — was only 88 entries, now bundles 5,492+ entries with full runtime classpath
 - Converted hand-written `main()` test in ModGraphTest to proper JUnit 5 `@Test` methods (Gradle 9.x fails on empty test suites)
 - Linux CI: changed jpackage from `app-image` (directory) to `deb` installer with menu shortcut and package metadata
-
-### Changed
-- Version bumped to 1.6.0
-- `FranciumBootstrap.VERSION` now reads from JAR manifest (`Implementation-Version`) instead of hardcoded `"1.2.0"`
 
 ### Changed
 - Version bumped to 1.6.0

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.francium'
-version = '1.6.0'
+version = '2.0.0'
 
 application {
     mainClass = 'com.francium.bootstrap.FranciumBootstrap'
@@ -34,6 +34,7 @@ allprojects {
         mavenCentral()
         maven { url = 'https://maven.fabricmc.net/' }
         maven { url = 'https://libraries.minecraft.net/' }
+        maven { url = 'https://repo.spongepowered.org/maven/' }
     }
 
     tasks.withType(JavaCompile).configureEach {
@@ -83,7 +84,7 @@ subprojects {
     }
 }
 
-// Root project depends on all subprojects so shadowJar bundles transitive deps (SLF4J, Logback, Gson, Netty, etc.)
+// Root project depends on all subprojects so shadowJar bundles transitive deps (SLF4J, Logback, Gson, Netty, Mixin, etc.)
 dependencies {
     implementation project(':francium-core')
     implementation project(':francium-resolver')
@@ -91,6 +92,10 @@ dependencies {
     implementation project(':francium-ai-bridge')
     implementation project(':francium-profiler')
     implementation project(':francium-server')
+
+    // Mixin: for Fabric mod compatibility (shaded into the fat JAR)
+    implementation 'org.spongepowered:mixin:0.8.7'
+    shadow 'org.spongepowered:mixin:0.8.7'
 }
 
 // ══════════════════════════════════════════════════
@@ -102,7 +107,11 @@ shadowJar {
     manifest {
         attributes 'Main-Class': application.mainClass.get(),
                    'Implementation-Title': 'Francium Mod Loader',
-                   'Implementation-Version': archiveVersion.get()
+                   'Implementation-Version': archiveVersion.get(),
+                   'Premain-Class': 'com.francium.loader.FranciumAgent',
+                   'Agent-Class': 'com.francium.loader.FranciumAgent',
+                   'Can-Retransform-Classes': 'true',
+                   'Can-Set-Native-Method-Prefix': 'true'
     }
     // Include all subproject outputs (dependencies via 'runtimeClasspath' handle transitive libs)
     from {
