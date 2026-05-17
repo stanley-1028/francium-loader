@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.francium'
-version = '2.1.0'
+version = '2.2.0'
 
 application {
     mainClass = 'com.francium.bootstrap.FranciumBootstrap'
@@ -136,6 +136,15 @@ def osMac = System.properties['os.name'].toLowerCase().contains('mac')
 def osLinux = System.properties['os.name'].toLowerCase().contains('nux') ||
               System.properties['os.name'].toLowerCase().contains('nix')
 
+// Helper: copy file using Java NIO for Gradle 9.x compatibility
+def copyToDir(srcFile, destDir) {
+    def dir = destDir instanceof File ? destDir : new File(destDir.toString())
+    dir.mkdirs()
+    def src = srcFile instanceof File ? srcFile : srcFile.asFile
+    java.nio.file.Files.copy(src.toPath(), new File(dir, src.name).toPath(),
+        java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+}
+
 // Determine JAVA_HOME
 def javaHome = System.getProperty('java.home')
 def jdkHome = javaHome.endsWith('jre') ? new File(javaHome).parent : javaHome
@@ -155,10 +164,7 @@ tasks.register('jpackageExe', Exec) {
         inDir.mkdirs()
         if (outDir.exists()) outDir.deleteDir()
         outDir.mkdirs()
-        copy {
-            from shadowJar.archiveFile
-            into inDir
-        }
+        copyToDir(shadowJar.archiveFile.get().asFile, inDir)
     }
 
     commandLine "${jdkHome}/bin/jpackage",
@@ -205,10 +211,7 @@ tasks.register('jpackageDmg', Exec) {
         inDir.mkdirs()
         if (outDir.exists()) outDir.deleteDir()
         outDir.mkdirs()
-        copy {
-            from shadowJar.archiveFile
-            into inDir
-        }
+        copyToDir(shadowJar.archiveFile.get().asFile, inDir)
     }
 
     commandLine "${jdkHome}/bin/jpackage",
@@ -247,10 +250,7 @@ tasks.register('jpackageDeb', Exec) {
         inDir.mkdirs()
         if (outDir.exists()) outDir.deleteDir()
         outDir.mkdirs()
-        copy {
-            from shadowJar.archiveFile
-            into inDir
-        }
+        copyToDir(shadowJar.archiveFile.get().asFile, inDir)
     }
 
     commandLine "${jdkHome}/bin/jpackage",
