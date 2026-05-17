@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.francium'
-version = '2.0.0'
+version = '2.1.0'
 
 application {
     mainClass = 'com.francium.bootstrap.FranciumBootstrap'
@@ -58,8 +58,8 @@ subprojects {
     apply plugin: 'jacoco'
 
     dependencies {
-        testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.11.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.12.3'
         implementation 'org.slf4j:slf4j-api:2.0.18'
     }
 
