@@ -59,7 +59,7 @@ subprojects {
 
     dependencies {
         testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.12.3'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.3'
         implementation 'org.slf4j:slf4j-api:2.0.18'
     }
 
