@@ -42,9 +42,75 @@ Next-generation Minecraft mod loader with AI-powered cross-version bridging and 
 
 ---
 
+## 快速引入 / Quick Start
+
+### 加入依賴 / Add Dependency
+
+**Gradle（JitPack，適合目前版本）：**
+
+```gradle
+// settings.gradle
+repositories {
+    maven { url = 'https://jitpack.io' }
+}
+
+// build.gradle
+dependencies {
+    implementation 'com.github.stanley-1028:francium-loader:v2.2.0'
+}
+```
+
+**Gradle（Maven Central，發布後可用）：**
+
+```gradle
+dependencies {
+    implementation 'com.francium:francium-loader:2.2.1'
+}
+```
+
+### 程式碼入門 / Code Example
+
+```java
+import com.francium.loader.FranciumLoader;
+import com.francium.graph.ModGraph;
+import com.francium.resolver.sat.SATDependencyResolver;
+import java.util.List;
+
+public class QuickStart {
+    public static void main(String[] args) {
+        // 1. 初始化加載器
+        FranciumLoader loader = FranciumLoader.builder()
+            .modsDirectory("./mods")
+            .parallel(true)
+            .build();
+
+        // 2. 掃描並載入模組
+        FranciumLoader.FranciumReport report = loader.bootstrap();
+
+        // 3. 查看並行加速效果
+        ModGraph graph = loader.getModGraph();
+        System.out.println("Layers: " + graph.getLayerCount());
+        System.out.println("Speedup: " + graph.getSpeedupRatio() + "x");
+
+        // 4. 使用 SAT 求解器自行解析依賴
+        SATDependencyResolver resolver = new SATDependencyResolver();
+        SATDependencyResolver.ResolveResult result =
+            resolver.resolve(allMods, allDependencies, timeout);
+
+        if (result.success) {
+            System.out.println("Resolved " + result.modCount + " mods");
+        }
+    }
+}
+```
+
+完整的 API 文檔請參閱 [Javadoc](https://jitpack.io/com/github/stanley-1028/francium-loader/v2.2.0/javadoc/)。
+
+---
+
 ## Demo / 功能展示
 
-Francium 提供一個獨立的 CLI Demo，無需 Minecraft 即可展示核心功能：
+Francium 提供一個獨立的 CLI Demo，無需 Minecraft 即可展示核心功能：，無需 Minecraft 即可展示核心功能：
 
 ```bash
 # Gradle 方式（推薦）
