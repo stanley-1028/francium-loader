@@ -112,17 +112,27 @@ public class ModValidator {
     }
 
     // --- 設定 ---
+    /** 封鎖符合正則規則的 mod（支援 pattern 匹配）。 */
     public void blockMod(String pattern) { blockedMods.add(pattern); }
+    /** 信任指定的簽署者。 */
     public void trustSigner(String signer) { trustedSigners.add(signer); }
 
     // --- 結果 ---
+    /** 單一 JAR 檔案的安全驗證結果。 */
     public static class ValidationResult {
+        /** 檔案名稱 */
         public String fileName;
+        /** 檔案的 SHA256 雜湊值 */
         public String sha256;
+        /** 完整性檢查是否通過 */
         public boolean integrityPassed;
+        /** 數位簽章是否驗證成功 */
         public boolean signatureVerified;
+        /** 總體驗證結果（所有檢查通過） */
         public boolean passed;
+        /** 錯誤訊息列表 */
         public List<String> errors = new ArrayList<>();
+        /** 警告訊息列表 */
         public List<String> warnings = new ArrayList<>();
         
         public ValidationResult(String fileName) {

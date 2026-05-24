@@ -94,7 +94,7 @@ public class ReportViewer {
     }
 
     /**
-     * 一鍵生成 & 開啟。
+     * 一鍵生成 &amp; 開啟。
      */
     public static void show(ProfilerReport report, Path outputDir) throws IOException {
         Path htmlPath = outputDir.resolve("francium-dashboard-" +

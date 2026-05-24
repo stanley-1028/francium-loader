@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'maven-publish'
+    id 'signing'
     id 'com.gradleup.shadow' version '9.4.1'
 }
 
@@ -361,5 +362,22 @@ publishing {
 
     repositories {
         mavenLocal()
+        // Maven Central Portal — requires verified namespace + deployment token
+        // See: https://central.sonatype.com/
+        maven {
+            name = 'CentralPortal'
+            url = 'https://central.sonatype.com/api/v1/publisher/uploads'
+            credentials {
+                username = project.findProperty('mavenCentralUsername') ?: ''
+                password = project.findProperty('mavenCentralPassword') ?: ''
+            }
+        }
     }
+}
+
+// ══════════════════════════════════════════════════
+//  GPG Signing (required by Maven Central)
+// ══════════════════════════════════════════════════
+signing {
+    sign publishing.publications.mavenJava
 }

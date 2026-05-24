@@ -143,24 +143,38 @@ public class VersionBridge {
     }
 
     // --- 設定 ---
+    /** 設定 AI 映射的置信度閾值（低於此值則標記為無法解析）。 */
     public void setConfidenceThreshold(float threshold) { this.confidenceThreshold = threshold; }
+    /** 啟用或停用自動修復（生成適配器）。 */
     public void setAutoFix(boolean autoFix) { this.autoFix = autoFix; }
+    /** 啟用報告模式：只分析不改寫，不生成適配器。 */
     public void setDryRun(boolean dryRun) { this.dryRun = dryRun; }
 
     // --- 數據類 ---
+    /** 單一模組的版本橋接分析報告。 */
     public static class BridgeReport {
+        /** 模組檔案名稱 */
         public String modName;
+        /** 外部 API 呼叫總數 */
         public int totalExternalCalls;
+        /** 直接兼容（無需映射）的方法數 */
         public int directMatchCount;
+        /** 成功映射的方法數 */
         public int mappedCount;
+        /** 無法解析的方法數 */
         public int unresolvableCount;
-        public float compatibilityScore; // 0.0 ~ 1.0
+        /** 兼容性分數 (0.0 ~ 1.0) */
+        public float compatibilityScore;
+        /** 已建立的映射列表 */
         public List<MethodMapping> mappings = new ArrayList<>();
+        /** 無法匹配的外部呼叫列表 */
         public List<MethodSignature> unmappedCalls = new ArrayList<>();
         
         public BridgeReport(String modName) { this.modName = modName; }
         
+        /** 此 mod 是否需要生成橋接適配器。 */
         public boolean needsAdapter() { return mappedCount > 0; }
+        /** 此 mod 是否完全兼容（無未解析的呼叫）。 */
         public boolean isFullyCompatible() { return unresolvableCount == 0; }
         
         @Override
@@ -172,12 +186,19 @@ public class VersionBridge {
 
     public record MethodMapping(MethodSignature source, MethodSignature target, float confidence) {}
 
+    /** 批次橋接的整體摘要，匯總所有 mod 的分析結果。 */
     public static class BridgeSummary {
+        /** 來源 Minecraft 版本 */
         public String sourceVersion;
+        /** 目標 Minecraft 版本 */
         public String targetVersion;
+        /** 各 mod 的橋接報告列表 */
         public List<BridgeReport> reports = new ArrayList<>();
+        /** 生成的適配器數量 */
         public int adaptersGenerated = 0;
+        /** modId → 適配器位元組映射 */
         public Map<String, byte[]> adapterBytes = new HashMap<>();
+        /** 整體兼容性分數 (0.0 ~ 1.0) */
         public float overallCompatibility;
         
         public void calculateOverallScore() {

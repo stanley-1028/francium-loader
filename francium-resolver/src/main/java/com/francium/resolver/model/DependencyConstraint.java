@@ -7,11 +7,11 @@ import java.util.regex.*;
  * 語義化版本約束。
  * 
  * 支援的約束語法:
- * - ">=1.2.0"     大於等於
- * - "<2.0.0"      小於
- * - ">=1.2.0 <2.0.0" 範圍
- * - "^1.2.3"      compatible with 1.x.x (>=1.2.3 <2.0.0)
- * - "~1.2.3"      approximately (>=1.2.3 <1.3.0)
+ * - {@code ">=1.2.0"}     大於等於
+ * - {@code "<2.0.0"}      小於
+ * - {@code ">=1.2.0 <2.0.0"} 範圍
+ * - {@code "^1.2.3"}      compatible with 1.x.x ({@code >=1.2.3 <2.0.0})
+ * - {@code "~1.2.3"}      approximately ({@code >=1.2.3 <1.3.0})
  * - "1.2.x"       通配符
  * - "*" 或 ""     任意版本
  */
@@ -102,6 +102,7 @@ public class DependencyConstraint {
             .build();
     }
 
+    /** 此約束是否為通配符（接受任意版本）。 */
     public boolean isWildcard() {
         return ranges.isEmpty() || raw.equals("*");
     }
@@ -185,16 +186,20 @@ public class DependencyConstraint {
     }
 
     // --- Builder ---
+    /** 用於程式化建構 DependencyConstraint 的建造者。 */
     public static class ConstraintBuilder {
         private SemanticVersion min, max;
         private boolean minInc = true, maxInc = true;
         
+        /** 設定下限版本及是否包含該版本。 */
         public ConstraintBuilder min(SemanticVersion v, boolean inclusive) {
             this.min = v; this.minInc = inclusive; return this;
         }
+        /** 設定上限版本及是否包含該版本。 */
         public ConstraintBuilder max(SemanticVersion v, boolean inclusive) {
             this.max = v; this.maxInc = inclusive; return this;
         }
+        /** 建構 DependencyConstraint 實例。 */
         public DependencyConstraint build() {
             DependencyConstraint c = new DependencyConstraint("*");
             c.ranges.clear();

@@ -154,6 +154,7 @@ public class MemoryManager {
         return new ArrayList<>(leakReports);
     }
 
+    /** 優雅關閉監控執行緒，釋放資源。 */
     public void shutdown() {
         monitor.shutdown();
         forceGC();
@@ -242,10 +243,15 @@ public class MemoryManager {
         }
     }
 
+    /** 單一 mod 的記憶體使用統計。 */
     public static class PerModMemory {
+        /** 模組識別碼 */
         public String modId;
+        /** 估算的記憶體使用量（位元組） */
         public long estimatedUsage;
+        /** 已載入的類別數量 */
         public int loadedClasses;
+        /** 加載耗時（毫秒） */
         public long loadTimeMs;
         
         public PerModMemory(String modId) {
@@ -259,6 +265,13 @@ public class MemoryManager {
         }
     }
 
+    /**
+     * 記憶體洩漏報告。
+     * @param modId 可能洩漏的模組
+     * @param description 洩漏描述
+     * @param estimatedLeakBytes 估算洩漏位元組
+     * @param ageMs 洩漏持續時間（毫秒）
+     */
     public record LeakReport(String modId, String description, long estimatedLeakBytes, long ageMs) {}
 
     record GCEvent(long timestamp, long memoryBefore) {}
@@ -293,6 +306,7 @@ public class MemoryManager {
             }
         }
         
+        /** 從池中借用一個物件（若池為空則創建新物件）。 */
         public T borrow() {
             T obj = pool.poll();
             if (obj == null) {
@@ -303,6 +317,7 @@ public class MemoryManager {
             return obj;
         }
         
+        /** 歸還物件至池中（若池滿則丟棄）。 */
         public void release(T obj) {
             if (pool.size() < maxSize) {
                 pool.offer(obj);
@@ -310,12 +325,14 @@ public class MemoryManager {
             returned.incrementAndGet();
         }
         
+        /** 收縮物件池至最大容量的一半，釋放未使用的物件。 */
         public void trim() {
             while (pool.size() > maxSize / 2) {
                 pool.poll();
             }
         }
         
+        /** 返回物件池的命中率（borrow 時池中有物件的比例，0~100）。 */
         public long hitRate() {
             long total = borrowed.get();
             return total > 0 ? (total - created.get() + pool.size()) * 100 / total : 0;

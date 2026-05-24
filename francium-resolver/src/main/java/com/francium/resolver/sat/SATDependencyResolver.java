@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
  * 高效能依賴解析器 — DPLL 風格回溯搜尋 + AC-3 弧一致性 + 緩存優化。
  * 
  * 相較於標準 SAT solver 的優勢:
- * 1. 針對 mod 依賴場景特化（變數 < 1000，域 < 50）
+ * 1. 針對 mod 依賴場景特化（變數 {@code < 1000}，域 {@code < 50}）
  * 2. 更好的錯誤訊息（指出哪個 mod 導致衝突）
  * 3. 零外部依賴
  * 
  * 效能特性:
- * - 小規模 (<100 mods): ~1ms
+ * - 小規模 ({@code <100} mods): ~1ms
  * - 中等規模 (100-500 mods): ~50ms  
  * - 大規模 (500-1000 mods): O(n log n) 而非 O(n²)
  * 
@@ -701,8 +701,11 @@ public class SATDependencyResolver {
     // 設定方法
     // ════════════════════════════════════════════════════════════
 
+    /** 設定最大求解數量（預設 1）。 */
     public void setMaxSolutions(int n) { this.maxSolutions = n; }
+    /** 設定求解超時時間（毫秒，預設 30000）。 */
     public void setTimeoutMs(long ms) { this.timeoutMs = ms; }
+    /** 啟用或停用 AC-3 弧一致性預處理（大規模場景建議啟用）。 */
     public void setEnableAC3(boolean enable) { this.enableAC3 = enable; }
 
     // ════════════════════════════════════════════════════════════
@@ -710,18 +713,28 @@ public class SATDependencyResolver {
     // ════════════════════════════════════════════════════════════
 
     /**
-     * 解析結果。
+     * SAT 求解器的解析結果。
+     * 包含求解成功與否、最終賦值方案及效能統計。
      */
     public static class ResolveResult {
+        /** 是否成功找到一組滿足所有約束的版本組合 */
         public boolean success;
+        /** 求解是否因超時而中斷 */
         public boolean timeout;
+        /** modId → 解析後的 SemanticVersion 映射（成功時有效） */
         public Map<String, SemanticVersion> solution;
+        /** 求解過程中的錯誤訊息列表 */
         public List<String> errors = new ArrayList<>();
+        /** 求解耗時（毫秒） */
         public long solveTimeMs;
+        /** 回溯搜尋中探索的節點數 */
         public int nodesExplored;
+        /** 回溯次數 */
         public int backtracks;
+        /** 前向檢查中過濾的值數 */
         public int propagations;
 
+        /** 結果是否為空（無解或未求解） */
         public boolean isEmpty() { return solution == null || solution.isEmpty(); }
 
         @Override

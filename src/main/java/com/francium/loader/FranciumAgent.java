@@ -15,8 +15,18 @@ import java.util.logging.Logger;
  */
 public class FranciumAgent {
 
+    /** Prevent instantiation — static entry point only. */
+    private FranciumAgent() {}
+
     private static final Logger LOG = Logger.getLogger(FranciumAgent.class.getName());
 
+    /**
+     * Java Agent entry point. Invoked by the JVM before the main method.
+     * Scans the mods directory for JAR files, appends them to the system classpath,
+     * and processes Mixin configurations.
+     * @param agentArgs agent arguments; supports "modsDir=/path" format or a bare path
+     * @param inst the JVM Instrumentation instance for classpath manipulation
+     */
     public static void premain(String agentArgs, Instrumentation inst) {
         LOG.info("[FranciumAgent] Initializing Francium Loader Agent v" + getVersion());
 

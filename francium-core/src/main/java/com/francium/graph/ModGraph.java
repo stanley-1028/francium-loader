@@ -217,6 +217,12 @@ public class ModGraph {
     }
 
     // --- Public API ---
+    /**
+     * 返回拓撲分層結果。
+     * 每層中的 mod 之間沒有依賴關係，可並行加載。
+     * 若尚未分層，自動調用 buildLayers()。
+     * @return 有序的層列表（層 0 為無依賴的根節點）
+     */
     public List<Set<String>> getLayers() {
         if (layers == null) buildLayers();
         return Collections.unmodifiableList(layers);
@@ -239,23 +245,37 @@ public class ModGraph {
         return total;
     }
 
+    /**
+     * 計算循序加載的預計總耗時。
+     * 假設所有 mod 依序加載，即各 mod 耗時之和。
+     */
     public long estimateSequentialLoadTime() {
         return manifestMap.values().stream()
             .mapToLong(ModManifest::estimatedLoadTimeMs)
             .sum();
     }
 
+    /**
+     * 返回並行加載相較於循序加載的加速比。
+     * 數值越大說明並行效益越高。
+     */
     public double getSpeedupRatio() {
         long p = estimateParallelLoadTime();
         long s = estimateSequentialLoadTime();
         return p > 0 ? (double) s / p : 1.0;
     }
 
+    /** 根據 modId 取得對應的 ModManifest。 */
     public ModManifest getManifest(String modId) { return manifestMap.get(modId); }
+    /** 返回所有已註冊 mod 的 manifest（唯讀）。 */
     public Map<String, ModManifest> getAllManifests() { return Collections.unmodifiableMap(manifestMap); }
+    /** 返回已成功註冊的 mod 數量。 */
     public int getModCount() { return manifestMap.size(); }
+    /** 返回拓撲分層數。若未分層則先調用 buildLayers()。 */
     public int getLayerCount() { if (layers == null) buildLayers(); return layers.size(); }
+    /** 返回 DAG 中所有節點總數（含外部提供者）。 */
     public int getTotalNodeCount() { return adjacency.size(); }
+    /** 返回 DAG 中所有依賴邊的總數。 */
     public int getTotalEdgeCount() {
         return adjacency.values().stream().mapToInt(Set::size).sum();
     }

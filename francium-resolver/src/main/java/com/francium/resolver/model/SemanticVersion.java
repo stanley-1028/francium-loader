@@ -82,8 +82,11 @@ public class SemanticVersion implements Comparable<SemanticVersion> {
     }
 
     // --- Incremental versions (for range boundaries) ---
+    /** 返回下一個主版本號 (major+1, 0, 0)，用於範圍邊界計算。 */
     public SemanticVersion nextMajor() { return new SemanticVersion(major + 1, 0, 0); }
+    /** 返回下一個次版本號 (major, minor+1, 0)。 */
     public SemanticVersion nextMinor() { return new SemanticVersion(major, minor + 1, 0); }
+    /** 返回下一個修訂版號 (major, minor, patch+1)。 */
     public SemanticVersion nextPatch() { return new SemanticVersion(major, minor, patch + 1); }
 
     // --- Comparison (pre-release < release) ---
@@ -131,10 +134,15 @@ public class SemanticVersion implements Comparable<SemanticVersion> {
     }
 
     // --- Accessors ---
+    /** 返回主版本號 (MAJOR)。 */
     public int major() { return major; }
+    /** 返回次版本號 (MINOR)。 */
     public int minor() { return minor; }
+    /** 返回修訂版號 (PATCH)。 */
     public int patch() { return patch; }
+    /** 返回預發布標籤（若無則為 null）。 */
     public String preRelease() { return preRelease; }
+    /** 返回建置元數據（若無則為 null）。 */
     public String build() { return build; }
 
     @Override

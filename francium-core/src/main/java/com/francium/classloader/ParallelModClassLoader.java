@@ -304,14 +304,17 @@ public class ParallelModClassLoader extends URLClassLoader {
         }
     }
 
+    /** 返回指定 mod 的加載狀態。 */
     public LoadStatus getStatus(String modId) {
         return loadStatuses.getOrDefault(modId, LoadStatus.PENDING);
     }
 
+    /** 返回所有 mod 的加載耗時（ms），唯讀。 */
     public Map<String, Long> getLoadTimes() {
         return Collections.unmodifiableMap(loadTimes);
     }
 
+    /** 優雅關閉 ForkJoinPool，等待進行中的任務完成。 */
     public void shutdown() {
         executor.shutdown();
         try {
@@ -329,16 +332,25 @@ public class ParallelModClassLoader extends URLClassLoader {
     }
 
     // --- 數據類 ---
+    /** 模組掃描結果，包含發現的 mod 和被跳過的檔案。 */
     public static class DiscoveryResult {
+        /** 成功解析 manifest 的 mod 列表 */
         public List<ModManifest> found = new ArrayList<>();
+        /** 被跳過的檔案名稱列表（格式不識別或損毀） */
         public List<String> skipped = new ArrayList<>();
+        /** mods 目錄中的 JAR 總數 */
         public int totalJars = 0;
     }
 
+    /** 完整加載報告，包含各層細節與效能統計。 */
     public static class LoadReport {
+        /** 所有層的實際總加載耗時（ms） */
         public long totalLoadTimeMs;
+        /** 循序加載的預估耗時（ms），用於對比加速比 */
         public long sequentialEstimatedMs;
+        /** 實際加速比 = sequentialEstimatedMs / totalLoadTimeMs */
         public double actualSpeedup;
+        /** 各層的加載細節 */
         public List<LayerLoadDetail> layerDetails = new ArrayList<>();
         
         @Override
@@ -358,20 +370,41 @@ public class ParallelModClassLoader extends URLClassLoader {
         }
     }
 
+    /** 單一拓撲層的加載結果。 */
     public static class LayerLoadDetail {
+        /** 層索引（0 為最底層） */
         public int layerIndex;
+        /** 該層中的 mod 總數 */
         public int modCount;
+        /** 該層的實際加載耗時（ms） */
         public long layerTimeMs;
+        /** 成功加載的 mod 數 */
         public int success = 0;
+        /** 加載失敗的 mod 數 */
         public int failed = 0;
+        /** 被跳過的 mod 數（外部依賴） */
         public int skipped = 0;
+        /** 成功加載的 mod 結果列表 */
         public List<ModLoadResult> results = new ArrayList<>();
+        /** 加載失敗的記錄列表 */
         public List<LoadFailure> failures = new ArrayList<>();
         
         public LayerLoadDetail(int index) { this.layerIndex = index; }
     }
 
+    /**
+     * 單個 mod 的加載結果。
+     * @param modId 模組識別碼
+     * @param version 解析後的版本號
+     * @param mainClass 加載後的主類別
+     * @param loadTimeMs 加載耗時（ms）
+     */
     public record ModLoadResult(String modId, String version, Class<?> mainClass, long loadTimeMs) {}
 
+    /**
+     * 單個 mod 的加載失敗記錄。
+     * @param modId 模組識別碼
+     * @param error 導致失敗的異常
+     */
     public record LoadFailure(String modId, Throwable error) {}
 }

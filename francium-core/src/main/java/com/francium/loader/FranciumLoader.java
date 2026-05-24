@@ -65,8 +65,22 @@ public class FranciumLoader {
     // 發現結果緩存，供後續階段使用
     private DiscoveryResult lastDiscoveryResult;
 
+    /** Represents the current phase of the mod loader lifecycle. */
     public enum LoaderState {
-        INIT, DISCOVERING, RESOLVING, BRIDGING, LOADING, READY, ERROR
+        /** Loader created, not yet initialized. */
+        INIT,
+        /** Scanning mods directory for JAR files and parsing manifests. */
+        DISCOVERING,
+        /** Running SAT dependency solver to resolve mod dependencies and detect conflicts. */
+        RESOLVING,
+        /** Applying AI-powered bytecode bridging for cross-version compatibility. */
+        BRIDGING,
+        /** Loading mod classes in parallel using DAG schedule. */
+        LOADING,
+        /** All mods loaded and ready for game launch. */
+        READY,
+        /** An error occurred during one of the lifecycle phases. */
+        ERROR
     }
 
     public FranciumLoader(Path gameDir) {
@@ -78,7 +92,9 @@ public class FranciumLoader {
     }
 
     /**
-     * 載入設定。
+     * 載入設定檔 (loader.toml)。
+     * 從 config/francium/loader.toml 讀取配置，若不存在則使用預設值。
+     * 可在 initialize() 之前單獨調用，也可由 initialize() 自動調用。
      */
     public void loadConfig() {
         this.config = LoaderConfig.load(configDir.resolve("loader.toml"));
@@ -362,16 +378,27 @@ public class FranciumLoader {
 
     // ─── Getters ───
 
+    /** Returns the current loader lifecycle state. */
     public LoaderState state() { return state; }
+    /** Returns the mod dependency graph (DAG). */
     public ModGraph modGraph() { return modGraph; }
+    /** Returns the parallel class loader instance. */
     public ParallelModClassLoader classLoader() { return classLoader; }
+    /** Returns the current loader configuration. */
     public LoaderConfig config() { return config; }
+    /** Returns the memory manager (leak detection, GC strategies). */
     public MemoryManager memoryManager() { return memoryManager; }
+    /** Returns the AI version bridge for cross-version compatibility. */
     public VersionBridge versionBridge() { return versionBridge; }
+    /** Returns the game root directory. */
     public Path gameDir() { return gameDir; }
+    /** Returns the mods directory (gameDir/mods). */
     public Path modsDir() { return modsDir; }
+    /** Returns the Francium config directory (gameDir/config/francium). */
     public Path configDir() { return configDir; }
+    /** Returns the Francium cache directory (gameDir/.francium-cache). */
     public Path cacheDir() { return cacheDir; }
+    /** Returns an unmodifiable map of lifecycle phase names to their execution time in milliseconds. */
     public Map<String, Long> phaseTimings() { return Collections.unmodifiableMap(phaseTimings); }
 
     /**
@@ -406,12 +433,21 @@ public class FranciumLoader {
 
         Builder(Path gameDir) { this.gameDir = gameDir; }
 
+        /** 啟用或停用 DAG 並行加載（預設啟用） */
         public Builder withParallelLoading(boolean v) { parallel = v; return this; }
+        /** 啟用或停用記憶體管理與洩漏檢測（預設啟用） */
         public Builder withMemoryManagement(boolean v) { memory = v; return this; }
+        /** 啟用或停用 AI 版本橋接（預設停用） */
         public Builder withAIBridge(boolean v) { aiBridge = v; return this; }
+        /** 啟用或停用伺服器 mod 清單同步（預設停用） */
         public Builder withServerSync(boolean v) { serverSync = v; return this; }
+        /** 設定 AI 橋接的置信度閾值（預設 0.85） */
         public Builder withAIConfidenceThreshold(double v) { aiThreshold = v; return this; }
 
+        /**
+         * 依據設定的參數建構 FranciumLoader 實例。
+         * 自動調用 initialize()。
+         */
         public FranciumLoader build() {
             FranciumLoader loader = new FranciumLoader(gameDir);
             loader.initialize();
@@ -425,7 +461,12 @@ public class FranciumLoader {
         }
     }
 
-    /** Phase 1: scan mods directory */
+    /**
+     * Phase 1: 掃描模組目錄。
+     * 掃描 gameDir/mods/ 下的所有 JAR 檔案，解析 mod manifest。
+     * 結果快取在內部供後續階段使用。
+     * @throws Exception if mods directory is missing or I/O error occurs
+     */
     public void scanMods() throws Exception {
         if (classLoader == null) initialize();
         state = LoaderState.DISCOVERING;
@@ -434,7 +475,12 @@ public class FranciumLoader {
         phaseTimings.put("discovery", System.currentTimeMillis() - t);
     }
 
-    /** Phase 2: resolve dependencies using cached discovery result */
+    /**
+     * Phase 2: 解析依賴關係。
+     * 使用 SAT 求解器解析掃描結果中所有 mod 的依賴關係。
+     * 依賴 scanMods() 先被調用以確保有快取結果。
+     * @throws Exception if SAT resolution encounters a fatal error
+     */
     public void resolveDependencies() throws Exception {
         state = LoaderState.RESOLVING;
         long t = System.currentTimeMillis();
@@ -443,20 +489,35 @@ public class FranciumLoader {
         phaseTimings.put("resolution", System.currentTimeMillis() - t);
     }
 
-    /** Phase 3: build DAG from resolved dependencies */
+    /**
+     * Phase 3: 構建 DAG 加載圖。
+     * 將解析後的依賴關係轉換為拓撲分層結構，
+     * 確定各 mod 的加載順序及可並行層。
+     */
     public void buildLoadGraph() {
         state = LoaderState.RESOLVING;
         modGraph.buildLayers();
     }
 
-    /** Phase 4: load all mods */
+    /**
+     * Phase 4: 加載所有模組。
+     * 執行 DAG 排程，逐層並行加載 mod 類別。
+     * 完成後將狀態設為 READY。
+     * @throws Exception if any mod fails to load
+     */
     public void loadMods() throws Exception {
         state = LoaderState.LOADING;
         lastReport = loadingPhase();
         state = LoaderState.READY;
     }
 
-    /** Inject Francium ClassLoader into LaunchClassLoader chain */
+    /**
+     * 將 Francium ClassLoader 注入 LaunchWrapper 的 LaunchClassLoader 鏈。
+     * 向 LaunchClassLoader 註冊 com.francium.* 排除規則，
+     * 避免 Minecraft 的主 ClassLoader 嘗試載入 Francium 類別。
+     * 若環境中沒有 LaunchWrapper，則此操作被安全跳過。
+     * @param launchClassLoader LaunchWrapper 的 LaunchClassLoader 實例
+     */
     public void injectInto(Object launchClassLoader) {
         if (launchClassLoader == null) {
             LOGGER.warn("[Francium] Cannot inject into null LaunchClassLoader");
@@ -474,6 +535,10 @@ public class FranciumLoader {
         }
     }
 
+    /**
+     * 返回已加載的模組總數（包含成功與失敗）。
+     * 若 launch() 尚未完成，則返回 DAG 中的節點數。
+     */
     public int getLoadedModCount() {
         if (lastReport != null)
             return lastReport.layerDetails.stream().mapToInt(d -> d.success + d.failed).sum();
@@ -484,7 +549,11 @@ public class FranciumLoader {
 
     private LoadReport lastReport;
 
-    /** Full status report */
+    /**
+     * 產生完整的載入狀態報告。
+     * 包含層數、並行度、mod 計數及階段耗時。
+     * 可在 launch() 之前或之後調用（之前調用會返回部分數據）。
+     */
     public FranciumReport getReport() {
         FranciumReport r = new FranciumReport();
         if (modGraph != null) {
@@ -505,8 +574,26 @@ public class FranciumLoader {
         return r;
     }
 
+    /**
+     * 載入報告的快照數據類。
+     * 包含加載過程的統計摘要，用於外部監控或日誌輸出。
+     */
     public static class FranciumReport {
-        public int layers, maxParallel, totalMods, loadedMods, failedMods;
-        public long satTimeMs, loadTimeMs, totalTimeMs;
+        /** DAG 拓撲層數 */
+        public int layers;
+        /** 最大並行層中的 mod 數量 */
+        public int maxParallel;
+        /** 總 mod 數（含失敗） */
+        public int totalMods;
+        /** 成功加載的 mod 數 */
+        public int loadedMods;
+        /** 加載失敗的 mod 數 */
+        public int failedMods;
+        /** SAT 求解器耗時（ms） */
+        public long satTimeMs;
+        /** DAG 並行加載耗時（ms） */
+        public long loadTimeMs;
+        /** 各階段總耗時（ms） */
+        public long totalTimeMs;
     }
 }

@@ -1,0 +1,26 @@
+# ════════════════════════════════════════════════════════
+#  Maven Central Publishing Configuration
+# ════════════════════════════════════════════════════════
+#
+#  Prerequisites:
+#    1. Register at https://central.sonatype.com/
+#    2. Verify ownership of the 'com.francium' namespace
+#    3. Generate a Deployment Token from your account
+#    4. Generate a GPG signing key and upload it to a keyserver
+#
+#  Copy this file to ~/.gradle/gradle.properties (or project-local gradle.properties)
+#  and fill in your credentials. NEVER commit this file to version control.
+# ════════════════════════════════════════════════════════
+
+# --- Maven Central Deployment Token ---
+# Generated from: central.sonatype.com → Account → Deployment Tokens
+mavenCentralUsername=your-deployment-token-username
+mavenCentralPassword=your-deployment-token-password
+
+# --- GPG Signing Key ---
+# Generate: gpg --gen-key
+# List keys: gpg --list-secret-keys --keyid-format=SHORT
+# Export: gpg --export-secret-keys -o ~/.gnupg/secring.gpg
+signing.keyId=YOUR_KEY_ID          # last 8 hex digits of GPG key fingerprint
+signing.password=your-gpg-passphrase
+signing.secretKeyRingFile=C:/Users/YourName/AppData/Roaming/gnupg/secring.gpg

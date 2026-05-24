@@ -26,14 +26,22 @@ public class ServerSyncProtocol {
     /**
      * 伺服器端 mod 清單。
      */
+    /** 伺服器端宣告的 mod 清單，用於 client-server 同步比對。 */
     public static class ServerModList {
+        /** 伺服器唯一識別碼 */
         public String serverId;
+        /** 伺服器顯示名稱 */
         public String serverName;
+        /** 伺服器運行的 Minecraft 版本 */
         public String mcVersion;
+        /** 伺服器使用的 Francium 版本 */
         public String franciumVersion;
+        /** 清單產生時間戳（毫秒） */
         public long timestamp;
+        /** mod 條目列表 */
         public List<ServerModEntry> mods;
-        public String signature; // 伺服器簽名
+        /** 伺服器簽名（用於驗證） */
+        public String signature;
         
         public byte[] toJson() {
             StringBuilder sb = new StringBuilder();
@@ -92,16 +100,26 @@ public class ServerSyncProtocol {
     /**
      * 單個模組資訊。
      */
+    /** 伺服器 mod 清單中的單一條目。 */
     public static class ServerModEntry {
+        /** 模組識別碼 */
         public String modId;
+        /** 模組顯示名稱 */
         public String name;
+        /** 所需版本 */
         public String version;
+        /** SHA256 校驗碼 */
         public String sha256;
+        /** 檔案大小（位元組） */
         public long size;
-        public String downloadUrl; // 可選: 直接提供下載連結
-        public boolean required;   // false = optional mod
-        public boolean serverOnly; // client doesn't need this mod
-        public String configTemplate; // 伺服器推薦的設定檔 (base64)
+        /** 可選的下載連結 */
+        public String downloadUrl;
+        /** 是否為必要 mod（false = 可選） */
+        public boolean required;
+        /** 僅伺服器端需要（用戶端無需安裝） */
+        public boolean serverOnly;
+        /** 伺服器推薦的設定檔（base64 編碼） */
+        public String configTemplate;
         
         public String toJson() {
             return "{" +
@@ -117,13 +135,36 @@ public class ServerSyncProtocol {
     /**
      * 同步結果。
      */
+    /** 用戶端與伺服器的 mod 同步結果。 */
     public static class SyncResult {
+        /** 是否完全兼容（無需任何操作） */
         public boolean compatible;
+        /** 需要執行的操作列表 */
         public List<ModAction> actions = new ArrayList<>();
+        /** 同步過程中的警告訊息 */
         public List<String> warnings = new ArrayList<>();
         
-        public enum Action { DOWNLOAD, UPDATE, REMOVE, OK, EXTRA_CLIENT_MOD }
+        /** 針對單一 mod 的同步操作類型。 */
+        public enum Action {
+            /** 需要下載 */
+            DOWNLOAD,
+            /** 需要更新 */
+            UPDATE,
+            /** 需要移除 */
+            REMOVE,
+            /** 已是最新，無需操作 */
+            OK,
+            /** 用戶端有多餘的 mod（可用可不用） */
+            EXTRA_CLIENT_MOD
+        }
         
+        /**
+         * 單一 mod 的同步操作記錄。
+         * @param modId 模組識別碼
+         * @param version 目標版本
+         * @param action 操作類型
+         * @param reason 操作原因說明
+         */
         public record ModAction(String modId, String version, Action action, String reason) {}
     }
 

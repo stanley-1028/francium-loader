@@ -183,26 +183,39 @@ public class MethodSignature {
     }
 
     // --- Getters and Setters ---
+    /** 所屬類別（內部名稱，如 net/minecraft/world/level/block/Block）。 */
     public String owner() { return owner; }
+    /** 方法名稱（混淆或映射後）。 */
     public String name() { return name; }
+    /** JVM 方法描述子，如 (Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState; */
     public String descriptor() { return descriptor; }
+    /** 返回類型（如 java.lang.String 或 void）。 */
     public String returnType() { return returnType; }
+    /** 參數類型列表。 */
     public List<String> paramTypes() { return paramTypes; }
+    /** Mojang 官方映射名稱（若有）。 */
     public String mojangName() { return mojangName; }
     public void setMojangName(String name) { this.mojangName = name; }
+    /** Yarn/Intermediary 映射名稱（若有）。 */
     public String intermediaryName() { return intermediaryName; }
     public void setIntermediaryName(String name) { this.intermediaryName = name; }
+    /** 原始混淆名稱（若有）。 */
     public String obfuscatedName() { return obfuscatedName; }
     public void setObfuscatedName(String name) { this.obfuscatedName = name; }
+    /** 方法的 bytecode 指令數。 */
     public int instructionCount() { return instructionCount; }
     public void setInstructionCount(int count) { this.instructionCount = count; }
+    /** 此方法中呼叫的其他方法集合。 */
     public Set<String> calledMethods() { return calledMethods; }
     public void addCalledMethod(String method) { this.calledMethods.add(method); }
+    /** 此方法中存取的欄位集合。 */
     public Set<String> fieldAccesses() { return fieldAccesses; }
     public void addFieldAccess(String field) { this.fieldAccesses.add(field); }
+    /** 此簽名所屬的映射版本。 */
     public String mappedVersion() { return mappedVersion; }
     public void setMappedVersion(String v) { this.mappedVersion = v; }
 
+    /** 返回格式化的唯一鍵值，用於映射查詢緩存。 */
     public String toKey() {
         return owner + "#" + name + descriptor;
     }
