@@ -1,5 +1,6 @@
 package com.francium.profiler.memory;
 
+import com.francium.api.PublicApi;
 import java.lang.management.*;
 import java.lang.ref.*;
 import java.util.*;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
  * 4. 記憶體閾值警告: 超過閾值時觸發回收和警告
  * 5. 每模組記憶體統計: 追蹤哪個模組消耗最多記憶體
  */
+@PublicApi
 public class MemoryManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(MemoryManager.class);
 

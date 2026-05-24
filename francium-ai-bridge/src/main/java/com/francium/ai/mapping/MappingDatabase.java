@@ -1,5 +1,6 @@
 package com.francium.ai.mapping;
 
+import com.francium.api.PublicApi;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -19,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * - 多層索引: version -> owner -> name+desc -> targets
  * - 反向索引: 支援雙向查詢
  */
+@PublicApi
 public class MappingDatabase {
     // version -> (sourceKey -> [targetSignatures])
     private final Map<String, Map<String, List<MethodSignature>>> mappings;

@@ -1,0 +1,12 @@
+
+> Configure project :
+Compiling with: C:\Program Files\Java\jdk-23
+
+> Task :francium-resolver:compileJava UP-TO-DATE
+> Task :francium-resolver:processResources UP-TO-DATE
+> Task :francium-resolver:classes UP-TO-DATE
+> Task :francium-resolver:javadoc UP-TO-DATE
+
+BUILD SUCCESSFUL in 1s
+3 actionable tasks: 3 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.1/userguide/configuration_cache_enabling.html

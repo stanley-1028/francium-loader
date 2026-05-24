@@ -1,5 +1,6 @@
 rootProject.name = 'francium-loader'
 
+include 'francium-api'
 include 'francium-core'
 include 'francium-ai-bridge'
 include 'francium-resolver'

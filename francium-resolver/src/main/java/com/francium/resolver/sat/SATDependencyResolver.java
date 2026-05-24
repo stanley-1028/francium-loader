@@ -1,5 +1,6 @@
 package com.francium.resolver.sat;
 
+import com.francium.api.PublicApi;
 import com.francium.resolver.model.DependencyConstraint;
 import com.francium.resolver.model.SemanticVersion;
 
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  * 4. 前向檢查 + 弧一致性傳播
  * 5. 衝突驅動回溯 (可選 CDCL)
  */
+@PublicApi
 public class SATDependencyResolver {
 
     // ─── 核心資料結構 ────────────────────────────────────────

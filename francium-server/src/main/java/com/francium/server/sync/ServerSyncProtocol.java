@@ -1,5 +1,6 @@
 package com.francium.server.sync;
 
+import com.francium.api.PublicApi;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
  * 3. 選項: 自動啟用伺服器 mod 設定檔
  * 4. 安全: mod 簽名驗證，防止惡意 mod
  */
+@PublicApi
 public class ServerSyncProtocol {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerSyncProtocol.class);

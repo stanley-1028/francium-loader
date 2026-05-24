@@ -1,5 +1,6 @@
 package com.francium.launch;
 
+import com.francium.api.PublicApi;
 import com.francium.loader.FranciumLoader;
 
 import java.io.File;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
  * 使用方式:
  *   --tweakClass com.francium.launch.FranciumTweaker
  */
+@PublicApi
 public class FranciumTweaker /* implements ITweaker */ {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FranciumTweaker.class);

@@ -1,6 +1,8 @@
 apply plugin: 'java'
 
 dependencies {
+    implementation project(':francium-api')
+
     // JSON parsing for registry API responses
     implementation 'com.google.code.gson:gson:2.14.0'
 

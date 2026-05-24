@@ -1,5 +1,6 @@
 package com.francium.resolver.model;
 
+import com.francium.api.PublicApi;
 import java.util.Objects;
 import java.util.regex.*;
 
@@ -9,6 +10,7 @@ import java.util.regex.*;
  * 格式: MAJOR.MINOR.PATCH[-PRERELEASE][+BUILD]
  * 例子: 1.20.4, 2.0.0-beta.1, 1.21.0-pre3+mc1.21
  */
+@PublicApi
 public class SemanticVersion implements Comparable<SemanticVersion> {
     private final int major;
     private final int minor;

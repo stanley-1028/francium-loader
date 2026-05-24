@@ -1,5 +1,6 @@
 package com.francium.ai.analysis;
 
+import com.francium.api.PublicApi;
 import com.francium.ai.mapping.MethodSignature;
 import org.objectweb.asm.*;
 import org.objectweb.asm.tree.*;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
  * 3. 記錄呼叫的結構特徵 (供結構匹配使用)
  * 4. 檢測可能的不相容呼叫模式
  */
+@PublicApi
 public class BytecodeAnalyzer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BytecodeAnalyzer.class);

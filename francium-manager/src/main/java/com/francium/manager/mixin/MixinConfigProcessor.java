@@ -1,5 +1,6 @@
 package com.francium.manager.mixin;
 
+import com.francium.api.PublicApi;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -13,6 +14,7 @@ import java.util.zip.ZipFile;
  * Discovers and registers Mixin configuration files from mod JARs.
  * Reads mixins.json from each JAR's root.
  */
+@PublicApi
 public class MixinConfigProcessor {
 
     private static final Set<String> MIXIN_CONFIG_FILES = new LinkedHashSet<>();

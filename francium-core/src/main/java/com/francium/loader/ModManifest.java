@@ -1,5 +1,6 @@
 package com.francium.loader;
 
+import com.francium.api.PublicApi;
 import java.util.*;
 import java.nio.file.Path;
 
@@ -7,6 +8,7 @@ import java.nio.file.Path;
  * 模組清單 - 描述單個模組的完整元數據。
  * 支援語義化版本、依賴約束、Mixin配置和AI橋接標記。
  */
+@PublicApi
 public class ModManifest {
     private String modId;
     private String name;

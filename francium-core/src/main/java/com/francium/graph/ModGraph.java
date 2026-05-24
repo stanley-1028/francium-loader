@@ -1,5 +1,6 @@
 package com.francium.graph;
 
+import com.francium.api.PublicApi;
 import com.francium.loader.ModManifest;
 
 import java.util.*;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 3. 環檢測: 發現循環依賴即報錯
  * 4. 加載時間預估: 為每一層計算並行加載瓶頸
  */
+@PublicApi
 public class ModGraph {
     // 鄰接表: 依賴者 → 被依賴者 (A depends on B → edge A→B)
     private final Map<String, Set<String>> adjacency;

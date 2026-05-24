@@ -1,5 +1,6 @@
 package com.francium.profiler.visualize;
 
+import com.francium.api.PublicApi;
 import com.francium.profiler.report.ProfilerReport;
 
 import java.awt.Desktop;
@@ -31,6 +32,7 @@ import org.slf4j.LoggerFactory;
  * 不需要伺服器、不需要 npm、不需要安裝任何東西。
  * 就是一個 HTML 檔案，雙擊打開就能看。
  */
+@PublicApi
 public class ReportViewer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportViewer.class);

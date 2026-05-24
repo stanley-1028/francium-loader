@@ -1,5 +1,6 @@
 package com.francium.resolver.model;
 
+import com.francium.api.PublicApi;
 import java.util.*;
 import java.util.regex.*;
 
@@ -15,6 +16,7 @@ import java.util.regex.*;
  * - "1.2.x"       通配符
  * - "*" 或 ""     任意版本
  */
+@PublicApi
 public class DependencyConstraint {
     private final String raw;
     private final List<Range> ranges;

@@ -1,0 +1,6 @@
+plugins {
+    id 'java'
+}
+
+// Minimal module — single annotation class shared across all submodules.
+// No external dependencies required.

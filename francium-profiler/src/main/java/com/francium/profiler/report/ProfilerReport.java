@@ -1,5 +1,6 @@
 package com.francium.profiler.report;
 
+import com.francium.api.PublicApi;
 import com.francium.profiler.memory.MemoryManager;
 
 import java.io.*;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
  *  - HTML: 互動式報告，含圖表、洩漏分析、池命中率、GC 時間軸
  *  - JSON: 結構化數據，給 CI/CD 或 Grafana 用
  */
+@PublicApi
 public class ProfilerReport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfilerReport.class);

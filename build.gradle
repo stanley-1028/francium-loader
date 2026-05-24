@@ -87,6 +87,7 @@ subprojects {
 
 // Root project depends on all subprojects so shadowJar bundles transitive deps (SLF4J, Logback, Gson, Netty, Mixin, etc.)
 dependencies {
+    implementation project(':francium-api')
     implementation project(':francium-core')
     implementation project(':francium-resolver')
     implementation project(':francium-manager')

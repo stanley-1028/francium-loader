@@ -1,5 +1,6 @@
 package com.francium.ai.mapping;
 
+import com.francium.api.PublicApi;
 import java.util.*;
 
 /**
@@ -10,6 +11,7 @@ import java.util.*;
  * 
  * 我們同時存儲多種表示以最大化匹配成功率。
  */
+@PublicApi
 public class MethodSignature {
     private final String owner;          // 所屬類別全名
     private final String name;           // 方法名 (可能是混淆的)

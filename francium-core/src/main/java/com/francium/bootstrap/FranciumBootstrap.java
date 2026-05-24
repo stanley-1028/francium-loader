@@ -1,5 +1,6 @@
 package com.francium.bootstrap;
 
+import com.francium.api.PublicApi;
 import com.francium.loader.FranciumLoader;
 import com.francium.loader.FranciumLoader.LoaderState;
 import com.francium.classloader.ParallelModClassLoader.LoadReport;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
  *   java -jar francium-loader.jar --help              # 顯示幫助
  * </pre>
  */
+@PublicApi
 public class FranciumBootstrap {
     private static final Logger LOGGER = LoggerFactory.getLogger(FranciumBootstrap.class);
 

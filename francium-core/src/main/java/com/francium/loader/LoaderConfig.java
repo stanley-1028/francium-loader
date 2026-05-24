@@ -1,5 +1,6 @@
 package com.francium.loader;
 
+import com.francium.api.PublicApi;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 加載器設定，支援 TOML-like 格式。
  */
+@PublicApi
 public class LoaderConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoaderConfig.class);
 

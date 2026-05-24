@@ -11,6 +11,7 @@ import com.francium.resolver.model.DependencyConstraint;
 import com.francium.resolver.model.SemanticVersion;
 import com.francium.resolver.sat.SATDependencyResolver;
 import com.francium.server.sync.ServerSyncProtocol;
+import com.francium.api.PublicApi;
 import com.francium.server.validate.ModValidator;
 
 import java.nio.file.Path;
@@ -36,6 +37,7 @@ import org.slf4j.LoggerFactory;
  * 7. 記憶體管理 → 洩漏檢測 + 自適應 GC + 物件池
  * 8. 版本斷層 → AI 橋接即時適配
  */
+@PublicApi
 public class FranciumLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(FranciumLoader.class);
 

@@ -1,5 +1,6 @@
 package com.francium.manager;
 
+import com.francium.api.PublicApi;
 import java.io.IOException;
 import java.io.File;
 import java.nio.file.*;
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
  * - 多 registry 支援 (類似 apt sources.list)
  * - 模組驗證 (SHA256 + 數位簽章)
  */
+@PublicApi
 public class PackageManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(PackageManager.class);
 

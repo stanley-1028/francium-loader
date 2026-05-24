@@ -1,5 +1,6 @@
 package com.francium.ai.adapter;
 
+import com.francium.api.PublicApi;
 import com.francium.ai.analysis.BytecodeAnalyzer;
 import com.francium.ai.mapping.MappingDatabase;
 import com.francium.ai.mapping.MethodSignature;
@@ -23,6 +24,7 @@ import java.util.*;
  * 
  * 這個技術讓一個為 1.20.4 寫的 mod 可以幾乎無修改在 1.21 運行。
  */
+@PublicApi
 public class VersionBridge {
     private final String sourceVersion;   // mod 目標版本 (如 1.20.4)
     private final String targetVersion;   // 當前 MC 版本 (如 1.21)

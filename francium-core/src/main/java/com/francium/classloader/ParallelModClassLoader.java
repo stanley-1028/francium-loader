@@ -1,5 +1,6 @@
 package com.francium.classloader;
 
+import com.francium.api.PublicApi;
 import com.francium.graph.ModGraph;
 import com.francium.loader.ModManifest;
 
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
  * 
  * 效能: N 個模組，L 層，加速比 = N/L (理想情況)
  */
+@PublicApi
 public class ParallelModClassLoader extends URLClassLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(ParallelModClassLoader.class);
 

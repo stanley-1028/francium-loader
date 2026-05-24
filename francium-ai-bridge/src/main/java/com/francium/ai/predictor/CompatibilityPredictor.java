@@ -1,5 +1,6 @@
 package com.francium.ai.predictor;
 
+import com.francium.api.PublicApi;
 import com.francium.ai.mapping.MethodSignature;
 
 import java.util.*;
@@ -21,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 由於無法真正執行神經網路，此處使用加權特徵模型，
  * 權重基於歷史數據統計得出。可替換為 TensorFlow/ONNX 模型。
  */
+@PublicApi
 public class CompatibilityPredictor {
     // 特徵權重 (可通過訓練調整)
     private float descriptorWeight = 0.30f;

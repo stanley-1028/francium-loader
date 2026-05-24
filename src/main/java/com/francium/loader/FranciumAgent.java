@@ -1,5 +1,6 @@
 package com.francium.loader;
 
+import com.francium.api.PublicApi;
 import com.francium.manager.mixin.MixinConfigProcessor;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
  * Hooks into the JVM at startup to inject mod classes and process Mixin configurations
  * before Minecraft classes are loaded.
  */
+@PublicApi
 public class FranciumAgent {
 
     /** Prevent instantiation — static entry point only. */

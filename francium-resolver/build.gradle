@@ -1,5 +1,7 @@
 apply plugin: 'java'
 
 dependencies {
+    implementation project(':francium-api')
+
     // No external dependencies — pure Java SAT solver
 }

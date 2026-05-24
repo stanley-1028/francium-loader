@@ -1,6 +1,8 @@
 apply plugin: 'java'
 
 dependencies {
+    implementation project(':francium-api')
+
     // Netty for server-client communication
     implementation 'io.netty:netty-all:4.2.13.Final'
 

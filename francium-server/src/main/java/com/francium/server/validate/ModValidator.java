@@ -1,5 +1,6 @@
 package com.francium.server.validate;
 
+import com.francium.api.PublicApi;
 import java.util.*;
 import java.io.*;
 import java.nio.file.*;
@@ -14,6 +15,7 @@ import java.security.MessageDigest;
  * - BEHAVIOR: 沙箱行為分析
  * - REPUTATION: 社群信譽分數
  */
+@PublicApi
 public class ModValidator {
     public enum SecurityLevel { NONE, INTEGRITY, SIGNATURE, BEHAVIOR, REPUTATION }
     
