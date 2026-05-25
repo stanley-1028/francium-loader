@@ -18,7 +18,7 @@ dependencies {
     compileOnly 'net.minecraft:launchwrapper:1.12'
 
     // JUnit for testing
-    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.1.0'
 }
 
 test {
