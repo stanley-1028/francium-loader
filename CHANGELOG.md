@@ -4,6 +4,18 @@ All notable changes to francium-loader will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.3.0] — 2026-06-05
+
+### 🐛 Bug Fixes
+- **System.exit 移除**: FranciumBootstrap 改用 `throw RuntimeException`
+- **異常處理強化**: 多處異常加入 LOGGER 日誌記錄
+- **PrintStackTrac 移除**: 全部改為 SLF4J LOGGER
+
+### 📄 文件
+- 新增 Checkstyle CI (`.github/workflows/checkstyle.yml`)
+- README 加入 Release badge
+- build.gradle 版本號 v2.2.0 → v2.3.0
+
 ## [2.1.0] — 2026-05-17
 
 ### Changed

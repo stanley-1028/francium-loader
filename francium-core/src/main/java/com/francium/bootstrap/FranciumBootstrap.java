@@ -116,7 +116,7 @@ public class FranciumBootstrap {
             LOGGER.error("FATAL: Failed to launch Francium Mod Loader");
             LOGGER.warn("  " + e.getMessage());
             LOGGER.error("Exception", e);
-            System.exit(1);
+            throw new RuntimeException("Francium Mod Loader failed to launch", e);
         }
     }
 

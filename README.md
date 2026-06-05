@@ -9,7 +9,8 @@ Next-generation Minecraft mod loader with AI-powered cross-version bridging and 
 [![Architecture](https://img.shields.io/badge/Architecture-DAG%20%2B%20SAT%20%2B%20AI-blue)]()
 [![Tests](https://img.shields.io/badge/Tests-70%2F70%20(100%25)-brightgreen)]()
 [![JitPack](https://img.shields.io/badge/JitPack-com.francium%3Afrancium--loader-blue)](https://jitpack.io/#stanley-1028/francium-loader)
-[![Release](https://img.shields.io/badge/release-v9.4.3-brightgreen)](https://github.com/stanley-1028/francium-loader/releases/tag/v9.4.3)
+[![Release](https://img.shields.io/badge/release-v2.3.0-brightgreen)](https://github.com/stanley-1028/francium-loader/releases/tag/v2.3.0)
+[![Checkstyle](https://github.com/stanley-1028/francium-loader/actions/workflows/checkstyle.yml/badge.svg)](https://github.com/stanley-1028/francium-loader/actions/workflows/checkstyle.yml)
 
 ---
 
