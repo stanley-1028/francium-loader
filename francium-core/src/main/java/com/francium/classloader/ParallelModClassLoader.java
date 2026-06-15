@@ -316,12 +316,20 @@ public class ParallelModClassLoader extends URLClassLoader {
         return Collections.unmodifiableMap(loadTimes);
     }
 
-    /** 優雅關閉 ForkJoinPool，等待進行中的任務完成。 */
+    /** 優雅關閉 ForkJoinPool，等待進行中的任務完成，並釋放所有 JAR 檔案句柄。 */
     public void shutdown() {
         executor.shutdown();
         try {
             executor.awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException ignored) {}
+        // 關閉每個 mod 的獨立 ClassLoader，釋放 JAR 檔案句柄
+        for (ModClassLoader child : modLoaders.values()) {
+            try { child.close(); } catch (IOException ignored) {}
+        }
+        // 釋放父 URLClassLoader 持有的 JAR 檔案句柄
+        try {
+            close();
+        } catch (IOException ignored) {}
     }
 
     /**

@@ -50,6 +50,8 @@ public class PackageManager {
             .build();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.registries = new ArrayList<>();
+        this.registries.add("https://api.modrinth.com/v2"); // Modrinth API v2 (官方)
+        this.registries.add("https://registry.francium.dev/v1"); // Francium 官方 registry (開發中)
         this.registries.add("https://registry.francium.dev/v1"); // 預設官方 registry
         this.cache = new HashMap<>();
 
