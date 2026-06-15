@@ -1,6 +1,8 @@
 package com.francium.manager;
 
 import com.francium.api.PublicApi;
+import com.francium.manager.CurseForgeAdapter;
+import com.francium.manager.ModrinthAdapter;
 import java.io.IOException;
 import java.io.File;
 import java.nio.file.*;
@@ -38,6 +40,8 @@ public class PackageManager {
 
     // 本地快取
     private final Map<String, List<RegistryMod>> cache;
+    private final ModrinthAdapter modrinth;
+    private final CurseForgeAdapter curseForge;
     private long cacheTTL = 3600_000; // 1 小時
     private long lastCacheUpdate = 0;
 
@@ -54,6 +58,8 @@ public class PackageManager {
         this.registries.add("https://registry.francium.dev/v1"); // Francium 官方 registry (開發中)
         this.registries.add("https://registry.francium.dev/v1"); // 預設官方 registry
         this.cache = new HashMap<>();
+        this.modrinth = new ModrinthAdapter();
+        this.curseForge = new CurseForgeAdapter();
 
         // 確保目錄存在
         try {
@@ -69,13 +75,24 @@ public class PackageManager {
     public List<RegistryMod> search(String query) throws Exception {
         refreshCacheIfNeeded();
 
+        // 同時查詢 Modrinth 與 CurseForge（若已配置 API key）
+        var modrinthResults = modrinth.searchProjects(query);
+        var cfResults = curseForge.isAvailable() ? curseForge.searchProjects(query) : List.<RegistryMod>of();
+        var combined = new LinkedHashMap<String, RegistryMod>();
+        for (var m : modrinthResults) combined.putIfAbsent(m.modId, m);
+        for (var m : cfResults) combined.putIfAbsent(m.modId, m);
+
         String lowerQuery = query.toLowerCase();
-        return cache.values().stream()
-            .flatMap(List::stream)
+        // 合併 cache（registry URL 來源）與 adapter（Modrinth/CurseForge）的結果
+        var all = new LinkedHashMap<String, RegistryMod>();
+        // 先加 registry URL 的結果
+        cache.values().stream().flatMap(List::stream).forEach(m -> all.putIfAbsent(m.modId, m));
+        // 再加 adapter 的結果（不覆蓋已存在的）
+        combined.forEach(all::putIfAbsent);
+        return all.values().stream()
             .filter(mod -> mod.modId.toLowerCase().contains(lowerQuery)
                 || (mod.name != null && mod.name.toLowerCase().contains(lowerQuery))
                 || (mod.description != null && mod.description.toLowerCase().contains(lowerQuery)))
-            .distinct()
             .sorted(Comparator.comparingLong((RegistryMod m) -> m.downloads).reversed())
             .limit(20)
             .toList();
