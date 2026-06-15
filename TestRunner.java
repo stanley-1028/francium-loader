@@ -61,7 +61,11 @@ public class TestRunner {
             }
         }
 
-        System.exit(runner.failed > 0 ? 1 : 0);
+        // Throw instead of System.exit so the JVM can shut down gracefully
+        // when TestRunner is called programmatically or as part of a larger suite.
+        if (runner.failed > 0) {
+            throw new RuntimeException("TestRunner: " + runner.failed + " test(s) failed");
+        }
     }
 
     void runClass(String className) throws Exception {

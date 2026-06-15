@@ -177,6 +177,15 @@ class MixinConfigProcessorTest {
     @AfterEach
     void tearDown() {
         // Reset global state so tests don't interfere with each other
-        // (the registered configs set is static)
+        // (the registered configs set is static). We use clear() via reflection
+        // since getRegisteredConfigs() returns an unmodifiable view.
+        try {
+            var field = MixinConfigProcessor.class.getDeclaredField("MIXIN_CONFIG_FILES");
+            field.setAccessible(true);
+            java.util.Set<String> configs = (java.util.Set<String>) field.get(null);
+            configs.clear();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to reset static MIXIN_CONFIG_FILES", e);
+        }
     }
 }

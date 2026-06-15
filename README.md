@@ -74,33 +74,30 @@ dependencies {
 
 ```java
 import com.francium.loader.FranciumLoader;
-import com.francium.graph.ModGraph;
-import com.francium.resolver.sat.SATDependencyResolver;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 
 public class QuickStart {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // 1. 初始化加載器
-        FranciumLoader loader = FranciumLoader.builder()
-            .modsDirectory("./mods")
-            .parallel(true)
+        FranciumLoader loader = FranciumLoader.builder(Paths.get("."))
+            .withParallelLoading(true)
+            .withMemoryManagement(true)
             .build();
 
         // 2. 掃描並載入模組
-        FranciumLoader.FranciumReport report = loader.bootstrap();
+        FranciumLoader.FranciumReport report = loader.launch();
 
         // 3. 查看並行加速效果
-        ModGraph graph = loader.getModGraph();
-        System.out.println("Layers: " + graph.getLayerCount());
-        System.out.println("Speedup: " + graph.getSpeedupRatio() + "x");
+        System.out.println("Total mods: " + report.totalMods);
+        System.out.println("Layers: " + report.layers);
+        System.out.println("Load time: " + report.loadTimeMs + "ms");
 
-        // 4. 使用 SAT 求解器自行解析依賴
-        SATDependencyResolver resolver = new SATDependencyResolver();
-        SATDependencyResolver.ResolveResult result =
-            resolver.resolve(allMods, allDependencies, timeout);
-
-        if (result.success) {
-            System.out.println("Resolved " + result.modCount + " mods");
+        // 4. 逐一取得各層（同層可並行載入）
+        List<Set<String>> layers = loader.getLayers();
+        for (int i = 0; i < layers.size(); i++) {
+            System.out.println("Layer " + i + ": " + layers.get(i));
         }
     }
 }

@@ -170,10 +170,10 @@ public class DependencyConstraint {
                 case "<" -> ranges.add(new Range(null, false, ver, false));
                 case "=", "==" -> ranges.add(new Range(ver, true, ver, true));
                 case "!=" -> {
-                    Range excludeLower = new Range(null, false, ver, false);
-                    Range excludeUpper = new Range(ver, false, null, false);
-                    // 不等於: 排除精確版本
+                    // 不等於: 排除精確版本 → 兩個範圍互斥覆蓋全集
+                    // 版本 < ver 或 版本 > ver 都滿足 !=
                     ranges.add(new Range(null, false, ver, false));
+                    ranges.add(new Range(ver, false, null, false));
                 }
             }
         }

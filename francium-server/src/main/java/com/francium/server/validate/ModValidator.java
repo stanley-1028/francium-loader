@@ -83,11 +83,11 @@ public class ModValidator {
 
     /**
      * 檢查位元組碼中的敏感 API 呼叫。
+     * 使用 JarInputStream 解壓縮後掃描真實的 .class 檔案內容，
+     * 避免對壓縮後的 zip 位元組做字串掃描（會產生大量誤報）。
      */
-    private void checkSensitiveAPIs(byte[] data, ValidationResult result) {
-        String content = new String(data, java.nio.charset.StandardCharsets.ISO_8859_1);
-        
-        // 檢查可疑的 API 呼叫模式 (簡化)
+    private void checkSensitiveAPIs(byte[] jarData, ValidationResult result) {
+        // 掃描可疑的 API 呼叫模式
         List<String> suspiciousPatterns = List.of(
             "java/lang/Runtime",   // Runtime.exec()
             "java/lang/ProcessBuilder",
@@ -95,13 +95,30 @@ public class ModValidator {
             "java/lang/reflect",   // 反射
             "sun/misc/Unsafe"      // Unsafe
         );
-        
-        // 注意: 許多正規 mod 合法使用這些 API，
-        // 此處僅記錄警告而非阻擋
-        for (String pattern : suspiciousPatterns) {
-            if (content.contains(pattern)) {
-                result.warnings.add("Uses: " + pattern);
+
+        // 使用 JarInputStream 解壓縮並只掃描 .class 檔案
+        try (java.util.jar.JarInputStream jis =
+                 new java.util.jar.JarInputStream(
+                     new java.io.ByteArrayInputStream(jarData))) {
+            java.util.jar.JarEntry entry;
+            while ((entry = jis.getNextJarEntry()) != null) {
+                if (entry.isDirectory() || !entry.getName().endsWith(".class")) {
+                    jis.closeEntry();
+                    continue;
+                }
+                // 讀取解壓縮後的 class 內容
+                byte[] classBytes = jis.readAllBytes();
+                String content = new String(classBytes,
+                    java.nio.charset.StandardCharsets.ISO_8859_1);
+                for (String pattern : suspiciousPatterns) {
+                    if (content.contains(pattern)) {
+                        result.warnings.add("Uses: " + pattern + " (in " + entry.getName() + ")");
+                    }
+                }
+                jis.closeEntry();
             }
+        } catch (Exception ignored) {
+            // 解析失敗時安靜跳過，不阻擋載入
         }
     }
 

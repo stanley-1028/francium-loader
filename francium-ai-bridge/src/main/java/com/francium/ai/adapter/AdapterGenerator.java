@@ -107,23 +107,15 @@ public class AdapterGenerator {
 
     private void generateSimpleForward(MethodVisitor mv, String targetOwner, 
                                         String targetName, String desc, float confidence) {
-        // 載入所有參數到堆疊
+        // 使用 parseParams 正確解析參數型別（支援 L 物件、[ 陣列等），
+        // 取代逐字元解析（逐字元無法正確處理物件型別如 Ljava/lang/String;）
+        List<String> params = parseParams(desc);
         int slot = 0;
-        for (char c : desc.toCharArray()) {
-            if (c == ')') break;
-            if (c == 'L' || c == '[') {
-                mv.visitVarInsn(Opcodes.ALOAD, slot);
-                slot++;
-            } else if (c == 'J') {
-                mv.visitVarInsn(Opcodes.LLOAD, slot);
+        for (String type : params) {
+            mv.visitVarInsn(getLoadOpcode(type), slot);
+            if (type.equals("J") || type.equals("D")) {
                 slot += 2;
-            } else if (c == 'D') {
-                mv.visitVarInsn(Opcodes.DLOAD, slot);
-            } else if (c == 'F') {
-                mv.visitVarInsn(Opcodes.FLOAD, slot);
-                slot++;
-            } else if (c != '(') {
-                mv.visitVarInsn(Opcodes.ILOAD, slot);
+            } else {
                 slot++;
             }
         }
@@ -152,7 +144,7 @@ public class AdapterGenerator {
         List<String> sourceParams = parseParams(sourceDesc);
         List<String> targetParams = parseParams(targetDesc);
         
-        // 簡單策略: 載入所有靜態參數，按目標順序重排
+        // 簡單策略: 計算每個參數在區域變數表中的 slot 位置
         int slot = 0;
         Map<Integer, Integer> paramSlots = new HashMap<>();
         
@@ -160,16 +152,13 @@ public class AdapterGenerator {
             paramSlots.put(i, slot);
             String type = sourceParams.get(i);
             if (type.equals("J") || type.equals("D")) {
-                mv.visitVarInsn(getLoadOpcode(type), slot);
                 slot += 2;
             } else {
-                mv.visitVarInsn(getLoadOpcode(type), slot);
                 slot++;
             }
         }
         
-        // 依照目標順序重新載入並推入堆疊
-        // (簡化: 假設順序相同，但類型可能不同)
+        // 依照目標順序載入並推入堆疊（處理型別轉換）
         slot = 0;
         for (int i = 0; i < targetParams.size(); i++) {
             String targetType = targetParams.get(i);

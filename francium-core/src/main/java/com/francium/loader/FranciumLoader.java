@@ -15,6 +15,7 @@ import com.francium.api.PublicApi;
 import com.francium.server.validate.ModValidator;
 
 import java.nio.file.Path;
+import java.io.IOException;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -155,7 +156,7 @@ public class FranciumLoader {
      * Phase 4: 並行加載 (DAG 排程)
      * Phase 5: 觸發生命週期事件
      */
-    public LoadReport launch() throws Exception {
+    public LoadReport launch() throws FranciumException {
         if (classLoader == null) initialize();
 
         long totalStart = System.currentTimeMillis();
@@ -201,9 +202,15 @@ public class FranciumLoader {
 
     // ─── Phase Implementations ───
 
-    private DiscoveryResult discoverPhase() throws Exception {
+    private DiscoveryResult discoverPhase() throws FranciumException {
         Objects.requireNonNull(classLoader, "classLoader not initialized");
-        DiscoveryResult result = classLoader.discoverMods();
+        DiscoveryResult result;
+        try {
+            result = classLoader.discoverMods();
+        } catch (IOException e) {
+            throw new FranciumException(FranciumException.Phase.DISCOVERY,
+                "Failed to discover mods", e);
+        };
         LOGGER.info(String.format("Fr: Discovered %d mods in %d JARs (%d skipped)%n",
             result.found.size(), result.totalJars, result.skipped.size()));
 
@@ -319,9 +326,14 @@ public class FranciumLoader {
         }
     }
 
-    private LoadReport loadingPhase() throws Exception {
+    private LoadReport loadingPhase() throws FranciumException {
         Objects.requireNonNull(classLoader, "classLoader not initialized in loading phase");
-        return classLoader.loadAll();
+        try {
+            return classLoader.loadAll();
+        } catch (Exception e) {
+            throw new FranciumException(FranciumException.Phase.LOADING,
+                "Failed to load mods", e);
+        }
     }
 
     // ─── 生命週期擴展 ───
@@ -467,9 +479,9 @@ public class FranciumLoader {
      * Phase 1: 掃描模組目錄。
      * 掃描 gameDir/mods/ 下的所有 JAR 檔案，解析 mod manifest。
      * 結果快取在內部供後續階段使用。
-     * @throws Exception if mods directory is missing or I/O error occurs
+     * @throws FranciumException if mods directory is missing or I/O error occurs
      */
-    public void scanMods() throws Exception {
+    public void scanMods() throws FranciumException {
         if (classLoader == null) initialize();
         state = LoaderState.DISCOVERING;
         long t = System.currentTimeMillis();
@@ -481,9 +493,9 @@ public class FranciumLoader {
      * Phase 2: 解析依賴關係。
      * 使用 SAT 求解器解析掃描結果中所有 mod 的依賴關係。
      * 依賴 scanMods() 先被調用以確保有快取結果。
-     * @throws Exception if SAT resolution encounters a fatal error
+     * @throws FranciumException if SAT resolution encounters a fatal error
      */
-    public void resolveDependencies() throws Exception {
+    public void resolveDependencies() throws FranciumException {
         state = LoaderState.RESOLVING;
         long t = System.currentTimeMillis();
         // Use cached discovery result instead of null
@@ -505,9 +517,9 @@ public class FranciumLoader {
      * Phase 4: 加載所有模組。
      * 執行 DAG 排程，逐層並行加載 mod 類別。
      * 完成後將狀態設為 READY。
-     * @throws Exception if any mod fails to load
+     * @throws FranciumException if any mod fails to load
      */
-    public void loadMods() throws Exception {
+    public void loadMods() throws FranciumException {
         state = LoaderState.LOADING;
         lastReport = loadingPhase();
         state = LoaderState.READY;

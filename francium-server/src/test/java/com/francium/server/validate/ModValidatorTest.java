@@ -126,10 +126,18 @@ class ModValidatorTest {
         ModValidator validator = new ModValidator(SecurityLevel.BEHAVIOR);
         Path tempFile = Files.createTempFile("safe-mod", ".jar");
         try {
-            Files.writeString(tempFile, "java/lang/Runtime normal content");
+            // 建立真正的 JAR 檔案，內含 .class 條目
+            try (var jos = new java.util.jar.JarOutputStream(
+                    new java.io.FileOutputStream(tempFile.toFile()))) {
+                jos.putNextEntry(new java.util.jar.JarEntry("com/example/Test.class"));
+                // 模擬 class 檔案內容中包含 Runtime 引用
+                jos.write("java/lang/Runtime normal content".getBytes());
+                jos.closeEntry();
+            }
             ValidationResult result = validator.validate(tempFile);
             assertTrue(result.passed);
-            assertTrue(result.warnings.stream().anyMatch(w -> w.contains("Runtime")));
+            assertTrue(result.warnings.stream().anyMatch(w -> w.contains("Runtime")),
+                "Should detect Runtime usage in .class entry");
         } finally {
             Files.deleteIfExists(tempFile);
         }

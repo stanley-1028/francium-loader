@@ -284,6 +284,7 @@ public class MemoryManager {
     public static class ObjectPool<T> {
         private final String name;
         private final Class<T> type;
+        private final int initialSize;
         private final int maxSize;
         private final java.util.function.Supplier<T> factory;
         private final ConcurrentLinkedQueue<T> pool;
@@ -295,6 +296,7 @@ public class MemoryManager {
                          java.util.function.Supplier<T> factory) {
             this.name = name;
             this.type = type;
+            this.initialSize = initialSize;
             this.maxSize = maxSize;
             this.factory = factory;
             this.pool = new ConcurrentLinkedQueue<>();
@@ -337,7 +339,7 @@ public class MemoryManager {
         /** 返回物件池的命中率（borrow 時池中有物件的比例，0~100）。 */
         public long hitRate() {
             long total = borrowed.get();
-            return total > 0 ? (total - created.get() + pool.size()) * 100 / total : 0;
+            return total > 0 ? (total - created.get() + initialSize) * 100 / total : 0;
         }
         
         @Override

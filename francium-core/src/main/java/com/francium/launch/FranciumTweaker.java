@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
  *   --tweakClass com.francium.launch.FranciumTweaker
  */
 @PublicApi
+@Deprecated(forRemoval = true)
 public class FranciumTweaker /* implements ITweaker */ {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FranciumTweaker.class);

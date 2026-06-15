@@ -48,7 +48,9 @@ public class ServerSyncProtocol {
         public byte[] toJson() {
             StringBuilder sb = new StringBuilder();
             sb.append("{\"serverId\":").append(jsonEscape(serverId)).append(",");
+            sb.append("\"serverName\":").append(jsonEscape(serverName)).append(",");
             sb.append("\"mcVersion\":").append(jsonEscape(mcVersion)).append(",");
+            sb.append("\"franciumVersion\":").append(jsonEscape(franciumVersion)).append(",");
             sb.append("\"timestamp\":").append(timestamp).append(",");
             sb.append("\"mods\":[");
             if (mods != null) {
@@ -248,6 +250,8 @@ public class ServerSyncProtocol {
 
     /**
      * 用戶端驗證伺服器 mod 清單的簽章。
+     * 注意：驗證前需暫時清除 signature 欄位，因為簽名時 toJson()
+     * 不包含 signature（當時為 null），但驗證時 JSON 中已有 signature。
      */
     public boolean verifyModList(ServerModList list, PublicKey publicKey) {
         if (list.signature == null) return false;
@@ -255,7 +259,12 @@ public class ServerSyncProtocol {
         try {
             Signature sig = Signature.getInstance("SHA256withECDSA");
             sig.initVerify(publicKey);
+            // 簽名時 signature=null → toJson() 不包含 signature 欄位，
+            // 驗證時 signature 已從 JSON 解析回來，需暫設為 null 以使用相同 payload
+            String storedSig = list.signature;
+            list.signature = null;
             sig.update(list.toJson());
+            list.signature = storedSig;
             return sig.verify(Base64.getDecoder().decode(list.signature));
         } catch (Exception e) {
             return false;

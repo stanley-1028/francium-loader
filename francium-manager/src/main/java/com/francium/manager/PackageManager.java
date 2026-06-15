@@ -54,7 +54,11 @@ public class PackageManager {
         this.cache = new HashMap<>();
 
         // 確保目錄存在
-        try { Files.createDirectories(this.cacheDir); } catch (IOException ignored) {}
+        try {
+            Files.createDirectories(this.cacheDir);
+        } catch (IOException e) {
+            LOGGER.warn("Failed to create cache directory: {}", e.getMessage());
+        }
     }
 
     /**
@@ -186,7 +190,9 @@ public class PackageManager {
                         updates.add(new UpdateInfo(modId, currentVersion, latest));
                     }
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                LOGGER.warn("Failed to check updates for mod {}: {}", modId, e.getMessage());
+            }
         }
 
         return updates;
@@ -245,7 +251,9 @@ public class PackageManager {
                     cache.put(modId, List.of(mod));
                     return mod;
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                LOGGER.warn("Failed to fetch mod info for {}: {}", modId, e.getMessage());
+            }
         }
         return null;
     }
