@@ -98,6 +98,9 @@ public class ModManifest {
         public Builder sizeBytes(long bytes) {
             manifest.sizeBytes = bytes; return this;
         }
+        public Builder estimatedLoadTimeMs(long ms) {
+            manifest.estimatedLoadTimeMs = ms; return this;
+        }
         public Builder entryPoint(String type) {
             manifest.entryPointType = type; return this;
         }
@@ -109,14 +112,20 @@ public class ModManifest {
     public String name() { return name; }
     public String version() { return version; }
     public String description() { return description; }
-    public List<String> authors() { return authors; }
+    public List<String> authors() { return authors != null ? Collections.unmodifiableList(authors) : List.of(); }
     public String mainClass() { return mainClass; }
-    public Map<String, String> dependencies() { return dependencies; }
-    public Map<String, String> optionalDependencies() { return optionalDependencies; }
-    public Map<String, String> conflicts() { return conflicts; }
+    public Map<String, String> dependencies() { 
+        return dependencies != null ? Collections.unmodifiableMap(dependencies) : Map.of(); 
+    }
+    public Map<String, String> optionalDependencies() { 
+        return optionalDependencies != null ? Collections.unmodifiableMap(optionalDependencies) : Map.of(); 
+    }
+    public Map<String, String> conflicts() { 
+        return conflicts != null ? Collections.unmodifiableMap(conflicts) : Map.of(); 
+    }
     public String mcVersionMin() { return mcVersionMin; }
     public String mcVersionMax() { return mcVersionMax; }
-    public List<String> mixinConfigs() { return mixinConfigs; }
+    public List<String> mixinConfigs() { return mixinConfigs != null ? Collections.unmodifiableList(mixinConfigs) : List.of(); }
     public boolean aiBridgeEnabled() { return aiBridgeEnabled; }
     public int loadPriority() { return loadPriority; }
     public long sizeBytes() { return sizeBytes; }
@@ -135,7 +144,7 @@ public class ModManifest {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof ModManifest m)) return false;
-        return modId.equals(m.modId) && version.equals(m.version);
+        return Objects.equals(modId, m.modId) && Objects.equals(version, m.version);
     }
 
     @Override
@@ -149,14 +158,13 @@ public class ModManifest {
      * 從 Francium 自訂 JSON 格式解析。
      */
     public static ModManifest fromJson(String json) {
-        // 簡單 JSON 解析 (不需要 Gson 依賴)
-        Builder builder = null;
+        if (json == null || json.isBlank()) return null;
         
         String modId = extractJsonValue(json, "modId");
         String version = extractJsonValue(json, "version");
         if (modId == null || version == null) return null;
         
-        builder = new Builder(modId, version);
+        Builder builder = new Builder(modId, version);
         
         String name = extractJsonValue(json, "name");
         if (name != null) builder.name(name);
@@ -167,17 +175,37 @@ public class ModManifest {
         String desc = extractJsonValue(json, "description");
         if (desc != null) builder.description(desc);
         
-        // 解析依賴
+        // 解析必選依賴
         String depsStr = extractJsonObject(json, "dependencies");
         if (depsStr != null) {
             parseDependencies(depsStr, builder);
         }
+
+        // ★ BUG FIX: 解析可選依賴 — 原本 fromJson() 完全忽略了 optionalDependencies 欄位
+        String optDepsStr = extractJsonObject(json, "optionalDependencies");
+        if (optDepsStr != null) {
+            parseOptionalDependencies(optDepsStr, builder);
+        }
         
         String priority = extractJsonValue(json, "loadPriority");
-        if (priority != null) builder.loadPriority(Integer.parseInt(priority));
+        if (priority != null) {
+            try { builder.loadPriority(Integer.parseInt(priority)); } catch (NumberFormatException ignored) {}
+        }
         
         String aiBridge = extractJsonValue(json, "aiBridgeEnabled");
         if (aiBridge != null) builder.aiBridge(Boolean.parseBoolean(aiBridge));
+        
+        // [BUG FIX] 從 JSON 正確讀取 estimatedLoadTimeMs，而非錯誤賦值給 sizeBytes
+        String estLoadTime = extractJsonValue(json, "estimatedLoadTimeMs");
+        if (estLoadTime != null) {
+            try { builder.estimatedLoadTimeMs(Long.parseLong(estLoadTime)); } catch (NumberFormatException ignored) {}
+        }
+        
+        // 也讀取 sizeBytes
+        String size = extractJsonValue(json, "sizeBytes");
+        if (size != null) {
+            try { builder.sizeBytes(Long.parseLong(size)); } catch (NumberFormatException ignored) {}
+        }
         
         return builder.build();
     }
@@ -186,6 +214,8 @@ public class ModManifest {
      * 從 Fabric 的 fabric.mod.json 格式解析。
      */
     public static ModManifest fromFabricJson(String json) {
+        if (json == null || json.isBlank()) return null;
+        
         String modId = extractJsonValue(json, "id");
         String version = extractJsonValue(json, "version");
         if (modId == null) return null;
@@ -203,7 +233,17 @@ public class ModManifest {
         String entrypointsObj = extractJsonObject(json, "entrypoints");
         if (entrypointsObj != null) {
             String main = extractJsonValue(entrypointsObj, "main");
-            if (main != null) builder.mainClass(main);
+            if (main != null && main.startsWith("[")) {
+                // 陣列格式: ["com.example.Mod"] → 提取第一個元素
+                main = extractJsonArrayFirst(entrypointsObj, "main");
+            }
+            if (main != null && !main.isBlank()) {
+                // 去掉可能的包裹
+                if (main.startsWith("\"") && main.endsWith("\"")) {
+                    main = main.substring(1, main.length() - 1);
+                }
+                builder.mainClass(main);
+            }
         }
         
         // Fabric dependencies
@@ -221,6 +261,8 @@ public class ModManifest {
      * 從 Forge 的 mods.toml 格式解析。
      */
     public static ModManifest fromForgeToml(String toml) {
+        if (toml == null || toml.isBlank()) return null;
+        
         String modId = extractTomlValue(toml, "modId");
         String version = extractTomlValue(toml, "version");
         if (modId == null) return null;
@@ -246,7 +288,7 @@ public class ModManifest {
     private static String extractJsonValue(String json, String key) {
         String pattern = "\"" + key + "\"\\s*:\\s*\"([^\"]*)\"";
         java.util.regex.Matcher m = java.util.regex.Pattern.compile(pattern).matcher(json);
-        if (m.find()) return m.group(1);
+        if (m.find()) return unescapeJsonString(m.group(1));
         
         // 嘗試數字/布林值
         pattern = "\"" + key + "\"\\s*:\\s*([^,}\\n]*)";
@@ -254,6 +296,49 @@ public class ModManifest {
         if (m.find()) return m.group(1).trim();
         
         return null;
+    }
+
+    /**
+     * Decode JSON escape sequences including \\uXXXX unicode escapes.
+     */
+    private static String unescapeJsonString(String s) {
+        if (s == null || s.indexOf('\\') < 0) return s;
+        StringBuilder sb = new StringBuilder(s.length());
+        int i = 0;
+        while (i < s.length()) {
+            char c = s.charAt(i);
+            if (c == '\\' && i + 1 < s.length()) {
+                char next = s.charAt(i + 1);
+                switch (next) {
+                    case '\"' -> sb.append('\"');
+                    case '\\' -> sb.append('\\');
+                    case '/' -> sb.append('/');
+                    case 'b' -> sb.append('\b');
+                    case 'f' -> sb.append('\f');
+                    case 'n' -> sb.append('\n');
+                    case 'r' -> sb.append('\r');
+                    case 't' -> sb.append('\t');
+                    case 'u' -> {
+                        if (i + 5 < s.length()) {
+                            try {
+                                sb.append((char) Integer.parseInt(s.substring(i + 2, i + 6), 16));
+                                i += 4;
+                            } catch (NumberFormatException e) {
+                                sb.append(c);
+                            }
+                        } else {
+                            sb.append(c);
+                        }
+                    }
+                    default -> sb.append(next);
+                }
+                i += 2;
+            } else {
+                sb.append(c);
+                i++;
+            }
+        }
+        return sb.toString();
     }
 
     private static String extractJsonObject(String json, String key) {
@@ -275,6 +360,7 @@ public class ModManifest {
     }
 
     private static void parseDependencies(String depsJson, Builder builder) {
+        if (depsJson == null) return;
         java.util.regex.Matcher m = java.util.regex.Pattern.compile(
             "\"([^\"]+)\"\\s*:\\s*\"([^\"]+)\"").matcher(depsJson);
         while (m.find()) {
@@ -282,9 +368,37 @@ public class ModManifest {
         }
     }
 
+    /**
+     * 解析可選依賴的 JSON 鍵值對，逐一註冊到 Builder 中。
+     * ★ BUG FIX: 新增此方法，避免 fromJson() 中的 optionalDependencies 被靜默丟棄。
+     */
+    private static void parseOptionalDependencies(String depsJson, Builder builder) {
+        if (depsJson == null) return;
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile(
+            "\"([^\"]+)\"\\s*:\\s*\"([^\"]+)\"").matcher(depsJson);
+        while (m.find()) {
+            builder.optionalDependency(m.group(1), m.group(2));
+        }
+    }
+
     private static String extractTomlValue(String toml, String key) {
         java.util.regex.Matcher m = java.util.regex.Pattern.compile(
             key + "\\s*=\\s*\"([^\"]*)\"").matcher(toml);
+        if (m.find()) return m.group(1);
+        // Single quotes: key = 'value'
+        m = java.util.regex.Pattern.compile(
+            key + "\\s*=\\s*'([^']*)'").matcher(toml);
+        if (m.find()) return m.group(1);
+        return null;
+    }
+
+    /**
+     * 從 JSON 陣列中提取第一個字串元素。
+     * 例如: "main": ["com.example.Mod"] → "com.example.Mod"
+     */
+    private static String extractJsonArrayFirst(String json, String key) {
+        String pattern = "\"" + key + "\"\\s*:\\s*\\[\\s*\"([^\"]+)\"";
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile(pattern).matcher(json);
         if (m.find()) return m.group(1);
         return null;
     }

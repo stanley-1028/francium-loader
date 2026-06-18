@@ -108,10 +108,14 @@ class ModrinthAdapter {
                         mv.size = primaryFile.size;
                     }
                     mv.dependencies = new HashMap<>();
+                    mv.optionalDependencies = new HashMap<>();
                     if (v.dependencies != null) {
                         for (var dep : v.dependencies) {
-                            if ("required".equals(dep.dependencyType) && dep.projectId != null) {
+                            if (dep.projectId == null) continue;
+                            if ("required".equals(dep.dependencyType)) {
                                 mv.dependencies.put(dep.projectId, "*");
+                            } else if ("optional".equals(dep.dependencyType)) {
+                                mv.optionalDependencies.put(dep.projectId, "*");
                             }
                         }
                     }
@@ -150,7 +154,7 @@ class ModrinthAdapter {
         String description;
         String author;
         long downloads;
-        String categories;
+        String[] categories;
     }
 
     static class ProjectResponse {

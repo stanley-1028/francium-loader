@@ -90,9 +90,11 @@ public class BytecodeAnalyzer {
                         methodInsn.name,
                         methodInsn.desc
                     );
-                    sig.setInstructionCount(instructions.size());
-                    
-                    calls.add(sig);
+                    // ★ BUG FIX: 避免重複 add 時覆蓋 instructionCount
+                    if (!calls.contains(sig)) {
+                        sig.setInstructionCount(instructions.size());
+                        calls.add(sig);
+                    }
                 }
             } else if (insn instanceof FieldInsnNode fieldInsn) {
                 // 記錄欄位存取作為結構特徵
@@ -153,9 +155,10 @@ public class BytecodeAnalyzer {
     }
 
     private boolean isInternalClass(String className, Set<String> internalClasses) {
-        // 檢查是否是模組內部的類
+        // ★ BUG FIX: startsWith 必須以 "." 為分隔，否則 "ModA" 會誤匹配 "ModABuilder"
+        //   正確的包前綴比對應該用 internal + "." 作為前綴
         return internalClasses.contains(className) 
-            || internalClasses.stream().anyMatch(className::startsWith);
+            || internalClasses.stream().anyMatch(internal -> className.startsWith(internal + "."));
     }
 
     private boolean isJavaStdLib(String className) {

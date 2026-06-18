@@ -1,5 +1,6 @@
 package com.francium.manager;
 
+import com.francium.resolver.model.SemanticVersion;
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
 import java.net.URI;
@@ -120,10 +121,24 @@ public class CurseForgeAdapter {
             PackageManager.RegistryMod.ModVersion mv = new PackageManager.RegistryMod.ModVersion();
             mv.version = latest.displayName != null ? latest.displayName : latest.fileName;
             if (mv.version == null) mv.version = "latest";
+            // ★ BUG FIX: CurseForge 的 displayName 可能含前綴 "v" 或非標準版本格式（如 "Release 1.2.3"），
+            //   嘗試用 tryParse 驗證是否為有效語義版本，若不是則改用 fileName 中的版本號
+            if (SemanticVersion.tryParse(mv.version) == null && latest.fileName != null) {
+                // 從 fileName 中提取版本（如 "MyMod-1.2.3.jar" → "1.2.3"）
+                java.util.regex.Matcher verMatcher = java.util.regex.Pattern.compile(
+                    "(\\d+\\.\\d+\\.\\d+(?:[-.][a-zA-Z0-9]+)?)").matcher(latest.fileName);
+                if (verMatcher.find()) {
+                    mv.version = verMatcher.group(1);
+                }
+            }
             mv.mcVersion = latest.gameVersion != null ? latest.gameVersion : "";
             mv.downloadUrl = latest.downloadUrl;
+            // ★ BUG FIX: 若 downloadUrl 為空，無法下載，跳過此版本
+            if (mv.downloadUrl == null || mv.downloadUrl.isBlank()) return null;
             mv.size = latest.fileLength;
             mv.dependencies = new HashMap<>();
+            mv.optionalDependencies = new HashMap<>();
+            // CurseForge API 不直接提供依賴資訊在 latestFilesIndex 中
             mod.versions = List.of(mv);
 
             return mod;
@@ -180,7 +195,6 @@ public class CurseForgeAdapter {
         Long classId;
         long downloadCount;
         List<ModAuthor> authors;
-        LatestFileIndex latestFilesIndex;
     }
 
     static class ModResponse {
@@ -202,14 +216,6 @@ public class CurseForgeAdapter {
         @SerializedName("game_version") String gameVersion;
         @SerializedName("download_url") String downloadUrl;
         @SerializedName("file_length") long fileLength;
-    }
-
-    static class LatestFileIndex {
-        String displayName;
-        String fileName;
-        String gameVersion;
-        String downloadUrl;
-        long fileLength;
     }
 
     static class ModAuthor {

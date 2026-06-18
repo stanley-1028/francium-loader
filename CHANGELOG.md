@@ -4,7 +4,29 @@ All notable changes to francium-loader will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [2.3.0] — 2026-06-05
+## [2.3.0] — 2026-06-18
+
+### 🚀 重大更新
+
+#### 📦 發行版包裝 (Distribution Packaging)
+- 建立完整的 `FranciumLoader-2.3.0.zip` 發行版（19.6 MB）
+- 包含：`francium-loader.jar`、設定檔、安裝腳本、範例 Mod、MultiMC 匯入 JSON
+- 提供 Windows 一鍵安裝 (`install_windows.bat`)
+- 支援 MultiMC / Prism Launcher 匯入 (`mmc-pack.json`)
+
+#### 🧩 範例 Mod (Example Mod)
+- 新增完整 Gradle 範例模組專案 `build/examples/example-mod/`
+- 預編譯 JAR (`example-mod-1.0.0.jar`) 含 `META-INF/francium.json` 描述檔
+- 展示 Mixin 設定 (`mixins.example.json`) 與 Framcium Loader 整合
+- 提供三種安裝方式：直接放 JAR、Gradle 建置、原始碼修改
+- 附完整 `francium.json` 欄位說明文件
+
+#### 🗺️ Mapping 數據庫大擴充 (Mapping Database)
+- 種子映射從 20 類別 / ~80 方法 → **38 類別 / 400 方法** (5x 增長)
+- 跨版本映射從 ~50 條 → **400 條** (8x 增長)
+- 新增領域：ServerLevel/ClientLevel、NBT、Registry、Tags、
+  BlockEntity、MenuType、Entity 子類、SoundEvent、Particle、Stats、MobEffect
+- 覆蓋 Minecraft 開發最常用的 API 面
 
 ### 🐛 Bug Fixes
 - **System.exit 移除**: FranciumBootstrap 改用 `throw RuntimeException`
@@ -13,7 +35,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### 📄 文件
 - 新增 Checkstyle CI (`.github/workflows/checkstyle.yml`)
-- README 加入 Release badge
+- README 全面重寫：更新測試計數 (70→153)、Mapping 統計、發行版說明
+- CI 流程更新：checkstyle action 版本升級 v4→v6
 - build.gradle 版本號 v2.2.0 → v2.3.0
 
 ## [2.1.0] — 2026-05-17

@@ -39,8 +39,14 @@ public class ModValidator {
             byte[] data = Files.readAllBytes(modPath);
             
             // Level 1: 完整性檢查
-            result.sha256 = computeSha256(data);
-            result.integrityPassed = true;
+            // ★ BUG FIX: 成功計算 SHA256 才算完整性檢查通過
+            try {
+                result.sha256 = computeSha256(data);
+                result.integrityPassed = result.sha256 != null && !result.sha256.isEmpty();
+            } catch (Exception e) {
+                result.errors.add("Integrity check failed: " + e.getMessage());
+                result.integrityPassed = false;
+            }
             
             // Level 2: 黑名單檢查
             for (String blocked : blockedMods) {

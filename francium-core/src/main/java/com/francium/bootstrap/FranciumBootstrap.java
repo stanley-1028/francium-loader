@@ -50,21 +50,29 @@ public class FranciumBootstrap {
         LOGGER.info("  OS: " + System.getProperty("os.name"));
         LOGGER.info("");
 
-        // 解析命令列參數
-        Path gameDir = Paths.get(System.getProperty("user.home"), ".minecraft");
+        // ★ BUG FIX: 檢查環境變數 FRANCIUM_GAME_DIR
+        String envGameDir = System.getenv("FRANCIUM_GAME_DIR");
+        Path gameDir = envGameDir != null && !envGameDir.isEmpty()
+            ? Paths.get(envGameDir)
+            : Paths.get(System.getProperty("user.home"), ".minecraft");
         boolean showHelp = false;
+        boolean showVersion = false;
 
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "--game-dir", "-g" -> {
                     if (i + 1 < args.length) gameDir = Paths.get(args[++i]);
                 }
-                case "--version", "-v" -> {
-                    return; // 已顯示
-                }
+                case "--version", "-v" -> showVersion = true;
                 case "--help", "-h" -> showHelp = true;
                 case "--debug" -> System.setProperty("francium.debug", "true");
             }
+        }
+
+        // ★ BUG FIX: --version 應打印版本後退出
+        if (showVersion) {
+            LOGGER.info("Francium Mod Loader version: {}", VERSION);
+            return;
         }
 
         if (showHelp) {
@@ -95,7 +103,7 @@ public class FranciumBootstrap {
             LOGGER.info("");
             LOGGER.info("Phase timings:");
             for (var entry : loader.phaseTimings().entrySet()) {
-                LOGGER.info(String.format("  %-12s %dms%n", entry.getKey() + ":", entry.getValue()));
+                LOGGER.info(String.format("  %-12s %dms", entry.getKey() + ":", entry.getValue()));
             }
 
             // 記憶體快照
@@ -105,11 +113,12 @@ public class FranciumBootstrap {
                 LOGGER.info("{}", memSnapshot);
             }
 
-            // 註冊關閉鉤子
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                LOGGER.info("\\nShutting down Francium...");
+            // 註冊關閉鉤子（★ BUG FIX: 防止重複註冊，為執行緒命名）
+            Thread shutdownHook = new Thread(() -> {
+                LOGGER.info("Shutting down Francium...");
                 loader.shutdown();
-            }));
+            }, "FranciumShutdownHook");
+            Runtime.getRuntime().addShutdownHook(shutdownHook);
 
         } catch (Exception e) {
             LOGGER.warn("");

@@ -16,6 +16,7 @@ dependencies {
 
     // Minecraft LaunchWrapper (compileOnly; provided by Minecraft at runtime)
     compileOnly 'net.minecraft:launchwrapper:1.12'
+    testImplementation 'net.minecraft:launchwrapper:1.12'
 
     // JUnit for testing
     testImplementation 'org.junit.jupiter:junit-jupiter:6.1.0'
@@ -23,4 +24,14 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    
+    // 真實世界測試: 傳遞根目錄給測試
+    def rootDir = rootProject.projectDir.toString()
+    def mcJar = rootDir + '/minecraft_server.jar'
+    
+    jvmArgs '-Dfrancium.test.rootdir=' + rootDir
+    systemProperty 'francium.test.rootdir', rootDir
+    
+    // 將 Minecraft Server jar 加入測試 classpath (讓 mod 能找到 Minecraft 類別)
+    classpath = classpath + files(mcJar)
 }

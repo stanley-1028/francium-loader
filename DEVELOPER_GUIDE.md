@@ -11,7 +11,7 @@
 ```
 my-awesome-mod/
 ├── src/main/java/com/example/MyMod.java
-├── src/main/resources/francium-mod.json
+├── src/main/resources/META-INF/francium.json
 └── build.gradle
 ```
 
@@ -33,7 +33,7 @@ public class MyMod {
 }
 ```
 
-### 3. 创建 francium-mod.json
+### 3. 创建 francium.json (META-INF/)
 
 ```json
 {
@@ -61,7 +61,7 @@ cp build/libs/my-awesome-mod-1.0.0.jar ~/.minecraft/mods/
 
 ---
 
-## francium-mod.json 完整参考
+## francium.json (META-INF/) 完整参考
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
@@ -261,14 +261,14 @@ allowUnsignedMods = true       # 允许未签名模组
 
 ### Fabric → Francium
 
-1. `fabric.mod.json` 重命名为 `francium-mod.json`
+1. `fabric.mod.json` 重命名为 `META-INF/francium.json`
 2. `entrypoints.main` 映射到 `mainClass`
 3. 依赖格式完全兼容
 4. Mixin 配置保持不变
 
 ### Forge → Francium
 
-1. 创建 `francium-mod.json`
+1. 创建 `META-INF/francium.json`
 2. 从 `mods.toml` 中提取 `modId`、`version`、`displayName`
 3. `@Mod` 注解改为实现 Francium 回调
 4. Forge 事件系统需手动适配

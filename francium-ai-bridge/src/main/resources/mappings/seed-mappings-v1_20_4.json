@@ -1,0 +1,1913 @@
+{
+  "version": "1.20.4",
+  "description": "Francium Seed Mappings — Minecraft 1.20.4",
+  "classes": {
+    "net/minecraft/world/level/block/Block": [
+      {
+        "name": "getDescriptionId",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_6057_"
+      },
+      {
+        "name": "getBlockState",
+        "desc": "()Lnet/minecraft/world/level/block/state/BlockState;",
+        "obf": "m_12345_"
+      },
+      {
+        "name": "getName",
+        "desc": "()Lnet/minecraft/network/chat/Component;",
+        "obf": "m_6059_"
+      },
+      {
+        "name": "getExplosionResistance",
+        "desc": "()F",
+        "obf": "m_49792_"
+      },
+      {
+        "name": "defaultBlockState",
+        "desc": "()Lnet/minecraft/world/level/block/state/BlockState;",
+        "obf": "m_49966_"
+      },
+      {
+        "name": "getCloneItemStack",
+        "desc": "(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_6801_"
+      },
+      {
+        "name": "getShape",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;",
+        "obf": "m_5940_"
+      },
+      {
+        "name": "getLightBlock",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)I",
+        "obf": "m_7753_"
+      },
+      {
+        "name": "getMapColor",
+        "desc": "()Lnet/minecraft/world/level/material/MapColor;",
+        "obf": "m_60734_"
+      },
+      {
+        "name": "randomTick",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)V",
+        "obf": "m_213897_"
+      },
+      {
+        "name": "neighborChanged",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;Z)V",
+        "obf": "m_6861_"
+      },
+      {
+        "name": "onPlace",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)V",
+        "obf": "m_6807_"
+      },
+      {
+        "name": "onRemove",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)V",
+        "obf": "m_6810_"
+      },
+      {
+        "name": "useWithoutItem",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+        "obf": "m_6227_"
+      },
+      {
+        "name": "useItemOn",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+        "obf": "m_316798_"
+      },
+      {
+        "name": "playerDestroy",
+        "desc": "(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/item/ItemStack;)V",
+        "obf": "m_6904_"
+      },
+      {
+        "name": "getDrops",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;)Ljava/util/List;",
+        "obf": "m_49635_"
+      },
+      {
+        "name": "spawnAfterBreak",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/ItemStack;Z)V",
+        "obf": "m_214148_"
+      },
+      {
+        "name": "getSoundType",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/block/SoundType;",
+        "obf": "m_5590_"
+      }
+    ],
+    "net/minecraft/world/level/block/state/BlockState": [
+      {
+        "name": "getBlock",
+        "desc": "()Lnet/minecraft/world/level/block/Block;",
+        "obf": "m_60734_"
+      },
+      {
+        "name": "getValue",
+        "desc": "(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;",
+        "obf": "m_61143_"
+      },
+      {
+        "name": "setValue",
+        "desc": "(Lnet/minecraft/world/level/block/state/properties/Property;Ljava/lang/Comparable;)Lnet/minecraft/world/level/block/state/BlockState;",
+        "obf": "m_61124_"
+      },
+      {
+        "name": "getLightEmission",
+        "desc": "()I",
+        "obf": "m_60791_"
+      },
+      {
+        "name": "isAir",
+        "desc": "()Z",
+        "obf": "m_60795_"
+      },
+      {
+        "name": "hasBlockEntity",
+        "desc": "()Z",
+        "obf": "m_155947_"
+      },
+      {
+        "name": "isSolid",
+        "desc": "()Z",
+        "obf": "m_60767_"
+      },
+      {
+        "name": "isRandomlyTicking",
+        "desc": "()Z",
+        "obf": "m_60791_"
+      },
+      {
+        "name": "getCollisionShape",
+        "desc": "(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/phys/shapes/VoxelShape;",
+        "obf": "m_5939_"
+      },
+      {
+        "name": "getRenderShape",
+        "desc": "()Lnet/minecraft/world/level/block/RenderShape;",
+        "obf": "m_60698_"
+      },
+      {
+        "name": "isCollisionShapeFullBlock",
+        "desc": "(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z",
+        "obf": "m_60762_"
+      }
+    ],
+    "net/minecraft/world/level/Level": [
+      {
+        "name": "getBlockState",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;",
+        "obf": "m_8055_"
+      },
+      {
+        "name": "setBlock",
+        "desc": "(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z",
+        "obf": "m_11111_"
+      },
+      {
+        "name": "isDay",
+        "desc": "()Z",
+        "obf": "m_44444_"
+      },
+      {
+        "name": "isNight",
+        "desc": "()Z",
+        "obf": "m_46466_"
+      },
+      {
+        "name": "getPlayers",
+        "desc": "(Ljava/util/function/Predicate;)Ljava/util/List;",
+        "obf": "m_6907_"
+      },
+      {
+        "name": "addParticle",
+        "desc": "(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V",
+        "obf": "m_7106_"
+      },
+      {
+        "name": "playSound",
+        "desc": "(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V",
+        "obf": "m_7785_"
+      },
+      {
+        "name": "destroyBlock",
+        "desc": "(Lnet/minecraft/core/BlockPos;Z)Z",
+        "obf": "m_46961_"
+      },
+      {
+        "name": "getHeight",
+        "desc": "()I",
+        "obf": "m_141928_"
+      },
+      {
+        "name": "getMaxLocalRawBrightness",
+        "desc": "(Lnet/minecraft/core/BlockPos;)I",
+        "obf": "m_141937_"
+      },
+      {
+        "name": "getSeaLevel",
+        "desc": "()I",
+        "obf": "m_5734_"
+      },
+      {
+        "name": "getGameTime",
+        "desc": "()J",
+        "obf": "m_46467_"
+      },
+      {
+        "name": "getDayTime",
+        "desc": "()J",
+        "obf": "m_46468_"
+      },
+      {
+        "name": "getDifficulty",
+        "desc": "()Lnet/minecraft/world/Difficulty;",
+        "obf": "m_46469_"
+      },
+      {
+        "name": "getBlockEntity",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;",
+        "obf": "m_7702_"
+      },
+      {
+        "name": "explode",
+        "desc": "(Lnet/minecraft/world/entity/Entity;DDDFLnet/minecraft/world/level/Level$ExplosionInteraction;)Lnet/minecraft/world/level/Explosion;",
+        "obf": "m_256259_"
+      },
+      {
+        "name": "getFluidState",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;",
+        "obf": "m_7705_"
+      },
+      {
+        "name": "isRainingAt",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Z",
+        "obf": "m_46803_"
+      },
+      {
+        "name": "getBiome",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/Holder;",
+        "obf": "m_204166_"
+      }
+    ],
+    "net/minecraft/server/level/ServerLevel": [
+      {
+        "name": "getServer",
+        "desc": "()Lnet/minecraft/server/MinecraftServer;",
+        "obf": "m_8614_"
+      },
+      {
+        "name": "getChunkSource",
+        "desc": "()Lnet/minecraft/server/level/ServerChunkCache;",
+        "obf": "m_7726_"
+      },
+      {
+        "name": "getChunk",
+        "desc": "(II)Lnet/minecraft/world/level/chunk/LevelChunk;",
+        "obf": "m_6325_"
+      },
+      {
+        "name": "getChunkAt",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/chunk/LevelChunk;",
+        "obf": "m_4670_"
+      },
+      {
+        "name": "setDayTime",
+        "desc": "(J)V",
+        "obf": "m_46472_"
+      },
+      {
+        "name": "getSeed",
+        "desc": "()J",
+        "obf": "m_7325_"
+      },
+      {
+        "name": "getDataStorage",
+        "desc": "()Lnet/minecraft/world/level/storage/DimensionDataStorage;",
+        "obf": "m_8892_"
+      },
+      {
+        "name": "getLevelData",
+        "desc": "()Lnet/minecraft/world/level/storage/LevelData;",
+        "obf": "m_6100_"
+      },
+      {
+        "name": "getSharedSpawnPos",
+        "desc": "()Lnet/minecraft/core/BlockPos;",
+        "obf": "m_7770_"
+      },
+      {
+        "name": "sendParticles",
+        "desc": "(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/core/particles/ParticleOptions;ZDDDI)V",
+        "obf": "m_8766_"
+      },
+      {
+        "name": "removeBlock",
+        "desc": "(Lnet/minecraft/core/BlockPos;Z)Z",
+        "obf": "m_6550_"
+      },
+      {
+        "name": "getEntities",
+        "desc": "(Lnet/minecraft/world/entity/EntityType;Ljava/util/function/Predicate;)Ljava/util/List;",
+        "obf": "m_141992_"
+      },
+      {
+        "name": "getEntitiesOfClass",
+        "desc": "(Ljava/lang/Class;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;",
+        "obf": "m_141993_"
+      },
+      {
+        "name": "isRaided",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Z",
+        "obf": "m_4986_"
+      },
+      {
+        "name": "getRaids",
+        "desc": "()Lnet/minecraft/world/entity/raid/Raids;",
+        "obf": "m_6406_"
+      },
+      {
+        "name": "getRandomPlayer",
+        "desc": "()Lnet/minecraft/server/level/ServerPlayer;",
+        "obf": "m_6115_"
+      },
+      {
+        "name": "addFreshEntityWithPassengers",
+        "desc": "(Lnet/minecraft/world/entity/Entity;)V",
+        "obf": "m_47218_"
+      }
+    ],
+    "net/minecraft/client/multiplayer/ClientLevel": [
+      {
+        "name": "getBlockState",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;",
+        "obf": "m_8055_"
+      },
+      {
+        "name": "getBlockEntity",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;",
+        "obf": "m_7702_"
+      },
+      {
+        "name": "addParticle",
+        "desc": "(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V",
+        "obf": "m_7106_"
+      },
+      {
+        "name": "getLevelData",
+        "desc": "()Lnet/minecraft/client/multiplayer/ClientLevelData;",
+        "obf": "m_7770_"
+      },
+      {
+        "name": "getPlayerByUUID",
+        "desc": "(Ljava/util/UUID;)Lnet/minecraft/world/entity/player/Player;",
+        "obf": "m_3666_"
+      },
+      {
+        "name": "getEntities",
+        "desc": "()Ljava/lang/Iterable;",
+        "obf": "m_8630_"
+      },
+      {
+        "name": "getEntity",
+        "desc": "(I)Lnet/minecraft/world/entity/Entity;",
+        "obf": "m_6815_"
+      },
+      {
+        "name": "getSkyDarken",
+        "desc": "()I",
+        "obf": "m_8666_"
+      }
+    ],
+    "net/minecraft/world/entity/Entity": [
+      {
+        "name": "getX",
+        "desc": "()D",
+        "obf": "m_20185_"
+      },
+      {
+        "name": "getY",
+        "desc": "()D",
+        "obf": "m_20186_"
+      },
+      {
+        "name": "getZ",
+        "desc": "()D",
+        "obf": "m_20187_"
+      },
+      {
+        "name": "getPos",
+        "desc": "()Lnet/minecraft/world/phys/Vec3;",
+        "obf": "m_67890_"
+      },
+      {
+        "name": "blockPosition",
+        "desc": "()Lnet/minecraft/core/BlockPos;",
+        "obf": "m_20183_"
+      },
+      {
+        "name": "getCommandSenderWorld",
+        "desc": "()Lnet/minecraft/world/level/Level;",
+        "obf": "m_9236_"
+      },
+      {
+        "name": "setPos",
+        "desc": "(DDD)V",
+        "obf": "m_6021_"
+      },
+      {
+        "name": "discard",
+        "desc": "()V",
+        "obf": "m_8127_"
+      },
+      {
+        "name": "isAlive",
+        "desc": "()Z",
+        "obf": "m_6084_"
+      },
+      {
+        "name": "getUUID",
+        "desc": "()Ljava/util/UUID;",
+        "obf": "m_20148_"
+      },
+      {
+        "name": "getDisplayName",
+        "desc": "()Lnet/minecraft/network/chat/Component;",
+        "obf": "m_7755_"
+      },
+      {
+        "name": "getCustomName",
+        "desc": "()Lnet/minecraft/network/chat/Component;",
+        "obf": "m_7770_"
+      },
+      {
+        "name": "hasCustomName",
+        "desc": "()Z",
+        "obf": "m_7753_"
+      },
+      {
+        "name": "setCustomName",
+        "desc": "(Lnet/minecraft/network/chat/Component;)V",
+        "obf": "m_5561_"
+      },
+      {
+        "name": "getType",
+        "desc": "()Lnet/minecraft/world/entity/EntityType;",
+        "obf": "m_6095_"
+      },
+      {
+        "name": "getBoundingBox",
+        "desc": "()Lnet/minecraft/world/phys/AABB;",
+        "obf": "m_6920_"
+      },
+      {
+        "name": "startRiding",
+        "desc": "(Lnet/minecraft/world/entity/Entity;)Z",
+        "obf": "m_7342_"
+      },
+      {
+        "name": "stopRiding",
+        "desc": "()V",
+        "obf": "m_8126_"
+      },
+      {
+        "name": "getVehicle",
+        "desc": "()Lnet/minecraft/world/entity/Entity;",
+        "obf": "m_6681_"
+      },
+      {
+        "name": "getPassengers",
+        "desc": "()Ljava/util/List;",
+        "obf": "m_7330_"
+      },
+      {
+        "name": "hasPassenger",
+        "desc": "(Lnet/minecraft/world/entity/Entity;)Z",
+        "obf": "m_7310_"
+      },
+      {
+        "name": "addTag",
+        "desc": "(Ljava/lang/String;)Z",
+        "obf": "m_7334_"
+      },
+      {
+        "name": "removeTag",
+        "desc": "(Ljava/lang/String;)Z",
+        "obf": "m_8107_"
+      },
+      {
+        "name": "getTags",
+        "desc": "()Ljava/util/Set;",
+        "obf": "m_6908_"
+      },
+      {
+        "name": "getName",
+        "desc": "()Lnet/minecraft/network/chat/Component;",
+        "obf": "m_5446_"
+      },
+      {
+        "name": "getLookAngle",
+        "desc": "()Lnet/minecraft/world/phys/Vec3;",
+        "obf": "m_5675_"
+      },
+      {
+        "name": "getEyePosition",
+        "desc": "()Lnet/minecraft/world/phys/Vec3;",
+        "obf": "m_20277_"
+      },
+      {
+        "name": "distanceTo",
+        "desc": "(Lnet/minecraft/world/entity/Entity;)D",
+        "obf": "m_20280_"
+      },
+      {
+        "name": "distanceToSqr",
+        "desc": "(Lnet/minecraft/world/entity/Entity;)D",
+        "obf": "m_20281_"
+      }
+    ],
+    "net/minecraft/world/entity/LivingEntity": [
+      {
+        "name": "getHealth",
+        "desc": "()F",
+        "obf": "m_21223_"
+      },
+      {
+        "name": "getMaxHealth",
+        "desc": "()F",
+        "obf": "m_21233_"
+      },
+      {
+        "name": "hurt",
+        "desc": "(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+        "obf": "m_6469_"
+      },
+      {
+        "name": "heal",
+        "desc": "(F)V",
+        "obf": "m_5634_"
+      },
+      {
+        "name": "isDeadOrDying",
+        "desc": "()Z",
+        "obf": "m_21331_"
+      },
+      {
+        "name": "addEffect",
+        "desc": "(Lnet/minecraft/world/effect/MobEffectInstance;)Z",
+        "obf": "m_147207_"
+      },
+      {
+        "name": "removeEffect",
+        "desc": "(Lnet/minecraft/world/effect/MobEffect;)Z",
+        "obf": "m_21195_"
+      },
+      {
+        "name": "getArmorValue",
+        "desc": "()I",
+        "obf": "m_21230_"
+      },
+      {
+        "name": "hasEffect",
+        "desc": "(Lnet/minecraft/world/effect/MobEffect;)Z",
+        "obf": "m_21220_"
+      },
+      {
+        "name": "getEffect",
+        "desc": "(Lnet/minecraft/world/effect/MobEffect;)Lnet/minecraft/world/effect/MobEffectInstance;",
+        "obf": "m_21219_"
+      },
+      {
+        "name": "getActiveEffects",
+        "desc": "()Ljava/util/Collection;",
+        "obf": "m_21221_"
+      },
+      {
+        "name": "getMainHandItem",
+        "desc": "()Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_21205_"
+      },
+      {
+        "name": "getOffhandItem",
+        "desc": "()Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_21206_"
+      },
+      {
+        "name": "getItemBySlot",
+        "desc": "(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_21207_"
+      },
+      {
+        "name": "setItemSlot",
+        "desc": "(Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/item/ItemStack;)V",
+        "obf": "m_21208_"
+      },
+      {
+        "name": "getArmorCoverPercentage",
+        "desc": "()F",
+        "obf": "m_21229_"
+      },
+      {
+        "name": "setHealth",
+        "desc": "(F)V",
+        "obf": "m_21209_"
+      },
+      {
+        "name": "getLastHurtByMob",
+        "desc": "()Lnet/minecraft/world/entity/LivingEntity;",
+        "obf": "m_21168_"
+      },
+      {
+        "name": "getLastHurtMob",
+        "desc": "()Lnet/minecraft/world/entity/LivingEntity;",
+        "obf": "m_21165_"
+      },
+      {
+        "name": "knockback",
+        "desc": "(DDD)V",
+        "obf": "m_147240_"
+      },
+      {
+        "name": "getAbsorptionAmount",
+        "desc": "()F",
+        "obf": "m_21241_"
+      },
+      {
+        "name": "setAbsorptionAmount",
+        "desc": "(F)V",
+        "obf": "m_21242_"
+      }
+    ],
+    "net/minecraft/world/entity/player/Player": [
+      {
+        "name": "sendSystemMessage",
+        "desc": "(Lnet/minecraft/network/chat/Component;)V",
+        "obf": "m_213846_"
+      },
+      {
+        "name": "getInventory",
+        "desc": "()Lnet/minecraft/world/entity/player/Inventory;",
+        "obf": "m_150109_"
+      },
+      {
+        "name": "isCreative",
+        "desc": "()Z",
+        "obf": "m_7500_"
+      },
+      {
+        "name": "getMainHandItem",
+        "desc": "()Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_21205_"
+      },
+      {
+        "name": "getOffhandItem",
+        "desc": "()Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_21206_"
+      },
+      {
+        "name": "addItem",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;)Z",
+        "obf": "m_7646_"
+      },
+      {
+        "name": "hurt",
+        "desc": "(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+        "obf": "m_6469_"
+      },
+      {
+        "name": "getAbilities",
+        "desc": "()Lnet/minecraft/world/entity/player/Abilities;",
+        "obf": "m_150110_"
+      },
+      {
+        "name": "canHarvestLevel",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;)Z",
+        "obf": "m_21223_"
+      },
+      {
+        "name": "getFoodData",
+        "desc": "()Lnet/minecraft/world/food/FoodData;",
+        "obf": "m_36330_"
+      },
+      {
+        "name": "getGameProfile",
+        "desc": "()Lcom/mojang/authlib/GameProfile;",
+        "obf": "m_7829_"
+      },
+      {
+        "name": "isSpectator",
+        "desc": "()Z",
+        "obf": "m_5833_"
+      },
+      {
+        "name": "drop",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;",
+        "obf": "m_7610_"
+      },
+      {
+        "name": "getExperienceLevel",
+        "desc": "()I",
+        "obf": "m_36328_"
+      },
+      {
+        "name": "getExperienceProgress",
+        "desc": "()F",
+        "obf": "m_36327_"
+      },
+      {
+        "name": "attack",
+        "desc": "(Lnet/minecraft/world/entity/Entity;)V",
+        "obf": "m_7327_"
+      },
+      {
+        "name": "openMenu",
+        "desc": "(Lnet/minecraft/world/MenuProvider;)Ljava/util/OptionalInt;",
+        "obf": "m_36246_"
+      }
+    ],
+    "net/minecraft/server/level/ServerPlayer": [
+      {
+        "name": "getServer",
+        "desc": "()Lnet/minecraft/server/MinecraftServer;",
+        "obf": "m_20194_"
+      },
+      {
+        "name": "getLevel",
+        "desc": "()Lnet/minecraft/server/level/ServerLevel;",
+        "obf": "m_182292_"
+      },
+      {
+        "name": "teleportTo",
+        "desc": "(DDD)V",
+        "obf": "m_245445_"
+      },
+      {
+        "name": "getRespawnPosition",
+        "desc": "()Lnet/minecraft/core/BlockPos;",
+        "obf": "m_29999_"
+      },
+      {
+        "name": "setRespawnPosition",
+        "desc": "(Lnet/minecraft/core/BlockPos;ZF)V",
+        "obf": "m_30000_"
+      },
+      {
+        "name": "getPlayerIp",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_6414_"
+      },
+      {
+        "name": "isPvpAllowed",
+        "desc": "()Z",
+        "obf": "m_6369_"
+      },
+      {
+        "name": "getAdvancements",
+        "desc": "()Lnet/minecraft/server/PlayerAdvancements;",
+        "obf": "m_6378_"
+      },
+      {
+        "name": "getStats",
+        "desc": "()Lnet/minecraft/stats/ServerStatsCounter;",
+        "obf": "m_6409_"
+      },
+      {
+        "name": "getRecipeBook",
+        "desc": "()Lnet/minecraft/stats/ServerRecipeBook;",
+        "obf": "m_6366_"
+      },
+      {
+        "name": "getConnection",
+        "desc": "()Lnet/minecraft/server/network/ServerGamePacketListenerImpl;",
+        "obf": "m_6438_"
+      },
+      {
+        "name": "onUpdateAbilities",
+        "desc": "()V",
+        "obf": "m_6435_"
+      }
+    ],
+    "net/minecraft/world/entity/player/Inventory": [
+      {
+        "name": "getSelected",
+        "desc": "()Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_9452_"
+      },
+      {
+        "name": "items",
+        "desc": "()Ljava/util/List;",
+        "obf": "m_36443_"
+      },
+      {
+        "name": "armor",
+        "desc": "()Ljava/util/List;",
+        "obf": "m_36448_"
+      },
+      {
+        "name": "offhand",
+        "desc": "()Ljava/util/List;",
+        "obf": "m_36446_"
+      },
+      {
+        "name": "setItem",
+        "desc": "(ILnet/minecraft/world/item/ItemStack;)V",
+        "obf": "m_6836_"
+      },
+      {
+        "name": "add",
+        "desc": "(ILnet/minecraft/world/item/ItemStack;)Z",
+        "obf": "m_36092_"
+      },
+      {
+        "name": "contains",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;)Z",
+        "obf": "m_36088_"
+      },
+      {
+        "name": "clearContent",
+        "desc": "()V",
+        "obf": "m_36078_"
+      },
+      {
+        "name": "getFreeSlot",
+        "desc": "()I",
+        "obf": "m_36076_"
+      },
+      {
+        "name": "removeItem",
+        "desc": "(II)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_36069_"
+      }
+    ],
+    "net/minecraft/world/item/ItemStack": [
+      {
+        "name": "getItem",
+        "desc": "()Lnet/minecraft/world/item/Item;",
+        "obf": "m_41720_"
+      },
+      {
+        "name": "getCount",
+        "desc": "()I",
+        "obf": "m_22222_"
+      },
+      {
+        "name": "setCount",
+        "desc": "(I)V",
+        "obf": "m_41728_"
+      },
+      {
+        "name": "isEmpty",
+        "desc": "()Z",
+        "obf": "m_41619_"
+      },
+      {
+        "name": "getHoverName",
+        "desc": "()Lnet/minecraft/network/chat/Component;",
+        "obf": "m_41733_"
+      },
+      {
+        "name": "getDescriptionId",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_41777_"
+      },
+      {
+        "name": "getMaxStackSize",
+        "desc": "()I",
+        "obf": "m_41741_"
+      },
+      {
+        "name": "getOrCreateTag",
+        "desc": "()Lnet/minecraft/nbt/CompoundTag;",
+        "obf": "m_41597_"
+      },
+      {
+        "name": "hasTag",
+        "desc": "()Z",
+        "obf": "m_42177_"
+      },
+      {
+        "name": "hurt",
+        "desc": "(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)Z",
+        "obf": "m_246868_"
+      },
+      {
+        "name": "getDamageValue",
+        "desc": "()I",
+        "obf": "m_41715_"
+      },
+      {
+        "name": "setDamageValue",
+        "desc": "(I)V",
+        "obf": "m_41716_"
+      },
+      {
+        "name": "isDamaged",
+        "desc": "()Z",
+        "obf": "m_41717_"
+      },
+      {
+        "name": "getMaxDamage",
+        "desc": "()I",
+        "obf": "m_41718_"
+      },
+      {
+        "name": "copy",
+        "desc": "()Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_41777_"
+      },
+      {
+        "name": "split",
+        "desc": "(I)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_41613_"
+      },
+      {
+        "name": "grow",
+        "desc": "(I)V",
+        "obf": "m_41713_"
+      },
+      {
+        "name": "shrink",
+        "desc": "(I)V",
+        "obf": "m_41714_"
+      },
+      {
+        "name": "isEnchanted",
+        "desc": "()Z",
+        "obf": "m_41863_"
+      },
+      {
+        "name": "getEnchantmentLevel",
+        "desc": "(Lnet/minecraft/world/item/enchantment/Enchantment;)I",
+        "obf": "m_41801_"
+      },
+      {
+        "name": "enchant",
+        "desc": "(Lnet/minecraft/world/item/enchantment/Enchantment;I)V",
+        "obf": "m_41744_"
+      },
+      {
+        "name": "getTag",
+        "desc": "()Lnet/minecraft/nbt/CompoundTag;",
+        "obf": "m_41656_"
+      },
+      {
+        "name": "setTag",
+        "desc": "(Lnet/minecraft/nbt/CompoundTag;)V",
+        "obf": "m_41672_"
+      },
+      {
+        "name": "isSameItem",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;)Z",
+        "obf": "m_41759_"
+      },
+      {
+        "name": "isSameItemSameComponents",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;)Z",
+        "obf": "m_41775_"
+      },
+      {
+        "name": "getUseDuration",
+        "desc": "()I",
+        "obf": "m_41745_"
+      },
+      {
+        "name": "useOn",
+        "desc": "(Lnet/minecraft/world/item/context/UseOnContext;)Lnet/minecraft/world/InteractionResult;",
+        "obf": "m_41682_"
+      }
+    ],
+    "net/minecraft/world/item/Item": [
+      {
+        "name": "getDescriptionId",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_7745_"
+      },
+      {
+        "name": "getMaxStackSize",
+        "desc": "()I",
+        "obf": "m_4193_"
+      },
+      {
+        "name": "getMaxDamage",
+        "desc": "()I",
+        "obf": "m_4194_"
+      },
+      {
+        "name": "getName",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/network/chat/Component;",
+        "obf": "m_4146_"
+      },
+      {
+        "name": "use",
+        "desc": "(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResultHolder;",
+        "obf": "m_7203_"
+      },
+      {
+        "name": "useOn",
+        "desc": "(Lnet/minecraft/world/item/context/UseOnContext;)Lnet/minecraft/world/InteractionResult;",
+        "obf": "m_41682_"
+      },
+      {
+        "name": "isCorrectToolForDrops",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/block/state/BlockState;)Z",
+        "obf": "m_41557_"
+      },
+      {
+        "name": "getEnchantmentValue",
+        "desc": "()I",
+        "obf": "m_4148_"
+      },
+      {
+        "name": "isEnchantable",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;)Z",
+        "obf": "m_4149_"
+      },
+      {
+        "name": "getFoodProperties",
+        "desc": "()Lnet/minecraft/world/food/FoodProperties;",
+        "obf": "m_4150_"
+      },
+      {
+        "name": "isEdible",
+        "desc": "()Z",
+        "obf": "m_4151_"
+      }
+    ],
+    "net/minecraft/core/BlockPos": [
+      {
+        "name": "above",
+        "desc": "()Lnet/minecraft/core/BlockPos;",
+        "obf": "m_55555_"
+      },
+      {
+        "name": "below",
+        "desc": "()Lnet/minecraft/core/BlockPos;",
+        "obf": "m_142041_"
+      },
+      {
+        "name": "north",
+        "desc": "()Lnet/minecraft/core/BlockPos;",
+        "obf": "m_121965_"
+      },
+      {
+        "name": "south",
+        "desc": "()Lnet/minecraft/core/BlockPos;",
+        "obf": "m_122024_"
+      },
+      {
+        "name": "east",
+        "desc": "()Lnet/minecraft/core/BlockPos;",
+        "obf": "m_121955_"
+      },
+      {
+        "name": "west",
+        "desc": "()Lnet/minecraft/core/BlockPos;",
+        "obf": "m_121971_"
+      },
+      {
+        "name": "getX",
+        "desc": "()I",
+        "obf": "m_123341_"
+      },
+      {
+        "name": "getY",
+        "desc": "()I",
+        "obf": "m_123342_"
+      },
+      {
+        "name": "getZ",
+        "desc": "()I",
+        "obf": "m_123343_"
+      },
+      {
+        "name": "offset",
+        "desc": "(III)Lnet/minecraft/core/BlockPos;",
+        "obf": "m_5484_"
+      },
+      {
+        "name": "relative",
+        "desc": "(Lnet/minecraft/core/Direction;)Lnet/minecraft/core/BlockPos;",
+        "obf": "m_5484_"
+      },
+      {
+        "name": "betweenClosed",
+        "desc": "(IIIIII)Lnet/minecraft/core/BlockPos;",
+        "obf": "m_121940_"
+      },
+      {
+        "name": "containing",
+        "desc": "(DDD)Lnet/minecraft/core/BlockPos;",
+        "obf": "m_121951_"
+      }
+    ],
+    "net/minecraft/world/phys/Vec3": [
+      {
+        "name": "x",
+        "desc": "()D"
+      },
+      {
+        "name": "y",
+        "desc": "()D"
+      },
+      {
+        "name": "z",
+        "desc": "()D"
+      },
+      {
+        "name": "add",
+        "desc": "(DDD)Lnet/minecraft/world/phys/Vec3;"
+      },
+      {
+        "name": "subtract",
+        "desc": "(DDD)Lnet/minecraft/world/phys/Vec3;"
+      },
+      {
+        "name": "multiply",
+        "desc": "(D)Lnet/minecraft/world/phys/Vec3;"
+      },
+      {
+        "name": "length",
+        "desc": "()D"
+      },
+      {
+        "name": "normalize",
+        "desc": "()Lnet/minecraft/world/phys/Vec3;"
+      },
+      {
+        "name": "cross",
+        "desc": "(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;"
+      },
+      {
+        "name": "dot",
+        "desc": "(Lnet/minecraft/world/phys/Vec3;)D"
+      },
+      {
+        "name": "distanceTo",
+        "desc": "(Lnet/minecraft/world/phys/Vec3;)D"
+      },
+      {
+        "name": "horizontalDistance",
+        "desc": "()D"
+      }
+    ],
+    "net/minecraft/world/phys/AABB": [
+      {
+        "name": "minX",
+        "desc": "()D"
+      },
+      {
+        "name": "minY",
+        "desc": "()D"
+      },
+      {
+        "name": "minZ",
+        "desc": "()D"
+      },
+      {
+        "name": "maxX",
+        "desc": "()D"
+      },
+      {
+        "name": "maxY",
+        "desc": "()D"
+      },
+      {
+        "name": "maxZ",
+        "desc": "()D"
+      },
+      {
+        "name": "intersects",
+        "desc": "(Lnet/minecraft/world/phys/AABB;)Z"
+      },
+      {
+        "name": "contains",
+        "desc": "(DDD)Z"
+      },
+      {
+        "name": "expandTowards",
+        "desc": "(DDD)Lnet/minecraft/world/phys/AABB;"
+      },
+      {
+        "name": "inflate",
+        "desc": "(D)Lnet/minecraft/world/phys/AABB;"
+      },
+      {
+        "name": "move",
+        "desc": "(DDD)Lnet/minecraft/world/phys/AABB;"
+      },
+      {
+        "name": "getCenter",
+        "desc": "()Lnet/minecraft/world/phys/Vec3;"
+      }
+    ],
+    "net/minecraft/world/phys/shapes/VoxelShape": [
+      {
+        "name": "bounds",
+        "desc": "()Lnet/minecraft/world/phys/AABB;"
+      },
+      {
+        "name": "isEmpty",
+        "desc": "()Z"
+      },
+      {
+        "name": "toAabbs",
+        "desc": "()Ljava/util/List;"
+      }
+    ],
+    "net/minecraft/core/Direction": [
+      {
+        "name": "getOpposite",
+        "desc": "()Lnet/minecraft/core/Direction;"
+      },
+      {
+        "name": "getNormal",
+        "desc": "()Lnet/minecraft/core/Vec3i;"
+      },
+      {
+        "name": "values",
+        "desc": "()[Lnet/minecraft/core/Direction;"
+      },
+      {
+        "name": "getClockWise",
+        "desc": "()Lnet/minecraft/core/Direction;"
+      },
+      {
+        "name": "getCounterClockWise",
+        "desc": "()Lnet/minecraft/core/Direction;"
+      },
+      {
+        "name": "step",
+        "desc": "()Lnet/minecraft/core/Vec3i;"
+      }
+    ],
+    "net/minecraft/resources/ResourceLocation": [
+      {
+        "name": "getNamespace",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_135827_"
+      },
+      {
+        "name": "getPath",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_135828_"
+      },
+      {
+        "name": "toString",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_135830_"
+      },
+      {
+        "name": "of",
+        "desc": "(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;",
+        "obf": "m_135810_"
+      },
+      {
+        "name": "parse",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;",
+        "obf": "m_135815_"
+      },
+      {
+        "name": "withPrefix",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;",
+        "obf": "m_135814_"
+      }
+    ],
+    "net/minecraft/server/MinecraftServer": [
+      {
+        "name": "getTPS",
+        "desc": "()[D",
+        "obf": "m_66666_"
+      },
+      {
+        "name": "getPlayerList",
+        "desc": "()Lnet/minecraft/server/players/PlayerList;",
+        "obf": "m_6846_"
+      },
+      {
+        "name": "overworld",
+        "desc": "()Lnet/minecraft/server/level/ServerLevel;",
+        "obf": "m_7726_"
+      },
+      {
+        "name": "getAllLevels",
+        "desc": "()Ljava/lang/Iterable;",
+        "obf": "m_6987_"
+      },
+      {
+        "name": "isRunning",
+        "desc": "()Z",
+        "obf": "m_130010_"
+      },
+      {
+        "name": "getLevel",
+        "desc": "(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/server/level/ServerLevel;",
+        "obf": "m_7727_"
+      },
+      {
+        "name": "getTickCount",
+        "desc": "()I",
+        "obf": "m_1831_"
+      },
+      {
+        "name": "getPlayerCount",
+        "desc": "()I",
+        "obf": "m_6875_"
+      },
+      {
+        "name": "getCommands",
+        "desc": "()Lnet/minecraft/commands/Commands;",
+        "obf": "m_6863_"
+      },
+      {
+        "name": "getScoreboard",
+        "desc": "()Lnet/minecraft/world/scores/Scoreboard;",
+        "obf": "m_6854_"
+      }
+    ],
+    "net/minecraft/server/players/PlayerList": [
+      {
+        "name": "getPlayers",
+        "desc": "()Ljava/util/List;"
+      },
+      {
+        "name": "getPlayerCount",
+        "desc": "()I"
+      },
+      {
+        "name": "getMaxPlayers",
+        "desc": "()I"
+      },
+      {
+        "name": "getPlayer",
+        "desc": "(Ljava/util/UUID;)Lnet/minecraft/server/level/ServerPlayer;"
+      },
+      {
+        "name": "getPlayerByName",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/server/level/ServerPlayer;"
+      },
+      {
+        "name": "isOp",
+        "desc": "(Lcom/mojang/authlib/GameProfile;)Z"
+      },
+      {
+        "name": "broadcastToAll",
+        "desc": "(Lnet/minecraft/network/protocol/Packet;)V"
+      }
+    ],
+    "net/minecraft/network/chat/Component": [
+      {
+        "name": "literal",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+      },
+      {
+        "name": "translatable",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+      },
+      {
+        "name": "translatableWithFallback",
+        "desc": "(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+      },
+      {
+        "name": "empty",
+        "desc": "()Lnet/minecraft/network/chat/Component;"
+      }
+    ],
+    "net/minecraft/network/chat/MutableComponent": [
+      {
+        "name": "setStyle",
+        "desc": "(Lnet/minecraft/network/chat/Style;)Lnet/minecraft/network/chat/MutableComponent;"
+      },
+      {
+        "name": "append",
+        "desc": "(Lnet/minecraft/network/chat/Component;)Lnet/minecraft/network/chat/MutableComponent;"
+      },
+      {
+        "name": "withStyle",
+        "desc": "(Lnet/minecraft/network/chat/Style;)Lnet/minecraft/network/chat/MutableComponent;"
+      },
+      {
+        "name": "getString",
+        "desc": "()Ljava/lang/String;"
+      }
+    ],
+    "net/minecraft/network/chat/Style": [
+      {
+        "name": "EMPTY",
+        "desc": "()Lnet/minecraft/network/chat/Style;"
+      },
+      {
+        "name": "withColor",
+        "desc": "(Lnet/minecraft/network/chat/TextColor;)Lnet/minecraft/network/chat/Style;"
+      },
+      {
+        "name": "withBold",
+        "desc": "(Ljava/lang/Boolean;)Lnet/minecraft/network/chat/Style;"
+      },
+      {
+        "name": "withItalic",
+        "desc": "(Ljava/lang/Boolean;)Lnet/minecraft/network/chat/Style;"
+      },
+      {
+        "name": "withClickEvent",
+        "desc": "(Lnet/minecraft/network/chat/ClickEvent;)Lnet/minecraft/network/chat/Style;"
+      },
+      {
+        "name": "withHoverEvent",
+        "desc": "(Lnet/minecraft/network/chat/HoverEvent;)Lnet/minecraft/network/chat/Style;"
+      }
+    ],
+    "net/minecraft/nbt/CompoundTag": [
+      {
+        "name": "put",
+        "desc": "(Ljava/lang/String;Lnet/minecraft/nbt/Tag;)Lnet/minecraft/nbt/Tag;"
+      },
+      {
+        "name": "get",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/nbt/Tag;"
+      },
+      {
+        "name": "getString",
+        "desc": "(Ljava/lang/String;)Ljava/lang/String;"
+      },
+      {
+        "name": "getInt",
+        "desc": "(Ljava/lang/String;)I"
+      },
+      {
+        "name": "getDouble",
+        "desc": "(Ljava/lang/String;)D"
+      },
+      {
+        "name": "getFloat",
+        "desc": "(Ljava/lang/String;)F"
+      },
+      {
+        "name": "getLong",
+        "desc": "(Ljava/lang/String;)J"
+      },
+      {
+        "name": "getBoolean",
+        "desc": "(Ljava/lang/String;)Z"
+      },
+      {
+        "name": "getCompound",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/nbt/CompoundTag;"
+      },
+      {
+        "name": "getList",
+        "desc": "(Ljava/lang/String;I)Lnet/minecraft/nbt/ListTag;"
+      },
+      {
+        "name": "putString",
+        "desc": "(Ljava/lang/String;Ljava/lang/String;)V"
+      },
+      {
+        "name": "putInt",
+        "desc": "(Ljava/lang/String;I)V"
+      },
+      {
+        "name": "remove",
+        "desc": "(Ljava/lang/String;)V"
+      },
+      {
+        "name": "hasKey",
+        "desc": "(Ljava/lang/String;)Z"
+      },
+      {
+        "name": "getAllKeys",
+        "desc": "()Ljava/util/Set;"
+      },
+      {
+        "name": "isEmpty",
+        "desc": "()Z"
+      },
+      {
+        "name": "merge",
+        "desc": "(Lnet/minecraft/nbt/CompoundTag;)V"
+      },
+      {
+        "name": "copy",
+        "desc": "()Lnet/minecraft/nbt/CompoundTag;"
+      }
+    ],
+    "net/minecraft/nbt/ListTag": [
+      {
+        "name": "add",
+        "desc": "(Lnet/minecraft/nbt/Tag;)Z"
+      },
+      {
+        "name": "get",
+        "desc": "(I)Lnet/minecraft/nbt/Tag;"
+      },
+      {
+        "name": "getCompound",
+        "desc": "(I)Lnet/minecraft/nbt/CompoundTag;"
+      },
+      {
+        "name": "size",
+        "desc": "()I"
+      },
+      {
+        "name": "isEmpty",
+        "desc": "()Z"
+      },
+      {
+        "name": "clear",
+        "desc": "()V"
+      }
+    ],
+    "net/minecraft/core/registries/BuiltInRegistries": [
+      {
+        "name": "BLOCK",
+        "desc": "Lnet/minecraft/core/Registry;"
+      },
+      {
+        "name": "ITEM",
+        "desc": "Lnet/minecraft/core/Registry;"
+      },
+      {
+        "name": "ENTITY_TYPE",
+        "desc": "Lnet/minecraft/core/Registry;"
+      },
+      {
+        "name": "MOB_EFFECT",
+        "desc": "Lnet/minecraft/core/Registry;"
+      },
+      {
+        "name": "BLOCK_ENTITY_TYPE",
+        "desc": "Lnet/minecraft/core/Registry;"
+      },
+      {
+        "name": "MENU",
+        "desc": "Lnet/minecraft/core/Registry;"
+      },
+      {
+        "name": "ENCHANTMENT",
+        "desc": "Lnet/minecraft/core/Registry;"
+      },
+      {
+        "name": "RECIPE_TYPE",
+        "desc": "Lnet/minecraft/core/Registry;"
+      }
+    ],
+    "net/minecraft/core/Registry": [
+      {
+        "name": "get",
+        "desc": "(Lnet/minecraft/resources/ResourceLocation;)Ljava/lang/Object;"
+      },
+      {
+        "name": "getId",
+        "desc": "(Ljava/lang/Object;)I"
+      },
+      {
+        "name": "getKey",
+        "desc": "(Ljava/lang/Object;)Lnet/minecraft/resources/ResourceLocation;"
+      },
+      {
+        "name": "entrySet",
+        "desc": "()Ljava/util/Set;"
+      },
+      {
+        "name": "containsKey",
+        "desc": "(Lnet/minecraft/resources/ResourceLocation;)Z"
+      },
+      {
+        "name": "size",
+        "desc": "()I"
+      },
+      {
+        "name": "stream",
+        "desc": "()Ljava/util/stream/Stream;"
+      }
+    ],
+    "net/minecraft/tags/BlockTags": [
+      {
+        "name": "MINEABLE_WITH_PICKAXE",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "MINEABLE_WITH_AXE",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "MINEABLE_WITH_SHOVEL",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "NEEDS_DIAMOND_TOOL",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "NEEDS_IRON_TOOL",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "LOGS",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "PLANKS",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "FENCES",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "DOORS",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "SLABS",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "STAIRS",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "WALLS",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      }
+    ],
+    "net/minecraft/tags/ItemTags": [
+      {
+        "name": "SWORDS",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "PICKAXES",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "AXES",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "SHOVELS",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "HOES",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      },
+      {
+        "name": "FOOD",
+        "desc": "Lnet/minecraft/tags/TagKey;"
+      }
+    ],
+    "net/minecraft/world/level/block/entity/BlockEntity": [
+      {
+        "name": "getBlockPos",
+        "desc": "()Lnet/minecraft/core/BlockPos;"
+      },
+      {
+        "name": "getBlockState",
+        "desc": "()Lnet/minecraft/world/level/block/state/BlockState;"
+      },
+      {
+        "name": "getLevel",
+        "desc": "()Lnet/minecraft/world/level/Level;"
+      },
+      {
+        "name": "setChanged",
+        "desc": "()V"
+      },
+      {
+        "name": "saveAdditional",
+        "desc": "(Lnet/minecraft/nbt/CompoundTag;)V"
+      },
+      {
+        "name": "loadAdditional",
+        "desc": "(Lnet/minecraft/nbt/CompoundTag;)V"
+      },
+      {
+        "name": "getType",
+        "desc": "()Lnet/minecraft/world/level/block/entity/BlockEntityType;"
+      },
+      {
+        "name": "hasLevel",
+        "desc": "()Z"
+      }
+    ],
+    "net/minecraft/world/level/block/entity/ChestBlockEntity": [
+      {
+        "name": "getContainerSize",
+        "desc": "()I"
+      },
+      {
+        "name": "getItem",
+        "desc": "(I)Lnet/minecraft/world/item/ItemStack;"
+      },
+      {
+        "name": "setItem",
+        "desc": "(ILnet/minecraft/world/item/ItemStack;)V"
+      },
+      {
+        "name": "isEmpty",
+        "desc": "()Z"
+      },
+      {
+        "name": "stillValid",
+        "desc": "(Lnet/minecraft/world/entity/player/Player;)Z"
+      },
+      {
+        "name": "clearContent",
+        "desc": "()V"
+      }
+    ],
+    "net/minecraft/world/inventory/MenuType": [
+      {
+        "name": "CHEST_9x1",
+        "desc": "Lnet/minecraft/world/inventory/MenuType;"
+      },
+      {
+        "name": "CHEST_9x3",
+        "desc": "Lnet/minecraft/world/inventory/MenuType;"
+      },
+      {
+        "name": "CHEST_9x6",
+        "desc": "Lnet/minecraft/world/inventory/MenuType;"
+      },
+      {
+        "name": "HOPPER",
+        "desc": "Lnet/minecraft/world/inventory/MenuType;"
+      },
+      {
+        "name": "FURNACE",
+        "desc": "Lnet/minecraft/world/inventory/MenuType;"
+      },
+      {
+        "name": "ANVIL",
+        "desc": "Lnet/minecraft/world/inventory/MenuType;"
+      },
+      {
+        "name": "CRAFTING",
+        "desc": "Lnet/minecraft/world/inventory/MenuType;"
+      }
+    ],
+    "net/minecraft/world/entity/Mob": [
+      {
+        "name": "setTarget",
+        "desc": "(Lnet/minecraft/world/entity/LivingEntity;)V"
+      },
+      {
+        "name": "getTarget",
+        "desc": "()Lnet/minecraft/world/entity/LivingEntity;"
+      },
+      {
+        "name": "setPersistenceRequired",
+        "desc": "()V"
+      },
+      {
+        "name": "isPersistenceRequired",
+        "desc": "()Z"
+      },
+      {
+        "name": "setAggressive",
+        "desc": "(Z)V"
+      },
+      {
+        "name": "isAggressive",
+        "desc": "()Z"
+      },
+      {
+        "name": "getNavigation",
+        "desc": "()Lnet/minecraft/world/entity/ai/navigation/PathNavigation;"
+      }
+    ],
+    "net/minecraft/world/entity/animal/Animal": [
+      {
+        "name": "isFood",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;)Z"
+      },
+      {
+        "name": "getAge",
+        "desc": "()I"
+      },
+      {
+        "name": "setAge",
+        "desc": "(I)V"
+      },
+      {
+        "name": "isInLove",
+        "desc": "()Z"
+      },
+      {
+        "name": "setInLove",
+        "desc": "(Lnet/minecraft/world/entity/player/Player;)V"
+      }
+    ],
+    "net/minecraft/world/entity/EntityType": [
+      {
+        "name": "PLAYER",
+        "desc": "Lnet/minecraft/world/entity/EntityType;"
+      },
+      {
+        "name": "ZOMBIE",
+        "desc": "Lnet/minecraft/world/entity/EntityType;"
+      },
+      {
+        "name": "CREEPER",
+        "desc": "Lnet/minecraft/world/entity/EntityType;"
+      },
+      {
+        "name": "SKELETON",
+        "desc": "Lnet/minecraft/world/entity/EntityType;"
+      },
+      {
+        "name": "COW",
+        "desc": "Lnet/minecraft/world/entity/EntityType;"
+      },
+      {
+        "name": "PIG",
+        "desc": "Lnet/minecraft/world/entity/EntityType;"
+      },
+      {
+        "name": "VILLAGER",
+        "desc": "Lnet/minecraft/world/entity/EntityType;"
+      },
+      {
+        "name": "ITEM",
+        "desc": "Lnet/minecraft/world/entity/EntityType;"
+      },
+      {
+        "name": "byString",
+        "desc": "(Ljava/lang/String;)Ljava/util/Optional;"
+      }
+    ],
+    "net/minecraft/sounds/SoundEvents": [
+      {
+        "name": "BLOCK_BREAK",
+        "desc": "Lnet/minecraft/sounds/SoundEvent;"
+      },
+      {
+        "name": "BLOCK_PLACE",
+        "desc": "Lnet/minecraft/sounds/SoundEvent;"
+      },
+      {
+        "name": "ITEM_PICKUP",
+        "desc": "Lnet/minecraft/sounds/SoundEvent;"
+      },
+      {
+        "name": "ENTITY_PLAYER_LEVELUP",
+        "desc": "Lnet/minecraft/sounds/SoundEvent;"
+      },
+      {
+        "name": "ENTITY_EXPERIENCE_ORB_PICKUP",
+        "desc": "Lnet/minecraft/sounds/SoundEvent;"
+      }
+    ],
+    "net/minecraft/core/particles/ParticleTypes": [
+      {
+        "name": "HAPPY_VILLAGER",
+        "desc": "Lnet/minecraft/core/particles/SimpleParticleType;"
+      },
+      {
+        "name": "FIREWORK",
+        "desc": "Lnet/minecraft/core/particles/SimpleParticleType;"
+      },
+      {
+        "name": "SMOKE",
+        "desc": "Lnet/minecraft/core/particles/SimpleParticleType;"
+      },
+      {
+        "name": "FLAME",
+        "desc": "Lnet/minecraft/core/particles/SimpleParticleType;"
+      },
+      {
+        "name": "HEART",
+        "desc": "Lnet/minecraft/core/particles/SimpleParticleType;"
+      },
+      {
+        "name": "PORTAL",
+        "desc": "Lnet/minecraft/core/particles/SimpleParticleType;"
+      }
+    ],
+    "net/minecraft/world/effect/MobEffect": [
+      {
+        "name": "getDisplayName",
+        "desc": "()Lnet/minecraft/network/chat/Component;"
+      },
+      {
+        "name": "getColor",
+        "desc": "()I"
+      },
+      {
+        "name": "getInstantenousDuration",
+        "desc": "(I)I"
+      },
+      {
+        "name": "isBeneficial",
+        "desc": "()Z"
+      },
+      {
+        "name": "createInstance",
+        "desc": "(II)Lnet/minecraft/world/effect/MobEffectInstance;"
+      }
+    ]
+  }
+}

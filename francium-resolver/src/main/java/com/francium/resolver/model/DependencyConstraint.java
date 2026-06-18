@@ -29,15 +29,21 @@ public class DependencyConstraint {
 
     /**
      * 檢查給定版本是否滿足此約束。
+     * ★ BUG FIX: 支援 OR 語義的範圍（例如 != 會產生兩個互斥範圍，任一滿足即可）
+     *   原本 AND 邏輯對 != 永遠為 false，現改為檢查所有範圍組合。
      */
     public boolean satisfiedBy(SemanticVersion version) {
         if (version == null) return false;
         if (ranges.isEmpty()) return true; // * wildcard
         
+        // 檢查是否為 OR 語義（多個範圍，如 != 產生的）
+        // 策略：如果任一範圍滿足，則整個約束滿足
         for (Range range : ranges) {
-            if (!range.contains(version)) return false;
+            if (range.contains(version)) {
+                return true; // OR 語義：任一範圍滿足即可
+            }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -94,13 +100,33 @@ public class DependencyConstraint {
             return null; // 無交集
         }
         
+        // ★ BUG FIX: 交集時 inclusivity 邏輯取最嚴格（both must be inclusive）
+        // 即 minInclusive = finalMin 來自的兩個範圍都包含 min（AND 語義）
+        boolean finalMinInc = true;
+        if (finalMin != null) {
+            boolean thisMinInc = ranges.stream()
+                .filter(r -> r.min != null && r.min.equals(finalMin))
+                .findFirst().map(r -> r.minInclusive).orElse(true);
+            boolean otherMinInc = other.ranges.stream()
+                .filter(r -> r.min != null && r.min.equals(finalMin))
+                .findFirst().map(r -> r.minInclusive).orElse(true);
+            finalMinInc = thisMinInc && otherMinInc;
+        }
+        
+        boolean finalMaxInc = true;
+        if (finalMax != null) {
+            boolean thisMaxInc = ranges.stream()
+                .filter(r -> r.max != null && r.max.equals(finalMax))
+                .findFirst().map(r -> r.maxInclusive).orElse(true);
+            boolean otherMaxInc = other.ranges.stream()
+                .filter(r -> r.max != null && r.max.equals(finalMax))
+                .findFirst().map(r -> r.maxInclusive).orElse(true);
+            finalMaxInc = thisMaxInc && otherMaxInc;
+        }
+        
         return new ConstraintBuilder()
-            .min(finalMin, finalMin != null ? 
-                (ranges.stream().anyMatch(r -> r.minInclusive) || 
-                 other.ranges.stream().anyMatch(r -> r.minInclusive)) : true)
-            .max(finalMax, finalMax != null ?
-                (ranges.stream().anyMatch(r -> r.maxInclusive) ||
-                 other.ranges.stream().anyMatch(r -> r.maxInclusive)) : true)
+            .min(finalMin, finalMinInc)
+            .max(finalMax, finalMaxInc)
             .build();
     }
 

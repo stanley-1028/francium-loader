@@ -1,0 +1,1608 @@
+{
+  "version": "cross-version",
+  "from": "1.20.4",
+  "to": "1.21",
+  "description": "Francium Cross-Version Mappings: 1.20.4 → 1.21 (400 entries)",
+  "mappings": [
+    {
+      "from": "net/minecraft/world/level/block/Block#defaultBlockState:()Lnet/minecraft/world/level/block/state/BlockState;",
+      "to": "net/minecraft/world/level/block/Block#defaultBlockState:()Lnet/minecraft/world/level/block/state/BlockState;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#getBlockState:()Lnet/minecraft/world/level/block/state/BlockState;",
+      "to": "net/minecraft/world/level/block/Block#getBlockState:()Lnet/minecraft/world/level/block/state/BlockState;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#getCloneItemStack:(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/level/block/Block#getCloneItemStack:(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#getDescriptionId:()Ljava/lang/String;",
+      "to": "net/minecraft/world/level/block/Block#getDescriptionId:()Ljava/lang/String;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#getDrops:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;)Ljava/util/List;",
+      "to": "net/minecraft/world/level/block/Block#getDrops:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;)Ljava/util/List;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#getExplosionResistance:()F",
+      "to": "net/minecraft/world/level/block/Block#getExplosionResistance:()F"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#getLightBlock:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)I",
+      "to": "net/minecraft/world/level/block/Block#getLightBlock:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)I"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#getMapColor:()Lnet/minecraft/world/level/material/MapColor;",
+      "to": "net/minecraft/world/level/block/Block#getMapColor:()Lnet/minecraft/world/level/material/MapColor;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#getName:()Lnet/minecraft/network/chat/Component;",
+      "to": "net/minecraft/world/level/block/Block#getName:()Lnet/minecraft/network/chat/Component;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#getShape:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;",
+      "to": "net/minecraft/world/level/block/Block#getShape:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#getSoundType:(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/block/SoundType;",
+      "to": "net/minecraft/world/level/block/Block#getSoundType:(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/block/SoundType;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#neighborChanged:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;Z)V",
+      "to": "net/minecraft/world/level/block/Block#neighborChanged:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;Z)V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#onPlace:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)V",
+      "to": "net/minecraft/world/level/block/Block#onPlace:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#onRemove:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)V",
+      "to": "net/minecraft/world/level/block/Block#onRemove:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#playerDestroy:(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/item/ItemStack;)V",
+      "to": "net/minecraft/world/level/block/Block#playerDestroy:(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/item/ItemStack;)V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#randomTick:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)V",
+      "to": "net/minecraft/world/level/block/Block#randomTick:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#spawnAfterBreak:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/ItemStack;Z)V",
+      "to": "net/minecraft/world/level/block/Block#spawnAfterBreak:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/ItemStack;Z)V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#useItemOn:(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+      "to": "net/minecraft/world/level/block/Block#useItemOn:(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/Block#useWithoutItem:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+      "to": "net/minecraft/world/level/block/Block#useWithoutItem:(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#getBlock:()Lnet/minecraft/world/level/block/Block;",
+      "to": "net/minecraft/world/level/block/state/BlockState#getBlock:()Lnet/minecraft/world/level/block/Block;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#getCollisionShape:(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/phys/shapes/VoxelShape;",
+      "to": "net/minecraft/world/level/block/state/BlockState#getCollisionShape:(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/phys/shapes/VoxelShape;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#getLightEmission:()I",
+      "to": "net/minecraft/world/level/block/state/BlockState#getLightEmission:()I"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#getRenderShape:()Lnet/minecraft/world/level/block/RenderShape;",
+      "to": "net/minecraft/world/level/block/state/BlockState#getRenderShape:()Lnet/minecraft/world/level/block/RenderShape;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#getValue:(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;",
+      "to": "net/minecraft/world/level/block/state/BlockState#getValue:(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#hasBlockEntity:()Z",
+      "to": "net/minecraft/world/level/block/state/BlockState#hasBlockEntity:()Z"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#isAir:()Z",
+      "to": "net/minecraft/world/level/block/state/BlockState#isAir:()Z"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#isCollisionShapeFullBlock:(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z",
+      "to": "net/minecraft/world/level/block/state/BlockState#isCollisionShapeFullBlock:(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#isRandomlyTicking:()Z",
+      "to": "net/minecraft/world/level/block/state/BlockState#isRandomlyTicking:()Z"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#isSolid:()Z",
+      "to": "net/minecraft/world/level/block/state/BlockState#isSolid:()Z"
+    },
+    {
+      "from": "net/minecraft/world/level/block/state/BlockState#setValue:(Lnet/minecraft/world/level/block/state/properties/Property;Ljava/lang/Comparable;)Lnet/minecraft/world/level/block/state/BlockState;",
+      "to": "net/minecraft/world/level/block/state/BlockState#setValue:(Lnet/minecraft/world/level/block/state/properties/Property;Ljava/lang/Comparable;)Lnet/minecraft/world/level/block/state/BlockState;"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#addParticle:(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V",
+      "to": "net/minecraft/world/level/Level#addParticle:(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#destroyBlock:(Lnet/minecraft/core/BlockPos;Z)Z",
+      "to": "net/minecraft/world/level/Level#destroyBlock:(Lnet/minecraft/core/BlockPos;Z)Z"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#explode:(Lnet/minecraft/world/entity/Entity;DDDFLnet/minecraft/world/level/Level$ExplosionInteraction;)Lnet/minecraft/world/level/Explosion;",
+      "to": "net/minecraft/world/level/Level#explode:(Lnet/minecraft/world/entity/Entity;DDDFLnet/minecraft/world/level/Level$ExplosionInteraction;)Lnet/minecraft/world/level/Explosion;"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getBiome:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/Holder;",
+      "to": "net/minecraft/world/level/Level#getBiome:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/Holder;"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getBlockEntity:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;",
+      "to": "net/minecraft/world/level/Level#getBlockEntity:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getBlockState:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;",
+      "to": "net/minecraft/world/level/Level#getBlockState:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getDayTime:()J",
+      "to": "net/minecraft/world/level/Level#getDayTime:()J"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getDifficulty:()Lnet/minecraft/world/Difficulty;",
+      "to": "net/minecraft/world/level/Level#getDifficulty:()Lnet/minecraft/world/Difficulty;"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getFluidState:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;",
+      "to": "net/minecraft/world/level/Level#getFluidState:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getGameTime:()J",
+      "to": "net/minecraft/world/level/Level#getGameTime:()J"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getHeight:()I",
+      "to": "net/minecraft/world/level/Level#getHeight:()I"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getMaxLocalRawBrightness:(Lnet/minecraft/core/BlockPos;)I",
+      "to": "net/minecraft/world/level/Level#getMaxLocalRawBrightness:(Lnet/minecraft/core/BlockPos;)I"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getPlayers:(Ljava/util/function/Predicate;)Ljava/util/List;",
+      "to": "net/minecraft/world/level/Level#getPlayers:(Ljava/util/function/Predicate;)Ljava/util/List;"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#getSeaLevel:()I",
+      "to": "net/minecraft/world/level/Level#getSeaLevel:()I"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#isDay:()Z",
+      "to": "net/minecraft/world/level/Level#isDay:()Z"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#isNight:()Z",
+      "to": "net/minecraft/world/level/Level#isNight:()Z"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#isRainingAt:(Lnet/minecraft/core/BlockPos;)Z",
+      "to": "net/minecraft/world/level/Level#isRainingAt:(Lnet/minecraft/core/BlockPos;)Z"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#playSound:(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V",
+      "to": "net/minecraft/world/level/Level#playSound:(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"
+    },
+    {
+      "from": "net/minecraft/world/level/Level#setBlock:(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z",
+      "to": "net/minecraft/world/level/Level#setBlock:(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#addFreshEntityWithPassengers:(Lnet/minecraft/world/entity/Entity;)V",
+      "to": "net/minecraft/server/level/ServerLevel#addFreshEntityWithPassengers:(Lnet/minecraft/world/entity/Entity;)V"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getChunk:(II)Lnet/minecraft/world/level/chunk/LevelChunk;",
+      "to": "net/minecraft/server/level/ServerLevel#getChunk:(II)Lnet/minecraft/world/level/chunk/LevelChunk;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getChunkAt:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/chunk/LevelChunk;",
+      "to": "net/minecraft/server/level/ServerLevel#getChunkAt:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/chunk/LevelChunk;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getChunkSource:()Lnet/minecraft/server/level/ServerChunkCache;",
+      "to": "net/minecraft/server/level/ServerLevel#getChunkSource:()Lnet/minecraft/server/level/ServerChunkCache;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getDataStorage:()Lnet/minecraft/world/level/storage/DimensionDataStorage;",
+      "to": "net/minecraft/server/level/ServerLevel#getDataStorage:()Lnet/minecraft/world/level/storage/DimensionDataStorage;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getEntities:(Lnet/minecraft/world/entity/EntityType;Ljava/util/function/Predicate;)Ljava/util/List;",
+      "to": "net/minecraft/server/level/ServerLevel#getEntities:(Lnet/minecraft/world/entity/EntityType;Ljava/util/function/Predicate;)Ljava/util/List;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getEntitiesOfClass:(Ljava/lang/Class;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;",
+      "to": "net/minecraft/server/level/ServerLevel#getEntitiesOfClass:(Ljava/lang/Class;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getLevelData:()Lnet/minecraft/world/level/storage/LevelData;",
+      "to": "net/minecraft/server/level/ServerLevel#getLevelData:()Lnet/minecraft/world/level/storage/LevelData;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getRaids:()Lnet/minecraft/world/entity/raid/Raids;",
+      "to": "net/minecraft/server/level/ServerLevel#getRaids:()Lnet/minecraft/world/entity/raid/Raids;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getRandomPlayer:()Lnet/minecraft/server/level/ServerPlayer;",
+      "to": "net/minecraft/server/level/ServerLevel#getRandomPlayer:()Lnet/minecraft/server/level/ServerPlayer;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getSeed:()J",
+      "to": "net/minecraft/server/level/ServerLevel#getSeed:()J"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getServer:()Lnet/minecraft/server/MinecraftServer;",
+      "to": "net/minecraft/server/level/ServerLevel#getServer:()Lnet/minecraft/server/MinecraftServer;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#getSharedSpawnPos:()Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/server/level/ServerLevel#getSharedSpawnPos:()Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#isRaided:(Lnet/minecraft/core/BlockPos;)Z",
+      "to": "net/minecraft/server/level/ServerLevel#isRaided:(Lnet/minecraft/core/BlockPos;)Z"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#removeBlock:(Lnet/minecraft/core/BlockPos;Z)Z",
+      "to": "net/minecraft/server/level/ServerLevel#removeBlock:(Lnet/minecraft/core/BlockPos;Z)Z"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#sendParticles:(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/core/particles/ParticleOptions;ZDDDI)V",
+      "to": "net/minecraft/server/level/ServerLevel#sendParticles:(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/core/particles/ParticleOptions;ZDDDI)V"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerLevel#setDayTime:(J)V",
+      "to": "net/minecraft/server/level/ServerLevel#setDayTime:(J)V"
+    },
+    {
+      "from": "net/minecraft/client/multiplayer/ClientLevel#addParticle:(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V",
+      "to": "net/minecraft/client/multiplayer/ClientLevel#addParticle:(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"
+    },
+    {
+      "from": "net/minecraft/client/multiplayer/ClientLevel#getBlockEntity:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;",
+      "to": "net/minecraft/client/multiplayer/ClientLevel#getBlockEntity:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"
+    },
+    {
+      "from": "net/minecraft/client/multiplayer/ClientLevel#getBlockState:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;",
+      "to": "net/minecraft/client/multiplayer/ClientLevel#getBlockState:(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"
+    },
+    {
+      "from": "net/minecraft/client/multiplayer/ClientLevel#getEntities:()Ljava/lang/Iterable;",
+      "to": "net/minecraft/client/multiplayer/ClientLevel#getEntities:()Ljava/lang/Iterable;"
+    },
+    {
+      "from": "net/minecraft/client/multiplayer/ClientLevel#getEntity:(I)Lnet/minecraft/world/entity/Entity;",
+      "to": "net/minecraft/client/multiplayer/ClientLevel#getEntity:(I)Lnet/minecraft/world/entity/Entity;"
+    },
+    {
+      "from": "net/minecraft/client/multiplayer/ClientLevel#getLevelData:()Lnet/minecraft/client/multiplayer/ClientLevelData;",
+      "to": "net/minecraft/client/multiplayer/ClientLevel#getLevelData:()Lnet/minecraft/client/multiplayer/ClientLevelData;"
+    },
+    {
+      "from": "net/minecraft/client/multiplayer/ClientLevel#getPlayerByUUID:(Ljava/util/UUID;)Lnet/minecraft/world/entity/player/Player;",
+      "to": "net/minecraft/client/multiplayer/ClientLevel#getPlayerByUUID:(Ljava/util/UUID;)Lnet/minecraft/world/entity/player/Player;"
+    },
+    {
+      "from": "net/minecraft/client/multiplayer/ClientLevel#getSkyDarken:()I",
+      "to": "net/minecraft/client/multiplayer/ClientLevel#getSkyDarken:()I"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#addTag:(Ljava/lang/String;)Z",
+      "to": "net/minecraft/world/entity/Entity#addTag:(Ljava/lang/String;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#blockPosition:()Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/world/entity/Entity#blockPosition:()Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#discard:()V",
+      "to": "net/minecraft/world/entity/Entity#discard:()V"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#distanceTo:(Lnet/minecraft/world/entity/Entity;)D",
+      "to": "net/minecraft/world/entity/Entity#distanceTo:(Lnet/minecraft/world/entity/Entity;)D"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#distanceToSqr:(Lnet/minecraft/world/entity/Entity;)D",
+      "to": "net/minecraft/world/entity/Entity#distanceToSqr:(Lnet/minecraft/world/entity/Entity;)D"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getBoundingBox:()Lnet/minecraft/world/phys/AABB;",
+      "to": "net/minecraft/world/entity/Entity#getBoundingBox:()Lnet/minecraft/world/phys/AABB;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getCommandSenderWorld:()Lnet/minecraft/world/level/Level;",
+      "to": "net/minecraft/world/entity/Entity#getCommandSenderWorld:()Lnet/minecraft/world/level/Level;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getCustomName:()Lnet/minecraft/network/chat/Component;",
+      "to": "net/minecraft/world/entity/Entity#getCustomName:()Lnet/minecraft/network/chat/Component;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getDisplayName:()Lnet/minecraft/network/chat/Component;",
+      "to": "net/minecraft/world/entity/Entity#getDisplayName:()Lnet/minecraft/network/chat/Component;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getEyePosition:()Lnet/minecraft/world/phys/Vec3;",
+      "to": "net/minecraft/world/entity/Entity#getEyePosition:()Lnet/minecraft/world/phys/Vec3;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getLookAngle:()Lnet/minecraft/world/phys/Vec3;",
+      "to": "net/minecraft/world/entity/Entity#getLookAngle:()Lnet/minecraft/world/phys/Vec3;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getName:()Lnet/minecraft/network/chat/Component;",
+      "to": "net/minecraft/world/entity/Entity#getName:()Lnet/minecraft/network/chat/Component;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getPassengers:()Ljava/util/List;",
+      "to": "net/minecraft/world/entity/Entity#getPassengers:()Ljava/util/List;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getPos:()Lnet/minecraft/world/phys/Vec3;",
+      "to": "net/minecraft/world/entity/Entity#getPos:()Lnet/minecraft/world/phys/Vec3;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getTags:()Ljava/util/Set;",
+      "to": "net/minecraft/world/entity/Entity#getTags:()Ljava/util/Set;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getType:()Lnet/minecraft/world/entity/EntityType;",
+      "to": "net/minecraft/world/entity/Entity#getType:()Lnet/minecraft/world/entity/EntityType;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getUUID:()Ljava/util/UUID;",
+      "to": "net/minecraft/world/entity/Entity#getUUID:()Ljava/util/UUID;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getVehicle:()Lnet/minecraft/world/entity/Entity;",
+      "to": "net/minecraft/world/entity/Entity#getVehicle:()Lnet/minecraft/world/entity/Entity;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getX:()D",
+      "to": "net/minecraft/world/entity/Entity#getX:()D"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getY:()D",
+      "to": "net/minecraft/world/entity/Entity#getY:()D"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#getZ:()D",
+      "to": "net/minecraft/world/entity/Entity#getZ:()D"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#hasCustomName:()Z",
+      "to": "net/minecraft/world/entity/Entity#hasCustomName:()Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#hasPassenger:(Lnet/minecraft/world/entity/Entity;)Z",
+      "to": "net/minecraft/world/entity/Entity#hasPassenger:(Lnet/minecraft/world/entity/Entity;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#isAlive:()Z",
+      "to": "net/minecraft/world/entity/Entity#isAlive:()Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#removeTag:(Ljava/lang/String;)Z",
+      "to": "net/minecraft/world/entity/Entity#removeTag:(Ljava/lang/String;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#setCustomName:(Lnet/minecraft/network/chat/Component;)V",
+      "to": "net/minecraft/world/entity/Entity#setCustomName:(Lnet/minecraft/network/chat/Component;)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#setPos:(DDD)V",
+      "to": "net/minecraft/world/entity/Entity#setPos:(DDD)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#startRiding:(Lnet/minecraft/world/entity/Entity;)Z",
+      "to": "net/minecraft/world/entity/Entity#startRiding:(Lnet/minecraft/world/entity/Entity;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/Entity#stopRiding:()V",
+      "to": "net/minecraft/world/entity/Entity#stopRiding:()V"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#addEffect:(Lnet/minecraft/world/effect/MobEffectInstance;)Z",
+      "to": "net/minecraft/world/entity/LivingEntity#addEffect:(Lnet/minecraft/world/effect/MobEffectInstance;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getAbsorptionAmount:()F",
+      "to": "net/minecraft/world/entity/LivingEntity#getAbsorptionAmount:()F"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getActiveEffects:()Ljava/util/Collection;",
+      "to": "net/minecraft/world/entity/LivingEntity#getActiveEffects:()Ljava/util/Collection;"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getArmorCoverPercentage:()F",
+      "to": "net/minecraft/world/entity/LivingEntity#getArmorCoverPercentage:()F"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getArmorValue:()I",
+      "to": "net/minecraft/world/entity/LivingEntity#getArmorValue:()I"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getEffect:(Lnet/minecraft/world/effect/MobEffect;)Lnet/minecraft/world/effect/MobEffectInstance;",
+      "to": "net/minecraft/world/entity/LivingEntity#getEffect:(Lnet/minecraft/world/effect/MobEffect;)Lnet/minecraft/world/effect/MobEffectInstance;"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getHealth:()F",
+      "to": "net/minecraft/world/entity/LivingEntity#getHealth:()F"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getItemBySlot:(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/entity/LivingEntity#getItemBySlot:(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getLastHurtByMob:()Lnet/minecraft/world/entity/LivingEntity;",
+      "to": "net/minecraft/world/entity/LivingEntity#getLastHurtByMob:()Lnet/minecraft/world/entity/LivingEntity;"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getLastHurtMob:()Lnet/minecraft/world/entity/LivingEntity;",
+      "to": "net/minecraft/world/entity/LivingEntity#getLastHurtMob:()Lnet/minecraft/world/entity/LivingEntity;"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getMainHandItem:()Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/entity/LivingEntity#getMainHandItem:()Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getMaxHealth:()F",
+      "to": "net/minecraft/world/entity/LivingEntity#getMaxHealth:()F"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#getOffhandItem:()Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/entity/LivingEntity#getOffhandItem:()Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#hasEffect:(Lnet/minecraft/world/effect/MobEffect;)Z",
+      "to": "net/minecraft/world/entity/LivingEntity#hasEffect:(Lnet/minecraft/world/effect/MobEffect;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#heal:(F)V",
+      "to": "net/minecraft/world/entity/LivingEntity#heal:(F)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#hurt:(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+      "to": "net/minecraft/world/entity/LivingEntity#hurt:(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#isDeadOrDying:()Z",
+      "to": "net/minecraft/world/entity/LivingEntity#isDeadOrDying:()Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#knockback:(DDD)V",
+      "to": "net/minecraft/world/entity/LivingEntity#knockback:(DDD)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#removeEffect:(Lnet/minecraft/world/effect/MobEffect;)Z",
+      "to": "net/minecraft/world/entity/LivingEntity#removeEffect:(Lnet/minecraft/world/effect/MobEffect;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#setAbsorptionAmount:(F)V",
+      "to": "net/minecraft/world/entity/LivingEntity#setAbsorptionAmount:(F)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#setHealth:(F)V",
+      "to": "net/minecraft/world/entity/LivingEntity#setHealth:(F)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/LivingEntity#setItemSlot:(Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/item/ItemStack;)V",
+      "to": "net/minecraft/world/entity/LivingEntity#setItemSlot:(Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/item/ItemStack;)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#addItem:(Lnet/minecraft/world/item/ItemStack;)Z",
+      "to": "net/minecraft/world/entity/player/Player#addItem:(Lnet/minecraft/world/item/ItemStack;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#attack:(Lnet/minecraft/world/entity/Entity;)V",
+      "to": "net/minecraft/world/entity/player/Player#attack:(Lnet/minecraft/world/entity/Entity;)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#canHarvestLevel:(Lnet/minecraft/world/level/block/state/BlockState;)Z",
+      "to": "net/minecraft/world/entity/player/Player#canHarvestLevel:(Lnet/minecraft/world/level/block/state/BlockState;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#drop:(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;",
+      "to": "net/minecraft/world/entity/player/Player#drop:(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#getAbilities:()Lnet/minecraft/world/entity/player/Abilities;",
+      "to": "net/minecraft/world/entity/player/Player#getAbilities:()Lnet/minecraft/world/entity/player/Abilities;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#getExperienceLevel:()I",
+      "to": "net/minecraft/world/entity/player/Player#getExperienceLevel:()I"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#getExperienceProgress:()F",
+      "to": "net/minecraft/world/entity/player/Player#getExperienceProgress:()F"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#getFoodData:()Lnet/minecraft/world/food/FoodData;",
+      "to": "net/minecraft/world/entity/player/Player#getFoodData:()Lnet/minecraft/world/food/FoodData;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#getGameProfile:()Lcom/mojang/authlib/GameProfile;",
+      "to": "net/minecraft/world/entity/player/Player#getGameProfile:()Lcom/mojang/authlib/GameProfile;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#getInventory:()Lnet/minecraft/world/entity/player/Inventory;",
+      "to": "net/minecraft/world/entity/player/Player#getInventory:()Lnet/minecraft/world/entity/player/Inventory;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#getMainHandItem:()Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/entity/player/Player#getMainHandItem:()Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#getOffhandItem:()Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/entity/player/Player#getOffhandItem:()Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#hurt:(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+      "to": "net/minecraft/world/entity/player/Player#hurt:(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#isCreative:()Z",
+      "to": "net/minecraft/world/entity/player/Player#isCreative:()Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#isSpectator:()Z",
+      "to": "net/minecraft/world/entity/player/Player#isSpectator:()Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#openMenu:(Lnet/minecraft/world/MenuProvider;)Ljava/util/OptionalInt;",
+      "to": "net/minecraft/world/entity/player/Player#openMenu:(Lnet/minecraft/world/MenuProvider;)Ljava/util/OptionalInt;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Player#sendSystemMessage:(Lnet/minecraft/network/chat/Component;)V",
+      "to": "net/minecraft/world/entity/player/Player#sendSystemMessage:(Lnet/minecraft/network/chat/Component;)V"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#getAdvancements:()Lnet/minecraft/server/PlayerAdvancements;",
+      "to": "net/minecraft/server/level/ServerPlayer#getAdvancements:()Lnet/minecraft/server/PlayerAdvancements;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#getConnection:()Lnet/minecraft/server/network/ServerGamePacketListenerImpl;",
+      "to": "net/minecraft/server/level/ServerPlayer#getConnection:()Lnet/minecraft/server/network/ServerGamePacketListenerImpl;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#getLevel:()Lnet/minecraft/server/level/ServerLevel;",
+      "to": "net/minecraft/server/level/ServerPlayer#getLevel:()Lnet/minecraft/server/level/ServerLevel;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#getPlayerIp:()Ljava/lang/String;",
+      "to": "net/minecraft/server/level/ServerPlayer#getPlayerIp:()Ljava/lang/String;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#getRecipeBook:()Lnet/minecraft/stats/ServerRecipeBook;",
+      "to": "net/minecraft/server/level/ServerPlayer#getRecipeBook:()Lnet/minecraft/stats/ServerRecipeBook;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#getRespawnPosition:()Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/server/level/ServerPlayer#getRespawnPosition:()Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#getServer:()Lnet/minecraft/server/MinecraftServer;",
+      "to": "net/minecraft/server/level/ServerPlayer#getServer:()Lnet/minecraft/server/MinecraftServer;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#getStats:()Lnet/minecraft/stats/ServerStatsCounter;",
+      "to": "net/minecraft/server/level/ServerPlayer#getStats:()Lnet/minecraft/stats/ServerStatsCounter;"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#isPvpAllowed:()Z",
+      "to": "net/minecraft/server/level/ServerPlayer#isPvpAllowed:()Z"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#onUpdateAbilities:()V",
+      "to": "net/minecraft/server/level/ServerPlayer#onUpdateAbilities:()V"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#setRespawnPosition:(Lnet/minecraft/core/BlockPos;ZF)V",
+      "to": "net/minecraft/server/level/ServerPlayer#setRespawnPosition:(Lnet/minecraft/core/BlockPos;ZF)V"
+    },
+    {
+      "from": "net/minecraft/server/level/ServerPlayer#teleportTo:(DDD)V",
+      "to": "net/minecraft/server/level/ServerPlayer#teleportTo:(DDD)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Inventory#add:(ILnet/minecraft/world/item/ItemStack;)Z",
+      "to": "net/minecraft/world/entity/player/Inventory#add:(ILnet/minecraft/world/item/ItemStack;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Inventory#armor:()Ljava/util/List;",
+      "to": "net/minecraft/world/entity/player/Inventory#armor:()Ljava/util/List;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Inventory#clearContent:()V",
+      "to": "net/minecraft/world/entity/player/Inventory#clearContent:()V"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Inventory#contains:(Lnet/minecraft/world/item/ItemStack;)Z",
+      "to": "net/minecraft/world/entity/player/Inventory#contains:(Lnet/minecraft/world/item/ItemStack;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Inventory#getFreeSlot:()I",
+      "to": "net/minecraft/world/entity/player/Inventory#getFreeSlot:()I"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Inventory#getSelected:()Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/entity/player/Inventory#getSelected:()Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Inventory#items:()Ljava/util/List;",
+      "to": "net/minecraft/world/entity/player/Inventory#items:()Ljava/util/List;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Inventory#offhand:()Ljava/util/List;",
+      "to": "net/minecraft/world/entity/player/Inventory#offhand:()Ljava/util/List;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Inventory#removeItem:(II)Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/entity/player/Inventory#removeItem:(II)Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/entity/player/Inventory#setItem:(ILnet/minecraft/world/item/ItemStack;)V",
+      "to": "net/minecraft/world/entity/player/Inventory#setItem:(ILnet/minecraft/world/item/ItemStack;)V"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#copy:()Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/item/ItemStack#copy:()Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#enchant:(Lnet/minecraft/world/item/enchantment/Enchantment;I)V",
+      "to": "net/minecraft/world/item/ItemStack#enchant:(Lnet/minecraft/world/item/enchantment/Enchantment;I)V"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getCount:()I",
+      "to": "net/minecraft/world/item/ItemStack#getCount:()I"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getDamageValue:()I",
+      "to": "net/minecraft/world/item/ItemStack#getDamageValue:()I"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getDescriptionId:()Ljava/lang/String;",
+      "to": "net/minecraft/world/item/ItemStack#getDescriptionId:()Ljava/lang/String;"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getEnchantmentLevel:(Lnet/minecraft/world/item/enchantment/Enchantment;)I",
+      "to": "net/minecraft/world/item/ItemStack#getEnchantmentLevel:(Lnet/minecraft/world/item/enchantment/Enchantment;)I"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getHoverName:()Lnet/minecraft/network/chat/Component;",
+      "to": "net/minecraft/world/item/ItemStack#getHoverName:()Lnet/minecraft/network/chat/Component;"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getItem:()Lnet/minecraft/world/item/Item;",
+      "to": "net/minecraft/world/item/ItemStack#getItem:()Lnet/minecraft/world/item/Item;"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getMaxDamage:()I",
+      "to": "net/minecraft/world/item/ItemStack#getMaxDamage:()I"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getMaxStackSize:()I",
+      "to": "net/minecraft/world/item/ItemStack#getMaxStackSize:()I"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getOrCreateTag:()Lnet/minecraft/nbt/CompoundTag;",
+      "to": "net/minecraft/world/item/ItemStack#getOrCreateTag:()Lnet/minecraft/nbt/CompoundTag;"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getTag:()Lnet/minecraft/nbt/CompoundTag;",
+      "to": "net/minecraft/world/item/ItemStack#getTag:()Lnet/minecraft/nbt/CompoundTag;"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#getUseDuration:()I",
+      "to": "net/minecraft/world/item/ItemStack#getUseDuration:()I"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#grow:(I)V",
+      "to": "net/minecraft/world/item/ItemStack#grow:(I)V"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#hasTag:()Z",
+      "to": "net/minecraft/world/item/ItemStack#hasTag:()Z"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#hurt:(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)Z",
+      "to": "net/minecraft/world/item/ItemStack#hurt:(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)Z"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#isDamaged:()Z",
+      "to": "net/minecraft/world/item/ItemStack#isDamaged:()Z"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#isEmpty:()Z",
+      "to": "net/minecraft/world/item/ItemStack#isEmpty:()Z"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#isEnchanted:()Z",
+      "to": "net/minecraft/world/item/ItemStack#isEnchanted:()Z"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#isSameItem:(Lnet/minecraft/world/item/ItemStack;)Z",
+      "to": "net/minecraft/world/item/ItemStack#isSameItem:(Lnet/minecraft/world/item/ItemStack;)Z"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#isSameItemSameComponents:(Lnet/minecraft/world/item/ItemStack;)Z",
+      "to": "net/minecraft/world/item/ItemStack#isSameItemSameComponents:(Lnet/minecraft/world/item/ItemStack;)Z"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#setCount:(I)V",
+      "to": "net/minecraft/world/item/ItemStack#setCount:(I)V"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#setDamageValue:(I)V",
+      "to": "net/minecraft/world/item/ItemStack#setDamageValue:(I)V"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#setTag:(Lnet/minecraft/nbt/CompoundTag;)V",
+      "to": "net/minecraft/world/item/ItemStack#setTag:(Lnet/minecraft/nbt/CompoundTag;)V"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#shrink:(I)V",
+      "to": "net/minecraft/world/item/ItemStack#shrink:(I)V"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#split:(I)Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/item/ItemStack#split:(I)Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/item/ItemStack#useOn:(Lnet/minecraft/world/item/context/UseOnContext;)Lnet/minecraft/world/InteractionResult;",
+      "to": "net/minecraft/world/item/ItemStack#useOn:(Lnet/minecraft/world/item/context/UseOnContext;)Lnet/minecraft/world/InteractionResult;"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#getDescriptionId:()Ljava/lang/String;",
+      "to": "net/minecraft/world/item/Item#getDescriptionId:()Ljava/lang/String;"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#getEnchantmentValue:()I",
+      "to": "net/minecraft/world/item/Item#getEnchantmentValue:()I"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#getFoodProperties:()Lnet/minecraft/world/food/FoodProperties;",
+      "to": "net/minecraft/world/item/Item#getFoodProperties:()Lnet/minecraft/world/food/FoodProperties;"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#getMaxDamage:()I",
+      "to": "net/minecraft/world/item/Item#getMaxDamage:()I"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#getMaxStackSize:()I",
+      "to": "net/minecraft/world/item/Item#getMaxStackSize:()I"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#getName:(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/network/chat/Component;",
+      "to": "net/minecraft/world/item/Item#getName:(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/network/chat/Component;"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#isCorrectToolForDrops:(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/block/state/BlockState;)Z",
+      "to": "net/minecraft/world/item/Item#isCorrectToolForDrops:(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/block/state/BlockState;)Z"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#isEdible:()Z",
+      "to": "net/minecraft/world/item/Item#isEdible:()Z"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#isEnchantable:(Lnet/minecraft/world/item/ItemStack;)Z",
+      "to": "net/minecraft/world/item/Item#isEnchantable:(Lnet/minecraft/world/item/ItemStack;)Z"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#use:(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResultHolder;",
+      "to": "net/minecraft/world/item/Item#use:(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResultHolder;"
+    },
+    {
+      "from": "net/minecraft/world/item/Item#useOn:(Lnet/minecraft/world/item/context/UseOnContext;)Lnet/minecraft/world/InteractionResult;",
+      "to": "net/minecraft/world/item/Item#useOn:(Lnet/minecraft/world/item/context/UseOnContext;)Lnet/minecraft/world/InteractionResult;"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#above:()Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/core/BlockPos#above:()Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#below:()Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/core/BlockPos#below:()Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#betweenClosed:(IIIIII)Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/core/BlockPos#betweenClosed:(IIIIII)Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#containing:(DDD)Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/core/BlockPos#containing:(DDD)Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#east:()Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/core/BlockPos#east:()Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#getX:()I",
+      "to": "net/minecraft/core/BlockPos#getX:()I"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#getY:()I",
+      "to": "net/minecraft/core/BlockPos#getY:()I"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#getZ:()I",
+      "to": "net/minecraft/core/BlockPos#getZ:()I"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#north:()Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/core/BlockPos#north:()Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#offset:(III)Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/core/BlockPos#offset:(III)Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#relative:(Lnet/minecraft/core/Direction;)Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/core/BlockPos#relative:(Lnet/minecraft/core/Direction;)Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#south:()Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/core/BlockPos#south:()Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/core/BlockPos#west:()Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/core/BlockPos#west:()Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#add:(DDD)Lnet/minecraft/world/phys/Vec3;",
+      "to": "net/minecraft/world/phys/Vec3#add:(DDD)Lnet/minecraft/world/phys/Vec3;"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#cross:(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;",
+      "to": "net/minecraft/world/phys/Vec3#cross:(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#distanceTo:(Lnet/minecraft/world/phys/Vec3;)D",
+      "to": "net/minecraft/world/phys/Vec3#distanceTo:(Lnet/minecraft/world/phys/Vec3;)D"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#dot:(Lnet/minecraft/world/phys/Vec3;)D",
+      "to": "net/minecraft/world/phys/Vec3#dot:(Lnet/minecraft/world/phys/Vec3;)D"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#horizontalDistance:()D",
+      "to": "net/minecraft/world/phys/Vec3#horizontalDistance:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#length:()D",
+      "to": "net/minecraft/world/phys/Vec3#length:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#multiply:(D)Lnet/minecraft/world/phys/Vec3;",
+      "to": "net/minecraft/world/phys/Vec3#multiply:(D)Lnet/minecraft/world/phys/Vec3;"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#normalize:()Lnet/minecraft/world/phys/Vec3;",
+      "to": "net/minecraft/world/phys/Vec3#normalize:()Lnet/minecraft/world/phys/Vec3;"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#subtract:(DDD)Lnet/minecraft/world/phys/Vec3;",
+      "to": "net/minecraft/world/phys/Vec3#subtract:(DDD)Lnet/minecraft/world/phys/Vec3;"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#x:()D",
+      "to": "net/minecraft/world/phys/Vec3#x:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#y:()D",
+      "to": "net/minecraft/world/phys/Vec3#y:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/Vec3#z:()D",
+      "to": "net/minecraft/world/phys/Vec3#z:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#contains:(DDD)Z",
+      "to": "net/minecraft/world/phys/AABB#contains:(DDD)Z"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#expandTowards:(DDD)Lnet/minecraft/world/phys/AABB;",
+      "to": "net/minecraft/world/phys/AABB#expandTowards:(DDD)Lnet/minecraft/world/phys/AABB;"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#getCenter:()Lnet/minecraft/world/phys/Vec3;",
+      "to": "net/minecraft/world/phys/AABB#getCenter:()Lnet/minecraft/world/phys/Vec3;"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#inflate:(D)Lnet/minecraft/world/phys/AABB;",
+      "to": "net/minecraft/world/phys/AABB#inflate:(D)Lnet/minecraft/world/phys/AABB;"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#intersects:(Lnet/minecraft/world/phys/AABB;)Z",
+      "to": "net/minecraft/world/phys/AABB#intersects:(Lnet/minecraft/world/phys/AABB;)Z"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#maxX:()D",
+      "to": "net/minecraft/world/phys/AABB#maxX:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#maxY:()D",
+      "to": "net/minecraft/world/phys/AABB#maxY:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#maxZ:()D",
+      "to": "net/minecraft/world/phys/AABB#maxZ:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#minX:()D",
+      "to": "net/minecraft/world/phys/AABB#minX:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#minY:()D",
+      "to": "net/minecraft/world/phys/AABB#minY:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#minZ:()D",
+      "to": "net/minecraft/world/phys/AABB#minZ:()D"
+    },
+    {
+      "from": "net/minecraft/world/phys/AABB#move:(DDD)Lnet/minecraft/world/phys/AABB;",
+      "to": "net/minecraft/world/phys/AABB#move:(DDD)Lnet/minecraft/world/phys/AABB;"
+    },
+    {
+      "from": "net/minecraft/world/phys/shapes/VoxelShape#bounds:()Lnet/minecraft/world/phys/AABB;",
+      "to": "net/minecraft/world/phys/shapes/VoxelShape#bounds:()Lnet/minecraft/world/phys/AABB;"
+    },
+    {
+      "from": "net/minecraft/world/phys/shapes/VoxelShape#isEmpty:()Z",
+      "to": "net/minecraft/world/phys/shapes/VoxelShape#isEmpty:()Z"
+    },
+    {
+      "from": "net/minecraft/world/phys/shapes/VoxelShape#toAabbs:()Ljava/util/List;",
+      "to": "net/minecraft/world/phys/shapes/VoxelShape#toAabbs:()Ljava/util/List;"
+    },
+    {
+      "from": "net/minecraft/core/Direction#getClockWise:()Lnet/minecraft/core/Direction;",
+      "to": "net/minecraft/core/Direction#getClockWise:()Lnet/minecraft/core/Direction;"
+    },
+    {
+      "from": "net/minecraft/core/Direction#getCounterClockWise:()Lnet/minecraft/core/Direction;",
+      "to": "net/minecraft/core/Direction#getCounterClockWise:()Lnet/minecraft/core/Direction;"
+    },
+    {
+      "from": "net/minecraft/core/Direction#getNormal:()Lnet/minecraft/core/Vec3i;",
+      "to": "net/minecraft/core/Direction#getNormal:()Lnet/minecraft/core/Vec3i;"
+    },
+    {
+      "from": "net/minecraft/core/Direction#getOpposite:()Lnet/minecraft/core/Direction;",
+      "to": "net/minecraft/core/Direction#getOpposite:()Lnet/minecraft/core/Direction;"
+    },
+    {
+      "from": "net/minecraft/core/Direction#step:()Lnet/minecraft/core/Vec3i;",
+      "to": "net/minecraft/core/Direction#step:()Lnet/minecraft/core/Vec3i;"
+    },
+    {
+      "from": "net/minecraft/core/Direction#values:()[Lnet/minecraft/core/Direction;",
+      "to": "net/minecraft/core/Direction#values:()[Lnet/minecraft/core/Direction;"
+    },
+    {
+      "from": "net/minecraft/resources/ResourceLocation#getNamespace:()Ljava/lang/String;",
+      "to": "net/minecraft/resources/ResourceLocation#getNamespace:()Ljava/lang/String;"
+    },
+    {
+      "from": "net/minecraft/resources/ResourceLocation#getPath:()Ljava/lang/String;",
+      "to": "net/minecraft/resources/ResourceLocation#getPath:()Ljava/lang/String;"
+    },
+    {
+      "from": "net/minecraft/resources/ResourceLocation#of:(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;",
+      "to": "net/minecraft/resources/ResourceLocation#of:(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;"
+    },
+    {
+      "from": "net/minecraft/resources/ResourceLocation#parse:(Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;",
+      "to": "net/minecraft/resources/ResourceLocation#parse:(Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;"
+    },
+    {
+      "from": "net/minecraft/resources/ResourceLocation#toString:()Ljava/lang/String;",
+      "to": "net/minecraft/resources/ResourceLocation#toString:()Ljava/lang/String;"
+    },
+    {
+      "from": "net/minecraft/resources/ResourceLocation#withPrefix:(Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;",
+      "to": "net/minecraft/resources/ResourceLocation#withPrefix:(Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;"
+    },
+    {
+      "from": "net/minecraft/server/MinecraftServer#getAllLevels:()Ljava/lang/Iterable;",
+      "to": "net/minecraft/server/MinecraftServer#getAllLevels:()Ljava/lang/Iterable;"
+    },
+    {
+      "from": "net/minecraft/server/MinecraftServer#getCommands:()Lnet/minecraft/commands/Commands;",
+      "to": "net/minecraft/server/MinecraftServer#getCommands:()Lnet/minecraft/commands/Commands;"
+    },
+    {
+      "from": "net/minecraft/server/MinecraftServer#getLevel:(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/server/level/ServerLevel;",
+      "to": "net/minecraft/server/MinecraftServer#getLevel:(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/server/level/ServerLevel;"
+    },
+    {
+      "from": "net/minecraft/server/MinecraftServer#getPlayerCount:()I",
+      "to": "net/minecraft/server/MinecraftServer#getPlayerCount:()I"
+    },
+    {
+      "from": "net/minecraft/server/MinecraftServer#getPlayerList:()Lnet/minecraft/server/players/PlayerList;",
+      "to": "net/minecraft/server/MinecraftServer#getPlayerList:()Lnet/minecraft/server/players/PlayerList;"
+    },
+    {
+      "from": "net/minecraft/server/MinecraftServer#getScoreboard:()Lnet/minecraft/world/scores/Scoreboard;",
+      "to": "net/minecraft/server/MinecraftServer#getScoreboard:()Lnet/minecraft/world/scores/Scoreboard;"
+    },
+    {
+      "from": "net/minecraft/server/MinecraftServer#getTPS:()[D",
+      "to": "net/minecraft/server/MinecraftServer#getTPS:()[D"
+    },
+    {
+      "from": "net/minecraft/server/MinecraftServer#getTickCount:()I",
+      "to": "net/minecraft/server/MinecraftServer#getTickCount:()I"
+    },
+    {
+      "from": "net/minecraft/server/MinecraftServer#isRunning:()Z",
+      "to": "net/minecraft/server/MinecraftServer#isRunning:()Z"
+    },
+    {
+      "from": "net/minecraft/server/MinecraftServer#overworld:()Lnet/minecraft/server/level/ServerLevel;",
+      "to": "net/minecraft/server/MinecraftServer#overworld:()Lnet/minecraft/server/level/ServerLevel;"
+    },
+    {
+      "from": "net/minecraft/server/players/PlayerList#broadcastToAll:(Lnet/minecraft/network/protocol/Packet;)V",
+      "to": "net/minecraft/server/players/PlayerList#broadcastToAll:(Lnet/minecraft/network/protocol/Packet;)V"
+    },
+    {
+      "from": "net/minecraft/server/players/PlayerList#getMaxPlayers:()I",
+      "to": "net/minecraft/server/players/PlayerList#getMaxPlayers:()I"
+    },
+    {
+      "from": "net/minecraft/server/players/PlayerList#getPlayer:(Ljava/util/UUID;)Lnet/minecraft/server/level/ServerPlayer;",
+      "to": "net/minecraft/server/players/PlayerList#getPlayer:(Ljava/util/UUID;)Lnet/minecraft/server/level/ServerPlayer;"
+    },
+    {
+      "from": "net/minecraft/server/players/PlayerList#getPlayerByName:(Ljava/lang/String;)Lnet/minecraft/server/level/ServerPlayer;",
+      "to": "net/minecraft/server/players/PlayerList#getPlayerByName:(Ljava/lang/String;)Lnet/minecraft/server/level/ServerPlayer;"
+    },
+    {
+      "from": "net/minecraft/server/players/PlayerList#getPlayerCount:()I",
+      "to": "net/minecraft/server/players/PlayerList#getPlayerCount:()I"
+    },
+    {
+      "from": "net/minecraft/server/players/PlayerList#getPlayers:()Ljava/util/List;",
+      "to": "net/minecraft/server/players/PlayerList#getPlayers:()Ljava/util/List;"
+    },
+    {
+      "from": "net/minecraft/server/players/PlayerList#isOp:(Lcom/mojang/authlib/GameProfile;)Z",
+      "to": "net/minecraft/server/players/PlayerList#isOp:(Lcom/mojang/authlib/GameProfile;)Z"
+    },
+    {
+      "from": "net/minecraft/network/chat/Component#empty:()Lnet/minecraft/network/chat/Component;",
+      "to": "net/minecraft/network/chat/Component#empty:()Lnet/minecraft/network/chat/Component;"
+    },
+    {
+      "from": "net/minecraft/network/chat/Component#literal:(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;",
+      "to": "net/minecraft/network/chat/Component#literal:(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+    },
+    {
+      "from": "net/minecraft/network/chat/Component#translatable:(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;",
+      "to": "net/minecraft/network/chat/Component#translatable:(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+    },
+    {
+      "from": "net/minecraft/network/chat/Component#translatableWithFallback:(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;",
+      "to": "net/minecraft/network/chat/Component#translatableWithFallback:(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+    },
+    {
+      "from": "net/minecraft/network/chat/MutableComponent#append:(Lnet/minecraft/network/chat/Component;)Lnet/minecraft/network/chat/MutableComponent;",
+      "to": "net/minecraft/network/chat/MutableComponent#append:(Lnet/minecraft/network/chat/Component;)Lnet/minecraft/network/chat/MutableComponent;"
+    },
+    {
+      "from": "net/minecraft/network/chat/MutableComponent#getString:()Ljava/lang/String;",
+      "to": "net/minecraft/network/chat/MutableComponent#getString:()Ljava/lang/String;"
+    },
+    {
+      "from": "net/minecraft/network/chat/MutableComponent#setStyle:(Lnet/minecraft/network/chat/Style;)Lnet/minecraft/network/chat/MutableComponent;",
+      "to": "net/minecraft/network/chat/MutableComponent#setStyle:(Lnet/minecraft/network/chat/Style;)Lnet/minecraft/network/chat/MutableComponent;"
+    },
+    {
+      "from": "net/minecraft/network/chat/MutableComponent#withStyle:(Lnet/minecraft/network/chat/Style;)Lnet/minecraft/network/chat/MutableComponent;",
+      "to": "net/minecraft/network/chat/MutableComponent#withStyle:(Lnet/minecraft/network/chat/Style;)Lnet/minecraft/network/chat/MutableComponent;"
+    },
+    {
+      "from": "net/minecraft/network/chat/Style#EMPTY:()Lnet/minecraft/network/chat/Style;",
+      "to": "net/minecraft/network/chat/Style#EMPTY:()Lnet/minecraft/network/chat/Style;"
+    },
+    {
+      "from": "net/minecraft/network/chat/Style#withBold:(Ljava/lang/Boolean;)Lnet/minecraft/network/chat/Style;",
+      "to": "net/minecraft/network/chat/Style#withBold:(Ljava/lang/Boolean;)Lnet/minecraft/network/chat/Style;"
+    },
+    {
+      "from": "net/minecraft/network/chat/Style#withClickEvent:(Lnet/minecraft/network/chat/ClickEvent;)Lnet/minecraft/network/chat/Style;",
+      "to": "net/minecraft/network/chat/Style#withClickEvent:(Lnet/minecraft/network/chat/ClickEvent;)Lnet/minecraft/network/chat/Style;"
+    },
+    {
+      "from": "net/minecraft/network/chat/Style#withColor:(Lnet/minecraft/network/chat/TextColor;)Lnet/minecraft/network/chat/Style;",
+      "to": "net/minecraft/network/chat/Style#withColor:(Lnet/minecraft/network/chat/TextColor;)Lnet/minecraft/network/chat/Style;"
+    },
+    {
+      "from": "net/minecraft/network/chat/Style#withHoverEvent:(Lnet/minecraft/network/chat/HoverEvent;)Lnet/minecraft/network/chat/Style;",
+      "to": "net/minecraft/network/chat/Style#withHoverEvent:(Lnet/minecraft/network/chat/HoverEvent;)Lnet/minecraft/network/chat/Style;"
+    },
+    {
+      "from": "net/minecraft/network/chat/Style#withItalic:(Ljava/lang/Boolean;)Lnet/minecraft/network/chat/Style;",
+      "to": "net/minecraft/network/chat/Style#withItalic:(Ljava/lang/Boolean;)Lnet/minecraft/network/chat/Style;"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#copy:()Lnet/minecraft/nbt/CompoundTag;",
+      "to": "net/minecraft/nbt/CompoundTag#copy:()Lnet/minecraft/nbt/CompoundTag;"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#get:(Ljava/lang/String;)Lnet/minecraft/nbt/Tag;",
+      "to": "net/minecraft/nbt/CompoundTag#get:(Ljava/lang/String;)Lnet/minecraft/nbt/Tag;"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#getAllKeys:()Ljava/util/Set;",
+      "to": "net/minecraft/nbt/CompoundTag#getAllKeys:()Ljava/util/Set;"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#getBoolean:(Ljava/lang/String;)Z",
+      "to": "net/minecraft/nbt/CompoundTag#getBoolean:(Ljava/lang/String;)Z"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#getCompound:(Ljava/lang/String;)Lnet/minecraft/nbt/CompoundTag;",
+      "to": "net/minecraft/nbt/CompoundTag#getCompound:(Ljava/lang/String;)Lnet/minecraft/nbt/CompoundTag;"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#getDouble:(Ljava/lang/String;)D",
+      "to": "net/minecraft/nbt/CompoundTag#getDouble:(Ljava/lang/String;)D"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#getFloat:(Ljava/lang/String;)F",
+      "to": "net/minecraft/nbt/CompoundTag#getFloat:(Ljava/lang/String;)F"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#getInt:(Ljava/lang/String;)I",
+      "to": "net/minecraft/nbt/CompoundTag#getInt:(Ljava/lang/String;)I"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#getList:(Ljava/lang/String;I)Lnet/minecraft/nbt/ListTag;",
+      "to": "net/minecraft/nbt/CompoundTag#getList:(Ljava/lang/String;I)Lnet/minecraft/nbt/ListTag;"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#getLong:(Ljava/lang/String;)J",
+      "to": "net/minecraft/nbt/CompoundTag#getLong:(Ljava/lang/String;)J"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#getString:(Ljava/lang/String;)Ljava/lang/String;",
+      "to": "net/minecraft/nbt/CompoundTag#getString:(Ljava/lang/String;)Ljava/lang/String;"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#hasKey:(Ljava/lang/String;)Z",
+      "to": "net/minecraft/nbt/CompoundTag#hasKey:(Ljava/lang/String;)Z"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#isEmpty:()Z",
+      "to": "net/minecraft/nbt/CompoundTag#isEmpty:()Z"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#merge:(Lnet/minecraft/nbt/CompoundTag;)V",
+      "to": "net/minecraft/nbt/CompoundTag#merge:(Lnet/minecraft/nbt/CompoundTag;)V"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#put:(Ljava/lang/String;Lnet/minecraft/nbt/Tag;)Lnet/minecraft/nbt/Tag;",
+      "to": "net/minecraft/nbt/CompoundTag#put:(Ljava/lang/String;Lnet/minecraft/nbt/Tag;)Lnet/minecraft/nbt/Tag;"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#putInt:(Ljava/lang/String;I)V",
+      "to": "net/minecraft/nbt/CompoundTag#putInt:(Ljava/lang/String;I)V"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#putString:(Ljava/lang/String;Ljava/lang/String;)V",
+      "to": "net/minecraft/nbt/CompoundTag#putString:(Ljava/lang/String;Ljava/lang/String;)V"
+    },
+    {
+      "from": "net/minecraft/nbt/CompoundTag#remove:(Ljava/lang/String;)V",
+      "to": "net/minecraft/nbt/CompoundTag#remove:(Ljava/lang/String;)V"
+    },
+    {
+      "from": "net/minecraft/nbt/ListTag#add:(Lnet/minecraft/nbt/Tag;)Z",
+      "to": "net/minecraft/nbt/ListTag#add:(Lnet/minecraft/nbt/Tag;)Z"
+    },
+    {
+      "from": "net/minecraft/nbt/ListTag#clear:()V",
+      "to": "net/minecraft/nbt/ListTag#clear:()V"
+    },
+    {
+      "from": "net/minecraft/nbt/ListTag#get:(I)Lnet/minecraft/nbt/Tag;",
+      "to": "net/minecraft/nbt/ListTag#get:(I)Lnet/minecraft/nbt/Tag;"
+    },
+    {
+      "from": "net/minecraft/nbt/ListTag#getCompound:(I)Lnet/minecraft/nbt/CompoundTag;",
+      "to": "net/minecraft/nbt/ListTag#getCompound:(I)Lnet/minecraft/nbt/CompoundTag;"
+    },
+    {
+      "from": "net/minecraft/nbt/ListTag#isEmpty:()Z",
+      "to": "net/minecraft/nbt/ListTag#isEmpty:()Z"
+    },
+    {
+      "from": "net/minecraft/nbt/ListTag#size:()I",
+      "to": "net/minecraft/nbt/ListTag#size:()I"
+    },
+    {
+      "from": "net/minecraft/core/registries/BuiltInRegistries#BLOCK:Lnet/minecraft/core/Registry;",
+      "to": "net/minecraft/core/registries/BuiltInRegistries#BLOCK:Lnet/minecraft/core/Registry;"
+    },
+    {
+      "from": "net/minecraft/core/registries/BuiltInRegistries#BLOCK_ENTITY_TYPE:Lnet/minecraft/core/Registry;",
+      "to": "net/minecraft/core/registries/BuiltInRegistries#BLOCK_ENTITY_TYPE:Lnet/minecraft/core/Registry;"
+    },
+    {
+      "from": "net/minecraft/core/registries/BuiltInRegistries#ENCHANTMENT:Lnet/minecraft/core/Registry;",
+      "to": "net/minecraft/core/registries/BuiltInRegistries#ENCHANTMENT:Lnet/minecraft/core/Registry;"
+    },
+    {
+      "from": "net/minecraft/core/registries/BuiltInRegistries#ENTITY_TYPE:Lnet/minecraft/core/Registry;",
+      "to": "net/minecraft/core/registries/BuiltInRegistries#ENTITY_TYPE:Lnet/minecraft/core/Registry;"
+    },
+    {
+      "from": "net/minecraft/core/registries/BuiltInRegistries#ITEM:Lnet/minecraft/core/Registry;",
+      "to": "net/minecraft/core/registries/BuiltInRegistries#ITEM:Lnet/minecraft/core/Registry;"
+    },
+    {
+      "from": "net/minecraft/core/registries/BuiltInRegistries#MENU:Lnet/minecraft/core/Registry;",
+      "to": "net/minecraft/core/registries/BuiltInRegistries#MENU:Lnet/minecraft/core/Registry;"
+    },
+    {
+      "from": "net/minecraft/core/registries/BuiltInRegistries#MOB_EFFECT:Lnet/minecraft/core/Registry;",
+      "to": "net/minecraft/core/registries/BuiltInRegistries#MOB_EFFECT:Lnet/minecraft/core/Registry;"
+    },
+    {
+      "from": "net/minecraft/core/registries/BuiltInRegistries#RECIPE_TYPE:Lnet/minecraft/core/Registry;",
+      "to": "net/minecraft/core/registries/BuiltInRegistries#RECIPE_TYPE:Lnet/minecraft/core/Registry;"
+    },
+    {
+      "from": "net/minecraft/core/Registry#containsKey:(Lnet/minecraft/resources/ResourceLocation;)Z",
+      "to": "net/minecraft/core/Registry#containsKey:(Lnet/minecraft/resources/ResourceLocation;)Z"
+    },
+    {
+      "from": "net/minecraft/core/Registry#entrySet:()Ljava/util/Set;",
+      "to": "net/minecraft/core/Registry#entrySet:()Ljava/util/Set;"
+    },
+    {
+      "from": "net/minecraft/core/Registry#get:(Lnet/minecraft/resources/ResourceLocation;)Ljava/lang/Object;",
+      "to": "net/minecraft/core/Registry#get:(Lnet/minecraft/resources/ResourceLocation;)Ljava/lang/Object;"
+    },
+    {
+      "from": "net/minecraft/core/Registry#getId:(Ljava/lang/Object;)I",
+      "to": "net/minecraft/core/Registry#getId:(Ljava/lang/Object;)I"
+    },
+    {
+      "from": "net/minecraft/core/Registry#getKey:(Ljava/lang/Object;)Lnet/minecraft/resources/ResourceLocation;",
+      "to": "net/minecraft/core/Registry#getKey:(Ljava/lang/Object;)Lnet/minecraft/resources/ResourceLocation;"
+    },
+    {
+      "from": "net/minecraft/core/Registry#size:()I",
+      "to": "net/minecraft/core/Registry#size:()I"
+    },
+    {
+      "from": "net/minecraft/core/Registry#stream:()Ljava/util/stream/Stream;",
+      "to": "net/minecraft/core/Registry#stream:()Ljava/util/stream/Stream;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#DOORS:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#DOORS:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#FENCES:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#FENCES:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#LOGS:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#LOGS:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#MINEABLE_WITH_AXE:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#MINEABLE_WITH_AXE:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#MINEABLE_WITH_PICKAXE:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#MINEABLE_WITH_PICKAXE:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#MINEABLE_WITH_SHOVEL:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#MINEABLE_WITH_SHOVEL:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#NEEDS_DIAMOND_TOOL:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#NEEDS_DIAMOND_TOOL:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#NEEDS_IRON_TOOL:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#NEEDS_IRON_TOOL:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#PLANKS:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#PLANKS:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#SLABS:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#SLABS:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#STAIRS:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#STAIRS:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/BlockTags#WALLS:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/BlockTags#WALLS:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/ItemTags#AXES:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/ItemTags#AXES:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/ItemTags#FOOD:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/ItemTags#FOOD:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/ItemTags#HOES:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/ItemTags#HOES:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/ItemTags#PICKAXES:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/ItemTags#PICKAXES:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/ItemTags#SHOVELS:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/ItemTags#SHOVELS:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/tags/ItemTags#SWORDS:Lnet/minecraft/tags/TagKey;",
+      "to": "net/minecraft/tags/ItemTags#SWORDS:Lnet/minecraft/tags/TagKey;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/BlockEntity#getBlockPos:()Lnet/minecraft/core/BlockPos;",
+      "to": "net/minecraft/world/level/block/entity/BlockEntity#getBlockPos:()Lnet/minecraft/core/BlockPos;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/BlockEntity#getBlockState:()Lnet/minecraft/world/level/block/state/BlockState;",
+      "to": "net/minecraft/world/level/block/entity/BlockEntity#getBlockState:()Lnet/minecraft/world/level/block/state/BlockState;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/BlockEntity#getLevel:()Lnet/minecraft/world/level/Level;",
+      "to": "net/minecraft/world/level/block/entity/BlockEntity#getLevel:()Lnet/minecraft/world/level/Level;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/BlockEntity#getType:()Lnet/minecraft/world/level/block/entity/BlockEntityType;",
+      "to": "net/minecraft/world/level/block/entity/BlockEntity#getType:()Lnet/minecraft/world/level/block/entity/BlockEntityType;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/BlockEntity#hasLevel:()Z",
+      "to": "net/minecraft/world/level/block/entity/BlockEntity#hasLevel:()Z"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/BlockEntity#loadAdditional:(Lnet/minecraft/nbt/CompoundTag;)V",
+      "to": "net/minecraft/world/level/block/entity/BlockEntity#loadAdditional:(Lnet/minecraft/nbt/CompoundTag;)V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/BlockEntity#saveAdditional:(Lnet/minecraft/nbt/CompoundTag;)V",
+      "to": "net/minecraft/world/level/block/entity/BlockEntity#saveAdditional:(Lnet/minecraft/nbt/CompoundTag;)V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/BlockEntity#setChanged:()V",
+      "to": "net/minecraft/world/level/block/entity/BlockEntity#setChanged:()V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/ChestBlockEntity#clearContent:()V",
+      "to": "net/minecraft/world/level/block/entity/ChestBlockEntity#clearContent:()V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/ChestBlockEntity#getContainerSize:()I",
+      "to": "net/minecraft/world/level/block/entity/ChestBlockEntity#getContainerSize:()I"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/ChestBlockEntity#getItem:(I)Lnet/minecraft/world/item/ItemStack;",
+      "to": "net/minecraft/world/level/block/entity/ChestBlockEntity#getItem:(I)Lnet/minecraft/world/item/ItemStack;"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/ChestBlockEntity#isEmpty:()Z",
+      "to": "net/minecraft/world/level/block/entity/ChestBlockEntity#isEmpty:()Z"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/ChestBlockEntity#setItem:(ILnet/minecraft/world/item/ItemStack;)V",
+      "to": "net/minecraft/world/level/block/entity/ChestBlockEntity#setItem:(ILnet/minecraft/world/item/ItemStack;)V"
+    },
+    {
+      "from": "net/minecraft/world/level/block/entity/ChestBlockEntity#stillValid:(Lnet/minecraft/world/entity/player/Player;)Z",
+      "to": "net/minecraft/world/level/block/entity/ChestBlockEntity#stillValid:(Lnet/minecraft/world/entity/player/Player;)Z"
+    },
+    {
+      "from": "net/minecraft/world/inventory/MenuType#ANVIL:Lnet/minecraft/world/inventory/MenuType;",
+      "to": "net/minecraft/world/inventory/MenuType#ANVIL:Lnet/minecraft/world/inventory/MenuType;"
+    },
+    {
+      "from": "net/minecraft/world/inventory/MenuType#CHEST_9x1:Lnet/minecraft/world/inventory/MenuType;",
+      "to": "net/minecraft/world/inventory/MenuType#CHEST_9x1:Lnet/minecraft/world/inventory/MenuType;"
+    },
+    {
+      "from": "net/minecraft/world/inventory/MenuType#CHEST_9x3:Lnet/minecraft/world/inventory/MenuType;",
+      "to": "net/minecraft/world/inventory/MenuType#CHEST_9x3:Lnet/minecraft/world/inventory/MenuType;"
+    },
+    {
+      "from": "net/minecraft/world/inventory/MenuType#CHEST_9x6:Lnet/minecraft/world/inventory/MenuType;",
+      "to": "net/minecraft/world/inventory/MenuType#CHEST_9x6:Lnet/minecraft/world/inventory/MenuType;"
+    },
+    {
+      "from": "net/minecraft/world/inventory/MenuType#CRAFTING:Lnet/minecraft/world/inventory/MenuType;",
+      "to": "net/minecraft/world/inventory/MenuType#CRAFTING:Lnet/minecraft/world/inventory/MenuType;"
+    },
+    {
+      "from": "net/minecraft/world/inventory/MenuType#FURNACE:Lnet/minecraft/world/inventory/MenuType;",
+      "to": "net/minecraft/world/inventory/MenuType#FURNACE:Lnet/minecraft/world/inventory/MenuType;"
+    },
+    {
+      "from": "net/minecraft/world/inventory/MenuType#HOPPER:Lnet/minecraft/world/inventory/MenuType;",
+      "to": "net/minecraft/world/inventory/MenuType#HOPPER:Lnet/minecraft/world/inventory/MenuType;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Mob#getNavigation:()Lnet/minecraft/world/entity/ai/navigation/PathNavigation;",
+      "to": "net/minecraft/world/entity/Mob#getNavigation:()Lnet/minecraft/world/entity/ai/navigation/PathNavigation;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Mob#getTarget:()Lnet/minecraft/world/entity/LivingEntity;",
+      "to": "net/minecraft/world/entity/Mob#getTarget:()Lnet/minecraft/world/entity/LivingEntity;"
+    },
+    {
+      "from": "net/minecraft/world/entity/Mob#isAggressive:()Z",
+      "to": "net/minecraft/world/entity/Mob#isAggressive:()Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/Mob#isPersistenceRequired:()Z",
+      "to": "net/minecraft/world/entity/Mob#isPersistenceRequired:()Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/Mob#setAggressive:(Z)V",
+      "to": "net/minecraft/world/entity/Mob#setAggressive:(Z)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/Mob#setPersistenceRequired:()V",
+      "to": "net/minecraft/world/entity/Mob#setPersistenceRequired:()V"
+    },
+    {
+      "from": "net/minecraft/world/entity/Mob#setTarget:(Lnet/minecraft/world/entity/LivingEntity;)V",
+      "to": "net/minecraft/world/entity/Mob#setTarget:(Lnet/minecraft/world/entity/LivingEntity;)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/animal/Animal#getAge:()I",
+      "to": "net/minecraft/world/entity/animal/Animal#getAge:()I"
+    },
+    {
+      "from": "net/minecraft/world/entity/animal/Animal#isFood:(Lnet/minecraft/world/item/ItemStack;)Z",
+      "to": "net/minecraft/world/entity/animal/Animal#isFood:(Lnet/minecraft/world/item/ItemStack;)Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/animal/Animal#isInLove:()Z",
+      "to": "net/minecraft/world/entity/animal/Animal#isInLove:()Z"
+    },
+    {
+      "from": "net/minecraft/world/entity/animal/Animal#setAge:(I)V",
+      "to": "net/minecraft/world/entity/animal/Animal#setAge:(I)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/animal/Animal#setInLove:(Lnet/minecraft/world/entity/player/Player;)V",
+      "to": "net/minecraft/world/entity/animal/Animal#setInLove:(Lnet/minecraft/world/entity/player/Player;)V"
+    },
+    {
+      "from": "net/minecraft/world/entity/EntityType#COW:Lnet/minecraft/world/entity/EntityType;",
+      "to": "net/minecraft/world/entity/EntityType#COW:Lnet/minecraft/world/entity/EntityType;"
+    },
+    {
+      "from": "net/minecraft/world/entity/EntityType#CREEPER:Lnet/minecraft/world/entity/EntityType;",
+      "to": "net/minecraft/world/entity/EntityType#CREEPER:Lnet/minecraft/world/entity/EntityType;"
+    },
+    {
+      "from": "net/minecraft/world/entity/EntityType#ITEM:Lnet/minecraft/world/entity/EntityType;",
+      "to": "net/minecraft/world/entity/EntityType#ITEM:Lnet/minecraft/world/entity/EntityType;"
+    },
+    {
+      "from": "net/minecraft/world/entity/EntityType#PIG:Lnet/minecraft/world/entity/EntityType;",
+      "to": "net/minecraft/world/entity/EntityType#PIG:Lnet/minecraft/world/entity/EntityType;"
+    },
+    {
+      "from": "net/minecraft/world/entity/EntityType#PLAYER:Lnet/minecraft/world/entity/EntityType;",
+      "to": "net/minecraft/world/entity/EntityType#PLAYER:Lnet/minecraft/world/entity/EntityType;"
+    },
+    {
+      "from": "net/minecraft/world/entity/EntityType#SKELETON:Lnet/minecraft/world/entity/EntityType;",
+      "to": "net/minecraft/world/entity/EntityType#SKELETON:Lnet/minecraft/world/entity/EntityType;"
+    },
+    {
+      "from": "net/minecraft/world/entity/EntityType#VILLAGER:Lnet/minecraft/world/entity/EntityType;",
+      "to": "net/minecraft/world/entity/EntityType#VILLAGER:Lnet/minecraft/world/entity/EntityType;"
+    },
+    {
+      "from": "net/minecraft/world/entity/EntityType#ZOMBIE:Lnet/minecraft/world/entity/EntityType;",
+      "to": "net/minecraft/world/entity/EntityType#ZOMBIE:Lnet/minecraft/world/entity/EntityType;"
+    },
+    {
+      "from": "net/minecraft/world/entity/EntityType#byString:(Ljava/lang/String;)Ljava/util/Optional;",
+      "to": "net/minecraft/world/entity/EntityType#byString:(Ljava/lang/String;)Ljava/util/Optional;"
+    },
+    {
+      "from": "net/minecraft/sounds/SoundEvents#BLOCK_BREAK:Lnet/minecraft/sounds/SoundEvent;",
+      "to": "net/minecraft/sounds/SoundEvents#BLOCK_BREAK:Lnet/minecraft/sounds/SoundEvent;"
+    },
+    {
+      "from": "net/minecraft/sounds/SoundEvents#BLOCK_PLACE:Lnet/minecraft/sounds/SoundEvent;",
+      "to": "net/minecraft/sounds/SoundEvents#BLOCK_PLACE:Lnet/minecraft/sounds/SoundEvent;"
+    },
+    {
+      "from": "net/minecraft/sounds/SoundEvents#ENTITY_EXPERIENCE_ORB_PICKUP:Lnet/minecraft/sounds/SoundEvent;",
+      "to": "net/minecraft/sounds/SoundEvents#ENTITY_EXPERIENCE_ORB_PICKUP:Lnet/minecraft/sounds/SoundEvent;"
+    },
+    {
+      "from": "net/minecraft/sounds/SoundEvents#ENTITY_PLAYER_LEVELUP:Lnet/minecraft/sounds/SoundEvent;",
+      "to": "net/minecraft/sounds/SoundEvents#ENTITY_PLAYER_LEVELUP:Lnet/minecraft/sounds/SoundEvent;"
+    },
+    {
+      "from": "net/minecraft/sounds/SoundEvents#ITEM_PICKUP:Lnet/minecraft/sounds/SoundEvent;",
+      "to": "net/minecraft/sounds/SoundEvents#ITEM_PICKUP:Lnet/minecraft/sounds/SoundEvent;"
+    },
+    {
+      "from": "net/minecraft/core/particles/ParticleTypes#FIREWORK:Lnet/minecraft/core/particles/SimpleParticleType;",
+      "to": "net/minecraft/core/particles/ParticleTypes#FIREWORK:Lnet/minecraft/core/particles/SimpleParticleType;"
+    },
+    {
+      "from": "net/minecraft/core/particles/ParticleTypes#FLAME:Lnet/minecraft/core/particles/SimpleParticleType;",
+      "to": "net/minecraft/core/particles/ParticleTypes#FLAME:Lnet/minecraft/core/particles/SimpleParticleType;"
+    },
+    {
+      "from": "net/minecraft/core/particles/ParticleTypes#HAPPY_VILLAGER:Lnet/minecraft/core/particles/SimpleParticleType;",
+      "to": "net/minecraft/core/particles/ParticleTypes#HAPPY_VILLAGER:Lnet/minecraft/core/particles/SimpleParticleType;"
+    },
+    {
+      "from": "net/minecraft/core/particles/ParticleTypes#HEART:Lnet/minecraft/core/particles/SimpleParticleType;",
+      "to": "net/minecraft/core/particles/ParticleTypes#HEART:Lnet/minecraft/core/particles/SimpleParticleType;"
+    },
+    {
+      "from": "net/minecraft/core/particles/ParticleTypes#PORTAL:Lnet/minecraft/core/particles/SimpleParticleType;",
+      "to": "net/minecraft/core/particles/ParticleTypes#PORTAL:Lnet/minecraft/core/particles/SimpleParticleType;"
+    },
+    {
+      "from": "net/minecraft/core/particles/ParticleTypes#SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;",
+      "to": "net/minecraft/core/particles/ParticleTypes#SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"
+    },
+    {
+      "from": "net/minecraft/world/effect/MobEffect#createInstance:(II)Lnet/minecraft/world/effect/MobEffectInstance;",
+      "to": "net/minecraft/world/effect/MobEffect#createInstance:(II)Lnet/minecraft/world/effect/MobEffectInstance;"
+    },
+    {
+      "from": "net/minecraft/world/effect/MobEffect#getColor:()I",
+      "to": "net/minecraft/world/effect/MobEffect#getColor:()I"
+    },
+    {
+      "from": "net/minecraft/world/effect/MobEffect#getDisplayName:()Lnet/minecraft/network/chat/Component;",
+      "to": "net/minecraft/world/effect/MobEffect#getDisplayName:()Lnet/minecraft/network/chat/Component;"
+    },
+    {
+      "from": "net/minecraft/world/effect/MobEffect#getInstantenousDuration:(I)I",
+      "to": "net/minecraft/world/effect/MobEffect#getInstantenousDuration:(I)I"
+    },
+    {
+      "from": "net/minecraft/world/effect/MobEffect#isBeneficial:()Z",
+      "to": "net/minecraft/world/effect/MobEffect#isBeneficial:()Z"
+    }
+  ]
+}

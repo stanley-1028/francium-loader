@@ -73,9 +73,10 @@ public class AdapterGeneratorTest {
         ClassNode cn = new ClassNode();
         cr.accept(cn, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG);
 
-        assertEquals(1, cn.methods.size(), "Should have one bridge method");
-        assertTrue(cn.methods.get(0).name.startsWith("bridge$"),
-            "Method name should start with 'bridge$'");
+        // ★ BUG FIX: 現在包含私有建構函數，所以總方法數 = 1 bridge + 1 constructor = 2
+        assertEquals(2, cn.methods.size(), "Should have one bridge method + constructor");
+        boolean hasBridge = cn.methods.stream().anyMatch(m -> m.name.startsWith("bridge$"));
+        assertTrue(hasBridge, "Should have a bridge method");
     }
 
     @Test
@@ -106,7 +107,7 @@ public class AdapterGeneratorTest {
         ClassNode cn = new ClassNode();
         cr.accept(cn, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG);
 
-        assertEquals(3, cn.methods.size(), "Should have 3 bridge methods");
+        assertEquals(4, cn.methods.size(), "Should have 3 bridge methods + constructor");
     }
 
     @Test
@@ -127,7 +128,7 @@ public class AdapterGeneratorTest {
         ClassNode cn = new ClassNode();
         cr.accept(cn, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG);
 
-        assertEquals(1, cn.methods.size());
+        assertEquals(2, cn.methods.size(), "Should have 1 bridge method + constructor");
     }
 
     @Test
@@ -148,7 +149,7 @@ public class AdapterGeneratorTest {
         ClassNode cn = new ClassNode();
         cr.accept(cn, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG);
 
-        assertEquals(1, cn.methods.size());
+        assertEquals(2, cn.methods.size(), "Should have 1 bridge method + constructor");
     }
 
     @Test
@@ -204,8 +205,11 @@ public class AdapterGeneratorTest {
         ClassNode cn = new ClassNode();
         cr.accept(cn, ClassReader.SKIP_CODE);
 
-        assertTrue(cn.methods.isEmpty(),
-            "No mappings should mean no bridge methods");
+        // ★ BUG FIX: 現在包含私有建構函數，所以至少有一個 <init> 方法
+        assertEquals(1, cn.methods.size(),
+            "No mappings should mean only the private constructor");
+        assertEquals("<init>", cn.methods.get(0).name,
+            "The only method should be the private constructor");
     }
 
     @Test
@@ -224,7 +228,10 @@ public class AdapterGeneratorTest {
         ClassNode cn = new ClassNode();
         cr.accept(cn, ClassReader.SKIP_CODE);
 
-        var method = cn.methods.get(0);
+        var method = cn.methods.stream()
+            .filter(m -> m.name.startsWith("bridge$"))
+            .findFirst().orElse(null);
+        assertNotNull(method, "Should have a bridge method");
         assertEquals("()Ljava/lang/String;", method.desc,
             "Bridge method descriptor should match source descriptor");
     }

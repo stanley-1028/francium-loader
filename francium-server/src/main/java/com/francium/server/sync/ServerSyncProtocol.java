@@ -47,16 +47,20 @@ public class ServerSyncProtocol {
         
         public byte[] toJson() {
             StringBuilder sb = new StringBuilder();
-            sb.append("{\"serverId\":").append(jsonEscape(serverId)).append(",");
-            sb.append("\"serverName\":").append(jsonEscape(serverName)).append(",");
-            sb.append("\"mcVersion\":").append(jsonEscape(mcVersion)).append(",");
-            sb.append("\"franciumVersion\":").append(jsonEscape(franciumVersion)).append(",");
+            sb.append("{");
+            // ★ BUG FIX: 對所有可能為 null 的欄位做防禦性處理
+            sb.append("\"serverId\":").append(serverId != null ? jsonEscape(serverId) : "null").append(",");
+            sb.append("\"serverName\":").append(serverName != null ? jsonEscape(serverName) : "null").append(",");
+            sb.append("\"mcVersion\":").append(mcVersion != null ? jsonEscape(mcVersion) : "null").append(",");
+            sb.append("\"franciumVersion\":").append(franciumVersion != null ? jsonEscape(franciumVersion) : "null").append(",");
             sb.append("\"timestamp\":").append(timestamp).append(",");
             sb.append("\"mods\":[");
             if (mods != null) {
                 for (int i = 0; i < mods.size(); i++) {
                     if (i > 0) sb.append(",");
-                    sb.append(mods.get(i).toJson());
+                    if (mods.get(i) != null) {
+                        sb.append(mods.get(i).toJson());
+                    }
                 }
             }
             sb.append("]");
@@ -72,6 +76,7 @@ public class ServerSyncProtocol {
             try {
                 // Simple JSON parsing without external dependencies
                 list.serverId = extractString(json, "serverId");
+                list.serverName = extractString(json, "serverName");
                 list.mcVersion = extractString(json, "mcVersion");
                 list.franciumVersion = extractString(json, "franciumVersion");
                 list.signature = extractString(json, "signature");
@@ -291,9 +296,12 @@ public class ServerSyncProtocol {
         return sb.toString();
     }
     
-    private static String jsonEscape(String s) {
+        private static String jsonEscape(String s) {
+        // ★ BUG FIX: JSON null 是裸字 null（無引號），非字串 "null"
         if (s == null) return "null";
-        return "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+        return "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"")
+            .replace("\n", "\\n").replace("\r", "\\r")
+            .replace("\t", "\\t") + "\"";
     }
     
     private static String extractString(String json, String key) {

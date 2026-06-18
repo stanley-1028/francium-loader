@@ -78,8 +78,21 @@ public class CompatibilityPredictor {
             score += descriptorWeight * 0.3f * paramSim;
         }
         
-        // Factor 2: 名稱相似度
+        // Factor 2: 名稱相似度 (含多重命名比對)
         float nameSim = calculateNameSimilarity(source.name(), target.name());
+        // ★ BUG FIX: mojangName/intermediaryName/obfuscatedName 未被用於提升匹配分數
+        //   例如 source 是混淆名 m_49792_ 但 mojangName = "getExplosionResistance"
+        //   應與 target.name() = "getExplosionResistance" 比對
+        float altNameSim = 0f;
+        if (nameSim < 1.0f) {
+            for (String altSource : getAlternateNames(source)) {
+                for (String altTarget : getAlternateNames(target)) {
+                    float sim = calculateNameSimilarity(altSource, altTarget);
+                    if (sim > altNameSim) altNameSim = sim;
+                }
+            }
+            nameSim = Math.max(nameSim, altNameSim);
+        }
         score += nameSimilarityWeight * nameSim;
         
         // Factor 3: 結構相似度
@@ -159,6 +172,16 @@ public class CompatibilityPredictor {
         Set<String> union = new HashSet<>(a);
         union.addAll(b);
         return union.isEmpty() ? 0f : (float) intersection.size() / union.size();
+    }
+
+    /** ★ BUG FIX: 返回方法的多重命名集合（主名 + mojang/intermediary/obfuscated），用於跨命名空間比對 */
+    private List<String> getAlternateNames(MethodSignature sig) {
+        Set<String> names = new LinkedHashSet<>();
+        names.add(sig.name());
+        if (sig.mojangName() != null && !sig.mojangName().isEmpty()) names.add(sig.mojangName());
+        if (sig.intermediaryName() != null && !sig.intermediaryName().isEmpty()) names.add(sig.intermediaryName());
+        if (sig.obfuscatedName() != null && !sig.obfuscatedName().isEmpty()) names.add(sig.obfuscatedName());
+        return new ArrayList<>(names);
     }
 
     private <T> float listSimilarity(List<T> a, List<T> b) {

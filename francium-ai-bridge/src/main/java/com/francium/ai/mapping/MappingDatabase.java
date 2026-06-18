@@ -42,6 +42,24 @@ public class MappingDatabase {
     }
 
     /**
+     * 內部工具：將 classCache 条目同步註冊到 mappings 索引。
+     * ★ BUG FIX: findMapping() 依賴 mappings 查找，但該 Map 從未被填入資料。
+     *   每次加載 mapping 文件後需同步索引。
+     */
+    private void indexVersionMappings(String version) {
+        Map<String, List<MethodSignature>> versionIndex = mappings.computeIfAbsent(version, k -> new ConcurrentHashMap<>());
+        Map<String, List<MethodSignature>> classMap = classCache.get(version);
+        if (classMap == null) return;
+        
+        for (var entry : classMap.entrySet()) {
+            for (var sig : entry.getValue()) {
+                String key = version + ":" + sig.toKey();
+                versionIndex.computeIfAbsent(key, k -> new ArrayList<>()).add(sig);
+            }
+        }
+    }
+
+    /**
      * 從 mapping 檔案加載映射資料。
      * 支援格式: .tiny (Fabric), .tsrg/.srg (Forge), .json (自訂)
      */
@@ -88,6 +106,8 @@ public class MappingDatabase {
                 classCache.get(version).get(currentClass).add(sig);
             }
         }
+        // ★ BUG FIX: 將 classCache 同步到 mappings 索引，使 findMapping() 能正確查詢
+        if (version != null) indexVersionMappings(version);
     }
 
     private void loadTsrgMappings(Path file) throws IOException {
@@ -120,13 +140,82 @@ public class MappingDatabase {
                 }
             }
         }
+        // ★ BUG FIX: 同步 TSRG 加載結果到 mappings 索引
+        indexVersionMappings(version);
     }
 
     private void loadJsonMappings(Path file) throws IOException {
-        // 自訂 JSON 格式
+        // 自訂 JSON 格式 - 支援簡單的 JSON 映射檔
         String content = Files.readString(file);
-        // 依賴 Gson，這裡用簡單的結構假設
-        // 實際實作會更複雜
+        parseSimpleJsonMappings(content);
+    }
+
+    /**
+     * 解析簡單 JSON 映射格式（無外部依賴）。
+     * 格式: {"mappings":[{"from":"owner#name:desc","to":"owner#name:desc"},...]}
+     */
+    private void parseSimpleJsonMappings(String content) {
+        if (content == null || content.isBlank()) return;
+        
+        // 查找 mappings 陣列
+        String arrayPattern = "\"mappings\"\\s*:\\s*\\[";
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile(arrayPattern).matcher(content);
+        if (!m.find()) return;
+        
+        int start = content.indexOf('[', m.start());
+        if (start < 0) return;
+        
+        // 手動找匹配的 ]
+        int depth = 0;
+        int end = -1;
+        for (int i = start; i < content.length(); i++) {
+            char c = content.charAt(i);
+            if (c == '[') depth++;
+            else if (c == ']') {
+                depth--;
+                if (depth == 0) {
+                    end = i;
+                    break;
+                }
+            }
+        }
+        if (end < 0) return;
+        
+        String arrayContent = content.substring(start + 1, end);
+        
+        // 提取每個物件中的 "from" 和 "to"
+        java.util.regex.Matcher objMatcher = java.util.regex.Pattern.compile(
+            "\"from\"\\s*:\\s*\"([^\"]+)\"\\s*,\\s*\"to\"\\s*:\\s*\"([^\"]+)\""
+        ).matcher(arrayContent);
+        
+        String currentVersion = "unknown";
+        while (objMatcher.find()) {
+            String fromKey = objMatcher.group(1);
+            String toKey = objMatcher.group(2);
+            
+            // fromKey format: "owner#name:desc"
+            MethodSignature fromSig = parseKeyToSignature(fromKey);
+            MethodSignature toSig = parseKeyToSignature(toKey);
+            
+            if (fromSig != null && toSig != null) {
+                toSig.setMappedVersion(currentVersion);
+                learnMapping(fromSig, toSig);
+            }
+        }
+    }
+    
+    private MethodSignature parseKeyToSignature(String key) {
+        if (key == null || key.isEmpty()) return null;
+        int hashIdx = key.indexOf('#');
+        int descIdx = key.indexOf(':', hashIdx >= 0 ? hashIdx : 0);
+        
+        if (hashIdx < 0 || descIdx < 0) return null;
+        
+        String owner = key.substring(0, hashIdx);
+        String name = key.substring(hashIdx + 1, descIdx);
+        String desc = key.substring(descIdx);
+        
+        return new MethodSignature(owner, name, desc);
     }
 
     /**
@@ -206,9 +295,10 @@ public class MappingDatabase {
         }
         
         // 找不到相同描述符，用相似度取所有候選中最佳
+        // ★ BUG FIX: 提高相似度閾值，避免返回過低品質的匹配
         return candidates.stream()
             .max(Comparator.comparingDouble(sig::similarity))
-            .filter(m -> sig.similarity(m) > 0.3f)
+            .filter(m -> sig.similarity(m) > 0.5f) // 原來是 0.3f，提高門檻減少誤報
             .orElse(null);
     }
 
@@ -268,6 +358,158 @@ public class MappingDatabase {
             int[] temp = prev; prev = curr; curr = temp;
         }
         return prev[b.length()];
+    }
+
+    /**
+     * 從 classpath 的 mappings/ 目錄自動加載種子映射數據。
+     * 支援兩種格式:
+     *   1. {"classes": {...}}  — 按版本和類別組織的方法簽名
+     *   2. {"mappings": [...]}  — 跨版本映射 (from→to)
+     * 
+     * 在 FranciumLoader 初始化時調用，確保資料庫有基礎數據。
+     */
+    public void loadSeedMappings() {
+        try {
+            java.io.InputStream seedIndex = getClass().getClassLoader()
+                .getResourceAsStream("mappings/seed-mappings-v1_20_4.json");
+            if (seedIndex != null) {
+                loadSeedJsonFile(seedIndex, "1.20.4");
+                loadedVersions.add("1.20.4");
+            }
+            
+            java.io.InputStream seedV21 = getClass().getClassLoader()
+                .getResourceAsStream("mappings/seed-mappings-v1_21.json");
+            if (seedV21 != null) {
+                loadSeedJsonFile(seedV21, "1.21");
+                loadedVersions.add("1.21");
+            }
+            
+            java.io.InputStream crossVersion = getClass().getClassLoader()
+                .getResourceAsStream("mappings/cross-version-v1_20_4-to-v1_21.json");
+            if (crossVersion != null) {
+                loadCrossVersionMappings(crossVersion);
+            }
+            
+            // 為每個已加載的版本同步索引
+            for (String version : loadedVersions) {
+                indexVersionMappings(version);
+            }
+        } catch (Exception e) {
+            // seed mappings 是附加功能，失敗不影響核心功能
+            System.err.println("[MappingDatabase] Warning: Could not load seed mappings: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 加載 JSON seed 映射文件 (classes 格式)。
+     */
+    private void loadSeedJsonFile(java.io.InputStream input, String version) throws java.io.IOException {
+        String content = new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+        
+        // 解析 "classes" 區塊
+        String classesPattern = "\"classes\"\\s*:\\s*\\{";
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile(classesPattern).matcher(content);
+        if (!m.find()) return;
+        
+        int classesStart = content.indexOf('{', m.start());
+        if (classesStart < 0) return;
+        
+        // 找到 classes 物件結束位置
+        int depth = 0;
+        int classesEnd = -1;
+        boolean inString = false;
+        char prevChar = 0;
+        for (int i = classesStart; i < content.length(); i++) {
+            char c = content.charAt(i);
+            if (c == '"' && prevChar != '\\') inString = !inString;
+            if (!inString) {
+                if (c == '{') depth++;
+                else if (c == '}') {
+                    depth--;
+                    if (depth == 0) { classesEnd = i; break; }
+                }
+            }
+            prevChar = c;
+        }
+        if (classesEnd < 0) return;
+        
+        String classesContent = content.substring(classesStart + 1, classesEnd - 1);
+        
+        // 用簡單的逐行解析提取每個類別和它的方法列表
+        java.util.regex.Matcher classMatcher = java.util.regex.Pattern.compile(
+            "\"([^\"]+)\"\\s*:\\s*\\["
+        ).matcher(classesContent);
+        
+        while (classMatcher.find()) {
+            String className = classMatcher.group(1);
+            
+            // 找到這個類別的方法陣列
+            int arrStart = classesContent.indexOf('[', classMatcher.end());
+            if (arrStart < 0) continue;
+            
+            int arrEnd = -1;
+            depth = 0;
+            inString = false;
+            prevChar = 0;
+            for (int i = arrStart; i < classesContent.length(); i++) {
+                char c = classesContent.charAt(i);
+                if (c == '"' && prevChar != '\\') inString = !inString;
+                if (!inString) {
+                    if (c == '[') depth++;
+                    else if (c == ']') {
+                        depth--;
+                        if (depth == 0) { arrEnd = i; break; }
+                    }
+                }
+                prevChar = c;
+            }
+            if (arrEnd < 0) continue;
+            
+            String arrContent = classesContent.substring(arrStart + 1, arrEnd);
+            
+            // 提取每個方法條目
+            java.util.regex.Matcher methodMatcher = java.util.regex.Pattern.compile(
+                "\"name\"\\s*:\\s*\"([^\"]+)\"\\s*,\\s*\"desc\"\\s*:\\s*\"([^\"]+)\""
+            ).matcher(arrContent);
+            
+            Map<String, List<MethodSignature>> classMap = classCache
+                .computeIfAbsent(version, k -> new ConcurrentHashMap<>());
+            List<MethodSignature> methods = classMap
+                .computeIfAbsent(className, k -> new ArrayList<>());
+            
+            while (methodMatcher.find()) {
+                String name = methodMatcher.group(1);
+                String desc = methodMatcher.group(2);
+                MethodSignature sig = new MethodSignature(className, name, desc);
+                sig.setMappedVersion(version);
+                
+                // 提取混淆名 (如果有)
+                java.util.regex.Matcher obfMatcher = java.util.regex.Pattern.compile(
+                    "\"obf\"\\s*:\\s*\"([^\"]+)\""
+                ).matcher(arrContent);
+                int fieldStart = methodMatcher.start();
+                int fieldEnd = arrContent.indexOf('}', methodMatcher.start());
+                if (fieldEnd < 0) fieldEnd = arrContent.length();
+                String methodBlock = arrContent.substring(fieldStart, Math.min(fieldEnd + 1, arrContent.length()));
+                java.util.regex.Matcher localObf = java.util.regex.Pattern.compile(
+                    "\"obf\"\\s*:\\s*\"([^\"]+)\""
+                ).matcher(methodBlock);
+                if (localObf.find()) {
+                    sig.setObfuscatedName(localObf.group(1));
+                    sig.setMojangName(name);
+                }
+                
+                methods.add(sig);
+            }
+        }
+    }
+
+    /**
+     * 加載跨版本映射 (mappings 格式)。
+     */
+    private void loadCrossVersionMappings(java.io.InputStream input) throws java.io.IOException {
+        String content = new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+        parseSimpleJsonMappings(content);
     }
 
     /**

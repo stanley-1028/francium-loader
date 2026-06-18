@@ -1,7 +1,6 @@
 package com.francium.loader;
 
 import com.francium.ai.adapter.VersionBridge;
-import com.francium.ai.mapping.MethodSignature;
 import com.francium.classloader.ParallelModClassLoader;
 import com.francium.classloader.ParallelModClassLoader.DiscoveryResult;
 import com.francium.classloader.ParallelModClassLoader.LoadReport;
@@ -17,6 +16,7 @@ import com.francium.server.validate.ModValidator;
 import java.nio.file.Path;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +50,10 @@ public class FranciumLoader {
     private final ModGraph modGraph;
     private ParallelModClassLoader classLoader;
     private LoaderConfig config;
-    private LoaderState state = LoaderState.INIT;
+    private volatile LoaderState state = LoaderState.INIT;
+
+    // 初始化鎖，防止併發重複初始化
+    private final ReentrantLock initLock = new ReentrantLock();
 
     // 子系統
     private SATDependencyResolver resolver;
@@ -76,6 +79,8 @@ public class FranciumLoader {
         DISCOVERING,
         /** Running SAT dependency solver to resolve mod dependencies and detect conflicts. */
         RESOLVING,
+        /** Building DAG layers for parallel loading. */
+        BUILDING_GRAPH,
         /** Applying AI-powered bytecode bridging for cross-version compatibility. */
         BRIDGING,
         /** Loading mod classes in parallel using DAG schedule. */
@@ -105,45 +110,51 @@ public class FranciumLoader {
 
     /**
      * 初始化所有子系統。
+     * 線程安全，防止重複初始化。
      * 必須在 launch() 之前調用。
      */
     public void initialize() {
-        // 載入設定
-        if (config == null) loadConfig();
-
-        // 初始化核心加載器
-        this.classLoader = new ParallelModClassLoader(modGraph, modsDir);
-
-        // 初始化 SAT 依賴解析器
-        this.resolver = new SATDependencyResolver();
-        this.resolver.setTimeoutMs(config.layerTimeoutSeconds * 1000L);
-
-        // 初始化 AI 版本橋接器
-        this.versionBridge = new VersionBridge("auto", "auto");
-        this.versionBridge.setConfidenceThreshold(config.aiConfidenceThreshold);
-        this.versionBridge.setAutoFix(config.aiBridgeEnabled);
-        this.versionBridge.setDryRun(config.aiBridgeReportOnly);
-
-        // 初始化記憶體管理器
-        this.memoryManager = new MemoryManager(
-            config.memoryWarningThresholdMB,
-            config.aggressiveGC,
-            config.memoryLeakDetection
-        );
-
-        // 初始化伺服器同步
-        this.serverSync = new ServerSyncProtocol();
-
-        // 初始化安全驗證器
-        this.validator = new ModValidator(ModValidator.SecurityLevel.INTEGRITY);
-
-        // 確保目錄存在
+        initLock.lock();
         try {
-            java.nio.file.Files.createDirectories(modsDir);
-            java.nio.file.Files.createDirectories(configDir);
-            java.nio.file.Files.createDirectories(cacheDir);
-        } catch (java.io.IOException e) {
-            LOGGER.error("Fr: Failed to create directories: " + e.getMessage());
+            // 載入設定
+            if (config == null) loadConfig();
+
+            // 初始化核心加載器
+            this.classLoader = new ParallelModClassLoader(modGraph, modsDir);
+
+            // 初始化 SAT 依賴解析器
+            this.resolver = new SATDependencyResolver();
+            this.resolver.setTimeoutMs(config.layerTimeoutSeconds * 1000L);
+
+            // 初始化 AI 版本橋接器
+            this.versionBridge = new VersionBridge("auto", "auto");
+            this.versionBridge.setConfidenceThreshold(config.aiConfidenceThreshold);
+            this.versionBridge.setAutoFix(config.aiBridgeEnabled);
+            this.versionBridge.setDryRun(config.aiBridgeReportOnly);
+
+            // 初始化記憶體管理器
+            this.memoryManager = new MemoryManager(
+                config.memoryWarningThresholdMB,
+                config.aggressiveGC,
+                config.memoryLeakDetection
+            );
+
+            // 初始化伺服器同步
+            this.serverSync = new ServerSyncProtocol();
+
+            // 初始化安全驗證器
+            this.validator = new ModValidator(ModValidator.SecurityLevel.INTEGRITY);
+
+            // 確保目錄存在
+            try {
+                java.nio.file.Files.createDirectories(modsDir);
+                java.nio.file.Files.createDirectories(configDir);
+                java.nio.file.Files.createDirectories(cacheDir);
+            } catch (java.io.IOException e) {
+                LOGGER.error("Fr: Failed to create directories: " + e.getMessage());
+            }
+        } finally {
+            initLock.unlock();
         }
     }
 
@@ -157,47 +168,57 @@ public class FranciumLoader {
      * Phase 5: 觸發生命週期事件
      */
     public LoadReport launch() throws FranciumException {
-        if (classLoader == null) initialize();
+        initLock.lock();
+        try {
+            if (classLoader == null) initialize();
+        } finally {
+            initLock.unlock();
+        }
 
         long totalStart = System.currentTimeMillis();
 
-        // Phase 1: DISCOVERING
-        state = LoaderState.DISCOVERING;
-        long t1 = System.currentTimeMillis();
-        lastDiscoveryResult = discoverPhase();
-        phaseTimings.put("discovery", System.currentTimeMillis() - t1);
+        try {
+            // Phase 1: DISCOVERING
+            state = LoaderState.DISCOVERING;
+            long t1 = System.currentTimeMillis();
+            lastDiscoveryResult = discoverPhase();
+            phaseTimings.put("discovery", System.currentTimeMillis() - t1);
 
-        // Phase 2: RESOLVING
-        state = LoaderState.RESOLVING;
-        long t2 = System.currentTimeMillis();
-        resolvePhase(lastDiscoveryResult);
-        phaseTimings.put("resolution", System.currentTimeMillis() - t2);
+            // Phase 2: RESOLVING
+            state = LoaderState.RESOLVING;
+            long t2 = System.currentTimeMillis();
+            resolvePhase(lastDiscoveryResult);
+            phaseTimings.put("resolution", System.currentTimeMillis() - t2);
 
-        // Phase 3: BRIDGING
-        state = LoaderState.BRIDGING;
-        long t3 = System.currentTimeMillis();
-        if (config.aiBridgeEnabled) {
-            bridgePhase(lastDiscoveryResult);
+            // Phase 3: BRIDGING
+            state = LoaderState.BRIDGING;
+            long t3 = System.currentTimeMillis();
+            if (config.aiBridgeEnabled) {
+                bridgePhase(lastDiscoveryResult);
+            }
+            phaseTimings.put("bridging", System.currentTimeMillis() - t3);
+
+            // Phase 4: LOADING
+            state = LoaderState.LOADING;
+            long t4 = System.currentTimeMillis();
+            // 啟動記憶體監控
+            memoryManager.start();
+            lastReport = loadingPhase();
+            phaseTimings.put("loading", System.currentTimeMillis() - t4);
+
+            // Phase 5: READY
+            state = LoaderState.READY;
+            lastReport.totalLoadTimeMs = System.currentTimeMillis() - totalStart;
+
+            // 觸發生命週期回調
+            fireExtension("preLaunch");
+            fireExtension("postLaunch");
+
+            return lastReport;
+        } catch (Exception e) {
+            state = LoaderState.ERROR;
+            throw e;
         }
-        phaseTimings.put("bridging", System.currentTimeMillis() - t3);
-
-        // Phase 4: LOADING
-        state = LoaderState.LOADING;
-        long t4 = System.currentTimeMillis();
-        // 啟動記憶體監控
-        memoryManager.start();
-        lastReport = loadingPhase();
-        phaseTimings.put("loading", System.currentTimeMillis() - t4);
-
-        // Phase 5: READY
-        state = LoaderState.READY;
-        lastReport.totalLoadTimeMs = System.currentTimeMillis() - totalStart;
-
-        // 觸發生命週期回調
-        fireExtension("preLaunch");
-        fireExtension("postLaunch");
-
-        return lastReport;
     }
 
     // ─── Phase Implementations ───
@@ -210,9 +231,9 @@ public class FranciumLoader {
         } catch (IOException e) {
             throw new FranciumException(FranciumException.Phase.DISCOVERY,
                 "Failed to discover mods", e);
-        };
-        LOGGER.info(String.format("Fr: Discovered %d mods in %d JARs (%d skipped)%n",
-            result.found.size(), result.totalJars, result.skipped.size()));
+        }
+        LOGGER.info("Fr: Discovered {} mods in {} JARs ({} skipped)",
+            result.found.size(), result.totalJars, result.skipped.size());
 
         // 安全驗證每個 JAR
         if (validator != null) {
@@ -237,8 +258,8 @@ public class FranciumLoader {
     private void resolvePhase(DiscoveryResult discovered) {
         Objects.requireNonNull(resolver, "SAT resolver not initialized");
         
-        // 如果沒有發現結果，嘗試掃描
-        if (discovered == null || discovered.found.isEmpty()) {
+        // 如果沒有發現結果，跳過
+        if (discovered == null || discovered.found == null || discovered.found.isEmpty()) {
             LOGGER.info("Fr: No mods to resolve (discovery returned empty)");
             return;
         }
@@ -250,23 +271,52 @@ public class FranciumLoader {
                 resolver.registerVersions(manifest.modId(), List.of(sv));
             }
 
-            // 註冊依賴關係
+            // 註冊依賴關係（防禦性 null 檢查）
             Map<String, DependencyConstraint> deps = new LinkedHashMap<>();
-            for (var entry : manifest.dependencies().entrySet()) {
-                deps.put(entry.getKey(), new DependencyConstraint(entry.getValue()));
+            Map<String, String> manifestDeps = manifest.dependencies();
+            if (manifestDeps != null) {
+                for (var entry : manifestDeps.entrySet()) {
+                    if (entry.getKey() != null && entry.getValue() != null) {
+                        deps.put(entry.getKey(), new DependencyConstraint(entry.getValue()));
+                    }
+                }
             }
             resolver.registerDependencies(manifest.modId(), deps);
 
-            // 註冊衝突
-            for (var entry : manifest.conflicts().entrySet()) {
-                resolver.registerConflict(manifest.modId(), entry.getKey(), entry.getValue());
+            // 註冊可選依賴 (Optional) — 目前 SAT solver 暫不區分 required/optional，
+            // 可選依賴若有衝突會在求解失敗時被偵測到。
+            Map<String, String> manifestOptDeps = manifest.optionalDependencies();
+            if (manifestOptDeps != null && !manifestOptDeps.isEmpty()) {
+                for (var entry : manifestOptDeps.entrySet()) {
+                    if (entry.getKey() != null && entry.getValue() != null) {
+                        deps.putIfAbsent(entry.getKey(), new DependencyConstraint(entry.getValue()));
+                    }
+                }
+                // 更新已註冊的依賴（含可選）
+                resolver.registerDependencies(manifest.modId(), deps);
+            }
+
+            // 註冊衝突（防禦性 null 檢查）
+            Map<String, String> manifestConflicts = manifest.conflicts();
+            if (manifestConflicts != null) {
+                for (var entry : manifestConflicts.entrySet()) {
+                    if (entry.getKey() != null && entry.getValue() != null) {
+                        resolver.registerConflict(manifest.modId(), entry.getKey(), entry.getValue());
+                    }
+                }
             }
         }
 
         // 求解
         List<String> rootMods = discovered.found.stream()
             .map(m -> m.modId())
+            .filter(Objects::nonNull)
             .toList();
+
+        if (rootMods.isEmpty()) {
+            LOGGER.info("Fr: No valid mod IDs found to resolve");
+            return;
+        }
 
         var resolveResult = resolver.solve(rootMods);
 
@@ -274,14 +324,14 @@ public class FranciumLoader {
             // 將解析結果加入 DAG
             for (var entry : resolveResult.solution.entrySet()) {
                 var manifest = discovered.found.stream()
-                    .filter(m -> m.modId().equals(entry.getKey()))
+                    .filter(m -> m.modId() != null && m.modId().equals(entry.getKey()))
                     .findFirst();
                 if (manifest.isPresent()) {
                     modGraph.addMod(manifest.get(), entry.getValue().toString());
                 }
             }
-            LOGGER.info(String.format("Fr: Dependencies resolved for %d mods (%dms, %d nodes explored)%n",
-                resolveResult.solution.size(), resolveResult.solveTimeMs, resolveResult.nodesExplored));
+            LOGGER.info("Fr: Dependencies resolved for {} mods ({}ms, {} nodes explored)",
+                resolveResult.solution.size(), resolveResult.solveTimeMs, resolveResult.nodesExplored);
         } else {
             LOGGER.error("Fr: Dependency resolution FAILED");
             for (String err : resolveResult.errors) {
@@ -289,15 +339,19 @@ public class FranciumLoader {
             }
             // 仍然嘗試加載所有 mod（最佳努力）
             for (var manifest : discovered.found) {
-                modGraph.addMod(manifest, manifest.version());
+                if (manifest.modId() != null) {
+                    modGraph.addMod(manifest, manifest.version());
+                }
             }
         }
     }
 
     @SuppressWarnings("unused")
     private void bridgePhase(DiscoveryResult discovered) {
+        if (discovered == null || discovered.found == null) return;
         Map<String, Path> modPaths = new LinkedHashMap<>();
         for (var manifest : discovered.found) {
+            if (manifest.modId() == null) continue;
             Path jarPath = manifest.jarSourcePath;
             if (jarPath != null && java.nio.file.Files.exists(jarPath)) {
                 modPaths.put(manifest.modId(), jarPath);
@@ -306,11 +360,12 @@ public class FranciumLoader {
 
         try {
             var summary = versionBridge.bridgeAll(modPaths);
-            LOGGER.info(String.format("Fr: AI Bridge - %d/%d mods compatible, %d adapters generated (%.0f%% overall)%n",
+            double compPct = summary.overallCompatibility * 100;
+            LOGGER.info("Fr: AI Bridge - {}/{} mods compatible, {} adapters generated ({}/100% overall)",
                 summary.reports.stream().filter(r -> r.isFullyCompatible()).count(),
                 summary.reports.size(),
                 summary.adaptersGenerated,
-                summary.overallCompatibility * 100));
+                String.format("%.0f", compPct));
 
             // 如果生成了 adapter，把它們寫入 cache 目錄
             for (var entry : summary.adapterBytes.entrySet()) {
@@ -388,6 +443,8 @@ public class FranciumLoader {
             classLoader.shutdown();
         }
         state = LoaderState.INIT;
+        // 清理階段計時
+        phaseTimings.clear();
     }
 
     // ─── Getters ───
@@ -439,20 +496,18 @@ public class FranciumLoader {
 
     public static class Builder {
         private final Path gameDir;
-        private boolean parallel = true;
-        private boolean memory = true;
         private boolean aiBridge;
         private boolean serverSync;
         private double aiThreshold = 0.85;
 
         Builder(Path gameDir) { this.gameDir = gameDir; }
 
-        /** 啟用或停用 DAG 並行加載（預設啟用） */
-        public Builder withParallelLoading(boolean v) { parallel = v; return this; }
-        /** 啟用或停用記憶體管理與洩漏檢測（預設啟用） */
-        public Builder withMemoryManagement(boolean v) { memory = v; return this; }
         /** 啟用或停用 AI 版本橋接（預設停用） */
         public Builder withAIBridge(boolean v) { aiBridge = v; return this; }
+        /** 啟用或停用平行加載（預設啟用） */
+        public Builder withParallelLoading(boolean v) { /* 平行加載由 ParallelModClassLoader 實現 */ return this; }
+        /** 啟用或停用記憶體管理（預設啟用） */
+        public Builder withMemoryManagement(boolean v) { /* 記憶體管理由 MemoryManager 實現 */ return this; }
         /** 啟用或停用伺服器 mod 清單同步（預設停用） */
         public Builder withServerSync(boolean v) { serverSync = v; return this; }
         /** 設定 AI 橋接的置信度閾值（預設 0.85） */
@@ -460,17 +515,19 @@ public class FranciumLoader {
 
         /**
          * 依據設定的參數建構 FranciumLoader 實例。
-         * 自動調用 initialize()。
+         * 自動調用 initialize() 並將 Builder 參數合併至 config。
+         * ★ BUG FIX: 先從檔案載入 config，再用 Builder 設定覆蓋，
+         *   避免 Builder 設定被 config 檔案或預設值靜默覆蓋。
          */
         public FranciumLoader build() {
             FranciumLoader loader = new FranciumLoader(gameDir);
-            loader.initialize();
-            if (loader.config == null) {
-                loader.config = LoaderConfig.createDefault();
-            }
+            // 先從 config 檔案載入（如果存在）
+            loader.loadConfig();
+            // 再用 Builder 的明確設定覆蓋（優先級更高）
             loader.config.aiBridgeEnabled = aiBridge;
             loader.config.aiConfidenceThreshold = (float) aiThreshold;
             loader.config.serverSyncEnabled = serverSync;
+            loader.initialize();
             return loader;
         }
     }
@@ -498,7 +555,6 @@ public class FranciumLoader {
     public void resolveDependencies() throws FranciumException {
         state = LoaderState.RESOLVING;
         long t = System.currentTimeMillis();
-        // Use cached discovery result instead of null
         resolvePhase(lastDiscoveryResult);
         phaseTimings.put("resolution", System.currentTimeMillis() - t);
     }
@@ -509,7 +565,7 @@ public class FranciumLoader {
      * 確定各 mod 的加載順序及可並行層。
      */
     public void buildLoadGraph() {
-        state = LoaderState.RESOLVING;
+        state = LoaderState.BUILDING_GRAPH;
         modGraph.buildLayers();
     }
 
@@ -556,12 +612,16 @@ public class FranciumLoader {
     public int getLoadedModCount() {
         if (lastReport != null)
             return lastReport.layerDetails.stream().mapToInt(d -> d.success + d.failed).sum();
-        return modGraph != null && modGraph.getLayerCount() > 0
-            ? modGraph.getLayers().stream().mapToInt(Set::size).sum()
-            : 0;
+        if (modGraph != null && modGraph.getLayerCount() > 0) {
+            List<Set<String>> layers = modGraph.getLayers();
+            if (layers != null) {
+                return layers.stream().mapToInt(Set::size).sum();
+            }
+        }
+        return 0;
     }
 
-    private LoadReport lastReport;
+    private volatile LoadReport lastReport;
 
     /**
      * 產生完整的載入狀態報告。
@@ -581,6 +641,7 @@ public class FranciumLoader {
         r.failedMods = 0;
         if (lastReport != null) {
             r.failedMods = lastReport.layerDetails.stream().mapToInt(d -> d.failed).sum();
+            r.loadedMods = r.totalMods - r.failedMods;
         }
         r.satTimeMs = phaseTimings.getOrDefault("resolution", 0L);
         r.loadTimeMs = phaseTimings.getOrDefault("loading", 0L);

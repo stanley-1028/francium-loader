@@ -54,9 +54,9 @@ public class PackageManager {
             .build();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.registries = new ArrayList<>();
+        // ★ BUG FIX: 移除重複的 registry URL
         this.registries.add("https://api.modrinth.com/v2"); // Modrinth API v2 (官方)
         this.registries.add("https://registry.francium.dev/v1"); // Francium 官方 registry (開發中)
-        this.registries.add("https://registry.francium.dev/v1"); // 預設官方 registry
         this.cache = new HashMap<>();
         this.modrinth = new ModrinthAdapter();
         this.curseForge = new CurseForgeAdapter();
@@ -125,10 +125,9 @@ public class PackageManager {
         report.selectedVersion = selectedVersion.version;
 
         // Step 3: 解析所有傳遞依賴
-        Set<String> toInstall = new LinkedHashSet<>();
         Map<String, RegistryMod.ModVersion> resolved = new LinkedHashMap<>();
 
-        if (!resolveTree(modId, selectedVersion, resolved, toInstall, new HashSet<>(), report)) {
+        if (!resolveTree(modId, selectedVersion, resolved, new HashSet<>(), report)) {
             return report; // 解析失敗
         }
         report.totalMods = resolved.size();
@@ -194,12 +193,23 @@ public class PackageManager {
 
         for (File modFile : modFiles) {
             String name = modFile.getName();
-            // 解析 modId 和 version
-            String[] parts = name.replace(".jar", "").split("-");
-            if (parts.length < 2) continue;
+            // 解析 modId 和版本號
+            // ★ BUG FIX: 不能直接用 split("-")，modId 本身可能含連字號（如 "better-fps"）
+            //   改用正則：從結尾往前找語義版本號模式
+            String baseName = name.replace(".jar", "");
+            String modId = baseName;
+            String currentVersion = null;
 
-            String modId = String.join("-", Arrays.copyOf(parts, parts.length - 1));
-            String currentVersion = parts[parts.length - 1];
+            // 嘗試匹配結尾的語義版本號（如 "1.2.3" 或 "1.2.3-beta"）
+            java.util.regex.Matcher versionMatcher = java.util.regex.Pattern.compile(
+                "-(\\d+\\.\\d+\\.\\d+(?:[-.][a-zA-Z0-9]+)?)$").matcher(baseName);
+            if (versionMatcher.find()) {
+                currentVersion = versionMatcher.group(1);
+                modId = baseName.substring(0, versionMatcher.start());
+            } else {
+                // Fallback: 沒有版本號的 mod 不檢查
+                continue;
+            }
 
             try {
                 RegistryMod mod = fetchModInfo(modId);
@@ -296,7 +306,6 @@ public class PackageManager {
 
     private boolean resolveTree(String modId, RegistryMod.ModVersion version,
                                 Map<String, RegistryMod.ModVersion> resolved,
-                                Set<String> toInstall,
                                 Set<String> visiting,
                                 InstallReport report) throws Exception {
         if (visiting.contains(modId)) {
@@ -316,37 +325,73 @@ public class PackageManager {
         }
 
         visiting.add(modId);
-        resolved.put(modId, version);
+        try {
+            resolved.put(modId, version);
 
-        // 解析此版本的依賴
-        if (version.dependencies != null) {
-            for (var dep : version.dependencies.entrySet()) {
-                String depId = dep.getKey();
-                String depConstraint = dep.getValue();
+            // 解析此版本的必選依賴（★ BUG FIX: 找不到時視為錯誤而非警告）
+            if (version.dependencies != null) {
+                for (var dep : version.dependencies.entrySet()) {
+                    String depId = dep.getKey();
+                    String depConstraint = dep.getValue();
 
-                RegistryMod depMod = fetchModInfo(depId);
-                if (depMod == null) {
-                    // 可選依賴: 不存在時僅警告
-                    report.warnings.add("Optional dependency not found: " + depId);
-                    continue;
-                }
+                    RegistryMod depMod = fetchModInfo(depId);
+                    if (depMod == null) {
+                        report.errors.add("Required dependency not found: " + depId + " (constraint: " + depConstraint + ")");
+                        return false;
+                    }
 
-                RegistryMod.ModVersion bestDep = selectBestVersion(depMod, depConstraint);
-                if (bestDep == null) {
-                    report.errors.add("No version of " + depId + " satisfies: " + depConstraint);
-                    visiting.remove(modId);
-                    return false;
-                }
+                    RegistryMod.ModVersion bestDep = selectBestVersion(depMod, depConstraint);
+                    if (bestDep == null) {
+                        report.errors.add("No version of " + depId + " satisfies: " + depConstraint);
+                        return false;
+                    }
 
-                if (!resolveTree(depId, bestDep, resolved, toInstall, visiting, report)) {
-                    visiting.remove(modId);
-                    return false;
+                    if (!resolveTree(depId, bestDep, resolved, visiting, report)) {
+                        return false;
+                    }
                 }
             }
-        }
 
-        visiting.remove(modId);
-        return true;
+            // 解析可選依賴
+            if (version.optionalDependencies != null) {
+                for (var dep : version.optionalDependencies.entrySet()) {
+                    String depId = dep.getKey();
+                    String depConstraint = dep.getValue();
+
+                    RegistryMod depMod;
+                    try {
+                        depMod = fetchModInfo(depId);
+                    } catch (Exception e) {
+                        report.warnings.add("Optional dependency check failed for " + depId + ": " + e.getMessage());
+                        continue;
+                    }
+                    if (depMod == null) {
+                        report.warnings.add("Optional dependency not found: " + depId);
+                        continue;
+                    }
+
+                    RegistryMod.ModVersion bestDep = selectBestVersion(depMod, depConstraint);
+                    if (bestDep == null) {
+                        report.warnings.add("No version of optional dependency " + depId + " satisfies: " + depConstraint);
+                        continue;
+                    }
+
+                    if (resolved.containsKey(depId)) continue;
+
+                    try {
+                        resolveTree(depId, bestDep, resolved, visiting, report);
+                    } catch (Exception e) {
+                        report.warnings.add("Optional dependency " + depId + " resolution failed: " + e.getMessage());
+                    }
+                }
+            }
+
+            return true;
+        } finally {
+            // ★ BUG FIX: 確保在任何情況下（正常返回、異常拋出）visiting 都能正確清理
+            //   避免 visiting 集污染導致後續依賴解析的虛假循環依賴檢測
+            visiting.remove(modId);
+        }
     }
 
     private void downloadMod(String url, Path dest, String expectedSha256) throws Exception {
@@ -390,6 +435,11 @@ public class PackageManager {
             lock.mods.add(le);
         }
 
+        // ★ BUG FIX: 寫入前確保目錄存在
+        Path lockParent = lockFile.getParent();
+        if (lockParent != null) {
+            Files.createDirectories(lockParent);
+        }
         Files.writeString(lockFile, gson.toJson(lock));
     }
 

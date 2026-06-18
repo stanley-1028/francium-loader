@@ -38,14 +38,14 @@ public class MixinConfigProcessor {
             try (ZipFile zip = new ZipFile(jar)) {
                 for (String configName : KNOWN_CONFIG_NAMES) {
                     ZipEntry entry = zip.getEntry(configName);
-                    if (entry != null) {
-                        String content = readEntry(zip, entry);
-                        if (isMixinConfig(content)) {
-                            MIXIN_CONFIG_FILES.add(configName);
-                            count++;
-                            LOG.info("[MixinConfigProcessor] Registered mixin config: " + configName + " from " + jar.getName());
-                        }
-                        break;
+                    if (entry == null) continue;
+                    
+                    String content = readEntry(zip, entry);
+                    if (isMixinConfig(content)) {
+                        MIXIN_CONFIG_FILES.add(configName);
+                        count++;
+                        LOG.info("[MixinConfigProcessor] Registered mixin config: " + configName + " from " + jar.getName());
+                        break; // ★ BUG FIX: break 移至有效 config 內部，無效 config 繼續嘗試下一個名稱
                     }
                 }
             } catch (IOException e) {
@@ -67,25 +67,31 @@ public class MixinConfigProcessor {
             String content = readEntry(zip, entry);
             JsonObject json = JsonParser.parseString(content).getAsJsonObject();
 
-            if (json.has("mixins")) {
-                for (JsonElement elem : json.getAsJsonArray("mixins")) {
-                    mixinClasses.add(elem.getAsString());
-                }
-            }
-            if (json.has("client")) {
-                for (JsonElement elem : json.getAsJsonArray("client")) {
-                    mixinClasses.add(elem.getAsString());
-                }
-            }
-            if (json.has("server")) {
-                for (JsonElement elem : json.getAsJsonArray("server")) {
-                    mixinClasses.add(elem.getAsString());
-                }
-            }
+            // ★ BUG FIX: 防禦性檢查 — mixins/client/server 欄位若不是 JSON 陣列，getAsJsonArray 會拋 IllegalStateException
+            mixinClasses.addAll(extractArrayField(json, "mixins"));
+            mixinClasses.addAll(extractArrayField(json, "client"));
+            mixinClasses.addAll(extractArrayField(json, "server"));
         } catch (IOException e) {
             // skip
+        } catch (RuntimeException e) {
+            // ★ BUG FIX: 捕獲 JSON 解析相關的 RuntimeException（IllegalStateException 等），防止崩潰
+            LOG.warning("[MixinConfigProcessor] Failed to parse mixin config: " + e.getMessage());
         }
         return mixinClasses;
+    }
+
+    /** ★ BUG FIX: 安全提取 JSON 陣列字段，非陣列或缺失時返回空列表 */
+    private List<String> extractArrayField(JsonObject json, String fieldName) {
+        List<String> result = new ArrayList<>();
+        if (!json.has(fieldName)) return result;
+        var element = json.get(fieldName);
+        if (element == null || !element.isJsonArray()) return result;
+        for (JsonElement elem : element.getAsJsonArray()) {
+            if (elem != null && elem.isJsonPrimitive()) {
+                result.add(elem.getAsString());
+            }
+        }
+        return result;
     }
 
     public static Set<String> getRegisteredConfigs() {

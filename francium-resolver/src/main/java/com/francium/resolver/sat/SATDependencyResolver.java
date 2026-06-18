@@ -51,12 +51,13 @@ public class SATDependencyResolver {
     private long timeoutMs = 30_000;
     private boolean enableAC3 = true;
 
-    // ─── 統計 ────────────────────────────────────────────────
+    // ─── 統計 (使用 ThreadLocal 確保線程安全) ────────────────
 
-    private int nodesExplored = 0;
-    private int backtracks = 0;
-    private int propagations = 0;
-    private long solveTimeMs = 0;
+    private final ThreadLocal<Integer> nodesExplored = ThreadLocal.withInitial(() -> 0);
+    private final ThreadLocal<Integer> backtracks = ThreadLocal.withInitial(() -> 0);
+    private final ThreadLocal<Integer> propagations = ThreadLocal.withInitial(() -> 0);
+    private final ThreadLocal<Long> startTime = ThreadLocal.withInitial(() -> 0L);
+    private final ThreadLocal<Long> solveTimeMs = ThreadLocal.withInitial(() -> 0L);
 
     public SATDependencyResolver() {
         this.availableVersions = new HashMap<>();
@@ -107,10 +108,10 @@ public class SATDependencyResolver {
      * @return 解析結果
      */
     public ResolveResult solve(List<String> rootMods) {
-        startTime = System.currentTimeMillis();
-        nodesExplored = 0;
-        backtracks = 0;
-        propagations = 0;
+        startTime.set(System.currentTimeMillis());
+        nodesExplored.set(0);
+        backtracks.set(0);
+        propagations.set(0);
 
         ResolveResult result = new ResolveResult();
 
@@ -129,7 +130,7 @@ public class SATDependencyResolver {
             if (domains == null) {
                 result.success = false;
                 result.errors.add("AC-3 preprocessing detected inconsistency (no valid version combination)");
-                result.solveTimeMs = System.currentTimeMillis() - startTime;
+                result.solveTimeMs = System.currentTimeMillis() - startTime.get();
                 return result;
             }
         }
@@ -139,12 +140,12 @@ public class SATDependencyResolver {
         Map<String, List<SemanticVersion>> prunedDomains = new HashMap<>(domains);
         boolean success = backtrack(variables, 0, prunedDomains, assignment, result);
 
-        solveTimeMs = System.currentTimeMillis() - startTime;
+        solveTimeMs.set(System.currentTimeMillis() - startTime.get());
         result.success = success;
-        result.solveTimeMs = solveTimeMs;
-        result.nodesExplored = nodesExplored;
-        result.backtracks = backtracks;
-        result.propagations = propagations;
+        result.solveTimeMs = solveTimeMs.get();
+        result.nodesExplored = nodesExplored.get();
+        result.backtracks = backtracks.get();
+        result.propagations = propagations.get();
 
         if (success) {
             result.solution = new LinkedHashMap<>(assignment);
@@ -383,8 +384,6 @@ public class SATDependencyResolver {
     // 回溯搜尋核心（優化版）
     // ════════════════════════════════════════════════════════════
 
-    private long startTime;
-
     /**
      * 回溯搜尋核心。
      * 
@@ -399,7 +398,7 @@ public class SATDependencyResolver {
                               ResolveResult result) {
 
         // 超時檢查（每次遞迴檢查）
-        if (System.currentTimeMillis() - startTime > timeoutMs) {
+        if (System.currentTimeMillis() - startTime.get() > timeoutMs) {
             result.timeout = true;
             return false;
         }
@@ -407,7 +406,7 @@ public class SATDependencyResolver {
         // 所有變數已賦值 → 找到解
         if (assignedCount == variables.size()) return true;
 
-        nodesExplored++;
+        nodesExplored.set(nodesExplored.get() + 1);
 
         // MRV + 度數啟發式：選擇最「危急」的變數
         String var = selectUnassignedVariableMRV(variables, assignment, domains);
@@ -428,7 +427,7 @@ public class SATDependencyResolver {
                 var, value, variables, assignment, domains);
 
             if (reducedDomains != null) {
-                propagations++;
+                propagations.set(propagations.get() + 1);
                 if (backtrack(variables, assignedCount + 1,
                               reducedDomains, assignment, result)) {
                     return true;
@@ -437,7 +436,7 @@ public class SATDependencyResolver {
 
             // 回溯
             assignment.remove(var);
-            backtracks++;
+            backtracks.set(backtracks.get() + 1);
         }
 
         return false;

@@ -169,8 +169,8 @@ public class MemoryManager {
         long usedPercent = (snap.heapUsed * 100) / snap.max;
         
         if (usedPercent > 85) {
-            System.err.printf("Fr Memory WARNING: Heap %.1f%% used (%dMB/%dMB)\n",
-                usedPercent / 100.0,
+            System.err.printf("Fr Memory WARNING: Heap %d%% used (%dMB/%dMB)%n",
+                usedPercent,
                 snap.heapUsed / 1024 / 1024,
                 snap.max / 1024 / 1024);
             
@@ -219,12 +219,31 @@ public class MemoryManager {
 
     private long estimateLoaderMemory(ClassLoader loader) {
         // 簡單估算: 每個 loaded class ~2KB + 元數據
+        // ★ BUG FIX: Java 9+ 中 classes 欄位可能已變更或不存在，增加多重 fallback
         try {
-            var field = ClassLoader.class.getDeclaredField("classes");
-            field.setAccessible(true);
-            @SuppressWarnings("unchecked")
-            var classes = (java.util.Vector<Class<?>>) field.get(loader);
-            return classes.size() * 2048L;
+            // Java 8: ClassLoader.classes (Vector<Class<?>>)
+            try {
+                var field = ClassLoader.class.getDeclaredField("classes");
+                field.setAccessible(true);
+                Object value = field.get(loader);
+                if (value instanceof java.util.Vector) {
+                    @SuppressWarnings("unchecked")
+                    var classes = (java.util.Vector<Class<?>>) value;
+                    return classes.size() * 2048L;
+                }
+            } catch (NoSuchFieldException ignored) {
+                // Java 9+ 可能使用不同內部結構
+            }
+            
+            // Fallback: 使用類加載器的已定義包數量做粗略估計
+            try {
+                var pkgMethod = ClassLoader.class.getDeclaredMethod("getDefinedPackages");
+                pkgMethod.setAccessible(true);
+                Package[] packages = (Package[]) pkgMethod.invoke(loader);
+                return packages.length * 4096L; // 每個包 ~4KB
+            } catch (Exception ignored2) {}
+            
+            return 0;
         } catch (Exception e) {
             return 0;
         }

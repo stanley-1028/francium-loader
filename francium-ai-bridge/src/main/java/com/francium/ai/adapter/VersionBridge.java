@@ -8,6 +8,7 @@ import com.francium.ai.predictor.CompatibilityPredictor;
 
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * AI 驅動的版本橋接器。
@@ -33,7 +34,7 @@ public class VersionBridge {
     private final CompatibilityPredictor predictor;
     
     private final List<BridgeReport> reports = new ArrayList<>();
-    private final Map<String, List<MethodSignature>> unresolvedMappings = new HashMap<>();
+    private final Map<String, List<MethodSignature>> unresolvedMappings = new ConcurrentHashMap<>();
     
     // 信心閾值
     private float confidenceThreshold = 0.85f;
@@ -85,16 +86,10 @@ public class VersionBridge {
                         unresolvable++;
                     }
                 } else {
-                    // 啟動結構搜索 (耗時較長但更精確)
-                    MethodSignature structural = mappingDb.structuralSearch(call, sourceVersion, targetVersion);
-                    if (structural != null) {
-                        report.mappings.add(new MethodMapping(call, structural, 0.6f));
-                        needMapping++;
-                        mappingDb.learnMapping(call, structural); // 學習到的新映射
-                    } else {
-                        report.unmappedCalls.add(call);
-                        unresolvable++;
-                    }
+                    // ★ BUG FIX: findMapping 已在內部調用 structuralSearchResults，
+                    // 此處無需重複調用，直接標記為無法解析
+                    report.unmappedCalls.add(call);
+                    unresolvable++;
                 }
             }
         }

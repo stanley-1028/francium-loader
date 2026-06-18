@@ -55,6 +55,19 @@ public class AdapterGenerator {
         av.visit("mappingCount", mappings.size());
         av.visitEnd();
         
+        // ★ BUG FIX: 生成私有建構函數，防止實例化，同時滿足 JVM 類別驗證需求
+        MethodVisitor constructor = cw.visitMethod(
+            Opcodes.ACC_PRIVATE,
+            "<init>",
+            "()V",
+            null, null);
+        constructor.visitCode();
+        constructor.visitVarInsn(Opcodes.ALOAD, 0);
+        constructor.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
+        constructor.visitInsn(Opcodes.RETURN);
+        constructor.visitMaxs(1, 1);
+        constructor.visitEnd();
+        
         // 為每個映射生成靜態橋接方法
         for (MethodMapping mapping : mappings) {
             generateBridgeMethod(cw, mapping);

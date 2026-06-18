@@ -53,7 +53,7 @@ public class ReportViewer {
             if (in == null) {
                 template = getFallbackTemplate();
             } else {
-                template = new String(in.readAllBytes());
+                template = new String(in.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
             }
         }
 

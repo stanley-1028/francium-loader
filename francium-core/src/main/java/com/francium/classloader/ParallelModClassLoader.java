@@ -43,6 +43,9 @@ public class ParallelModClassLoader extends URLClassLoader {
     private final Map<String, Long> loadTimes;
     private volatile boolean loaded = false;
 
+    // 預設 timeout（毫秒），可由 setter 覆蓋
+    private volatile long layerTimeoutMs = 120_000;
+
     public enum LoadStatus { PENDING, LOADING, LOADED, FAILED, SKIPPED }
 
     public ParallelModClassLoader(ModGraph modGraph, Path modsDirectory) {
@@ -60,6 +63,21 @@ public class ParallelModClassLoader extends URLClassLoader {
             ForkJoinPool.defaultForkJoinWorkerThreadFactory,
             null, true // async mode
         );
+    }
+
+    /** 設定每層加載超時時間（毫秒） */
+    public void setLayerTimeoutMs(long timeoutMs) {
+        this.layerTimeoutMs = timeoutMs > 0 ? timeoutMs : 120_000;
+    }
+
+    /**
+     * 將外部 JAR 加入父 ClassLoader，
+     * 使所有子 ModClassLoader 都能透過委派找到其類別。
+     */
+    public void addExternalJar(Path jarPath) throws MalformedURLException {
+        URL url = jarPath.toUri().toURL();
+        super.addURL(url);
+        LOGGER.info("Added external JAR: {} -> {}", jarPath.getFileName(), url);
     }
 
     /**
@@ -93,7 +111,7 @@ public class ParallelModClassLoader extends URLClassLoader {
                 var entry = jar.getJarEntry("francium-mod.json");
                 if (entry != null && !registered) {
                     try (InputStream is = jar.getInputStream(entry)) {
-                        ModManifest manifest = ModManifest.fromJson(new String(is.readAllBytes()));
+                        ModManifest manifest = ModManifest.fromJson(new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
                         if (manifest != null) {
                             manifest.jarSourcePath = jarFile.toPath();
                             modPaths.computeIfAbsent(manifest.modId(), k -> new ArrayList<>())
@@ -107,7 +125,7 @@ public class ParallelModClassLoader extends URLClassLoader {
                 entry = jar.getJarEntry("fabric.mod.json");
                 if (entry != null && !registered) {
                     try (InputStream is = jar.getInputStream(entry)) {
-                        ModManifest manifest = ModManifest.fromFabricJson(new String(is.readAllBytes()));
+                        ModManifest manifest = ModManifest.fromFabricJson(new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
                         if (manifest != null) {
                             manifest.jarSourcePath = jarFile.toPath();
                             modPaths.computeIfAbsent(manifest.modId(), k -> new ArrayList<>())
@@ -121,7 +139,7 @@ public class ParallelModClassLoader extends URLClassLoader {
                 entry = jar.getJarEntry("META-INF/mods.toml");
                 if (entry != null && !registered) {
                     try (InputStream is = jar.getInputStream(entry)) {
-                        ModManifest manifest = ModManifest.fromForgeToml(new String(is.readAllBytes()));
+                        ModManifest manifest = ModManifest.fromForgeToml(new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
                         if (manifest != null) {
                             manifest.jarSourcePath = jarFile.toPath();
                             modPaths.computeIfAbsent(manifest.modId(), k -> new ArrayList<>())
@@ -157,29 +175,36 @@ public class ParallelModClassLoader extends URLClassLoader {
      * 4. 等待當前層全部完成後進入下一層
      */
     public LoadReport loadAll() throws Exception {
-        if (loaded) throw new IllegalStateException("Already loaded");
-        
-        modGraph.buildLayers();
-        List<Set<String>> layers = modGraph.getLayers();
-        
-        LoadReport report = new LoadReport();
-        long totalStart = System.currentTimeMillis();
-        
-        LOGGER.info("Fr: Loading " + modGraph.getModCount() + " mods in " 
-            + layers.size() + " layers (estimated speedup: " 
-            + String.format("%.1fx", modGraph.getSpeedupRatio()) + ")");
-        
-        for (int i = 0; i < layers.size(); i++) {
-            Set<String> layer = layers.get(i);
-            report.layerDetails.add(loadLayer(i, layer));
+        loadLock.lock();
+        try {
+            if (loaded) throw new IllegalStateException("Already loaded");
+            
+            modGraph.buildLayers();
+            List<Set<String>> layers = modGraph.getLayers();
+            
+            LoadReport report = new LoadReport();
+            long totalStart = System.currentTimeMillis();
+            
+            LOGGER.info("Fr: Loading " + modGraph.getModCount() + " mods in " 
+                + layers.size() + " layers (estimated speedup: " 
+                + String.format("%.1fx", modGraph.getSpeedupRatio()) + ")");
+            
+            for (int i = 0; i < layers.size(); i++) {
+                Set<String> layer = layers.get(i);
+                report.layerDetails.add(loadLayer(i, layer));
+            }
+            
+            report.totalLoadTimeMs = System.currentTimeMillis() - totalStart;
+            report.sequentialEstimatedMs = modGraph.estimateSequentialLoadTime();
+            report.actualSpeedup = report.sequentialEstimatedMs > 0
+                ? (double) report.sequentialEstimatedMs / report.totalLoadTimeMs
+                : 1.0;
+            loaded = true;
+            
+            return report;
+        } finally {
+            loadLock.unlock();
         }
-        
-        report.totalLoadTimeMs = System.currentTimeMillis() - totalStart;
-        report.sequentialEstimatedMs = modGraph.estimateSequentialLoadTime();
-        report.actualSpeedup = (double) report.sequentialEstimatedMs / report.totalLoadTimeMs;
-        loaded = true;
-        
-        return report;
     }
 
     /**
@@ -193,10 +218,15 @@ public class ParallelModClassLoader extends URLClassLoader {
         
         long layerStart = System.currentTimeMillis();
         
+        // 使用有序列表保持 modId 順序與結果對應，避免 Set 順序不確定性
+        List<String> orderedModIds = new ArrayList<>(layerMods);
+        
         // 為每個模組創建加載任務
         List<CompletableFuture<ModLoadResult>> futures = new ArrayList<>();
+        // 同時保留 modId 到 Future 的映射，以便失敗時精準定位
+        Map<String, CompletableFuture<ModLoadResult>> modFutureMap = new ConcurrentHashMap<>();
         
-        for (String modId : layerMods) {
+        for (String modId : orderedModIds) {
             ModManifest manifest = modGraph.getManifest(modId);
             if (manifest == null) {
                 // 外部依賴 (如 Minecraft 自身)
@@ -216,6 +246,7 @@ public class ParallelModClassLoader extends URLClassLoader {
             }, executor);
             
             futures.add(future);
+            modFutureMap.put(modId, future);
         }
         
         // 等待該層所有模組加載完成
@@ -224,37 +255,49 @@ public class ParallelModClassLoader extends URLClassLoader {
         );
         
         try {
-            allInLayer.get(120, TimeUnit.SECONDS); // 每層最多等 2 分鐘
+            allInLayer.get(layerTimeoutMs, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
             allInLayer.cancel(true);
-            throw new RuntimeException("Layer " + layerIndex + " load timeout");
+            throw new RuntimeException("Layer " + layerIndex + " load timeout after " + layerTimeoutMs + "ms");
+        } catch (ExecutionException e) {
+            // ★ BUG FIX: 單個或多個模組加載失敗時，allOf 會立即完成異常。
+            //   不應因此拋出，應繼續收集各模組的個別結果，
+            //   讓下方的結果迴圈正確記錄成功/失敗。
+            LOGGER.warn("Layer {}: some mods failed during parallel load, collecting results...", layerIndex);
         }
         
-        // 收集結果
-        for (int j = 0; j < futures.size(); j++) {
+        // 收集結果：遍歷 orderedModIds 而非 futures，確保順序正確
+        for (String modId : orderedModIds) {
+            CompletableFuture<ModLoadResult> future = modFutureMap.get(modId);
+            if (future == null) {
+                // 被跳過的 mod（manifest == null）
+                continue;
+            }
             try {
-                ModLoadResult result = futures.get(j).get();
-                detail.results.add(result);
+                ModLoadResult result = future.get();
                 if (result != null) {
-                    loadStatuses.put(result.modId, LoadStatus.LOADED);
-                    loadTimes.put(result.modId, result.loadTimeMs);
+                    detail.results.add(result);
+                    loadStatuses.put(result.modId(), LoadStatus.LOADED);
+                    loadTimes.put(result.modId(), result.loadTimeMs());
                 }
                 detail.success++;
             } catch (ExecutionException e) {
-                // 某個模組加載失敗 — 從 layerMods 提取 modId
-                Throwable cause = e.getCause();
-                String failedModId = layerMods.size() > j 
-                    ? layerMods.toArray(new String[0])[j] : "unknown";
-                loadStatuses.put(failedModId, LoadStatus.FAILED);
-                detail.failures.add(new LoadFailure(failedModId, cause));
+                Throwable cause = e.getCause() != null ? e.getCause() : e;
+                loadStatuses.put(modId, LoadStatus.FAILED);
+                detail.failures.add(new LoadFailure(modId, cause));
                 detail.failed++;
-                LOGGER.error("  ⚠ Mod load failed: " + failedModId + " - " + cause.getMessage());
+                LOGGER.error("  \u26a0 Mod load failed: {} - {}", modId, cause.getMessage());
+            } catch (Exception e) {
+                loadStatuses.put(modId, LoadStatus.FAILED);
+                detail.failures.add(new LoadFailure(modId, e));
+                detail.failed++;
+                LOGGER.error("  \u26a0 Mod load failed: {} - {}", modId, e.getMessage());
             }
         }
         
         detail.layerTimeMs = System.currentTimeMillis() - layerStart;
-        LOGGER.info(String.format("  Layer %d: %d mods loaded in %dms (%d success, %d failed)\n",
-            layerIndex, detail.modCount, detail.layerTimeMs, detail.success, detail.failed));
+        LOGGER.info("  Layer {}: {} mods loaded in {}ms ({} success, {} failed)",
+            layerIndex, detail.modCount, detail.layerTimeMs, detail.success, detail.failed);
         
         return detail;
     }
@@ -281,8 +324,12 @@ public class ParallelModClassLoader extends URLClassLoader {
         ModClassLoader modLoader = new ModClassLoader(urls, this);
         modLoaders.put(modId, modLoader);
         
-        // 加載主類
-        Class<?> mainClass = modLoader.loadClass(manifest.mainClass());
+        // 加載主類（庫型 mod 可能沒有 mainClass）
+        Class<?> mainClass = null;
+        String mainClassName = manifest.mainClass();
+        if (mainClassName != null && !mainClassName.isBlank()) {
+            mainClass = modLoader.loadClass(mainClassName);
+        }
         
         long loadTimeMs = (System.nanoTime() - start) / 1_000_000;
         
@@ -293,14 +340,18 @@ public class ParallelModClassLoader extends URLClassLoader {
      * 獲取已加載模組的主類。
      */
     public Class<?> getModClass(String modId) {
+        if (modId == null) return null;
         ModClassLoader loader = modLoaders.get(modId);
         if (loader == null) return null;
         
         ModManifest manifest = modGraph.getManifest(modId);
         if (manifest == null) return null;
         
+        String mainClassName = manifest.mainClass();
+        if (mainClassName == null || mainClassName.isBlank()) return null;
+        
         try {
-            return loader.loadClass(manifest.mainClass());
+            return loader.loadClass(mainClassName);
         } catch (ClassNotFoundException e) {
             return null;
         }
@@ -321,7 +372,9 @@ public class ParallelModClassLoader extends URLClassLoader {
         executor.shutdown();
         try {
             executor.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException ignored) {}
+        } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt();
+        }
         // 關閉每個 mod 的獨立 ClassLoader，釋放 JAR 檔案句柄
         for (ModClassLoader child : modLoaders.values()) {
             try { child.close(); } catch (IOException ignored) {}
