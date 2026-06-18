@@ -234,18 +234,22 @@ public class ModGraph {
      * @return 有序的層列表（層 0 為無依賴的根節點）
      */
     public List<Set<String>> getLayers() {
-        // 先讀鎖檢查
-        if (layers == null) {
+        // ★ BUG FIX: 正確的雙重檢查鎖定模式（Double-Checked Locking）
+        //   先用 volatile 讀取 layers（volatile 保證可見性）
+        List<Set<String>> current = layers;
+        if (current == null) {
             layersLock.writeLock().lock();
             try {
-                if (layers == null) {
+                current = layers;
+                if (current == null) {
                     buildLayers();
+                    current = layers;
                 }
             } finally {
                 layersLock.writeLock().unlock();
             }
         }
-        return Collections.unmodifiableList(layers);
+        return Collections.unmodifiableList(current);
     }
 
     /**

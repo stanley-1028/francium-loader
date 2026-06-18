@@ -22,6 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @PublicApi
 public class MappingDatabase {
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(MappingDatabase.class);
+
     // version -> (sourceKey -> [targetSignatures])
     private final Map<String, Map<String, List<MethodSignature>>> mappings;
     
@@ -375,6 +377,8 @@ public class MappingDatabase {
             if (seedIndex != null) {
                 loadSeedJsonFile(seedIndex, "1.20.4");
                 loadedVersions.add("1.20.4");
+                // ★ BUG FIX: 每次加載後立即同步索引，確保 findMapping() 能正確查詢
+                indexVersionMappings("1.20.4");
             }
             
             java.io.InputStream seedV21 = getClass().getClassLoader()
@@ -382,6 +386,8 @@ public class MappingDatabase {
             if (seedV21 != null) {
                 loadSeedJsonFile(seedV21, "1.21");
                 loadedVersions.add("1.21");
+                // ★ BUG FIX: 同上，立即同步索引
+                indexVersionMappings("1.21");
             }
             
             java.io.InputStream crossVersion = getClass().getClassLoader()
@@ -390,13 +396,10 @@ public class MappingDatabase {
                 loadCrossVersionMappings(crossVersion);
             }
             
-            // 為每個已加載的版本同步索引
-            for (String version : loadedVersions) {
-                indexVersionMappings(version);
-            }
+            LOGGER.info("[MappingDatabase] Seed mappings loaded for versions: {}", loadedVersions);
         } catch (Exception e) {
             // seed mappings 是附加功能，失敗不影響核心功能
-            System.err.println("[MappingDatabase] Warning: Could not load seed mappings: " + e.getMessage());
+            LOGGER.warn("[MappingDatabase] Could not load seed mappings: {}", e.getMessage());
         }
     }
 

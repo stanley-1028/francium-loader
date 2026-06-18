@@ -259,6 +259,9 @@ public class ParallelModClassLoader extends URLClassLoader {
         } catch (TimeoutException e) {
             allInLayer.cancel(true);
             throw new RuntimeException("Layer " + layerIndex + " load timeout after " + layerTimeoutMs + "ms");
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Layer " + layerIndex + " load interrupted", e);
         } catch (ExecutionException e) {
             // ★ BUG FIX: 單個或多個模組加載失敗時，allOf 會立即完成異常。
             //   不應因此拋出，應繼續收集各模組的個別結果，

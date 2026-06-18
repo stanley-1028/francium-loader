@@ -113,12 +113,19 @@ public class FranciumBootstrap {
                 LOGGER.info("{}", memSnapshot);
             }
 
-            // 註冊關閉鉤子（★ BUG FIX: 防止重複註冊，為執行緒命名）
+            // 註冊關閉鉤子（★ BUG FIX: 僅在 loader 初始化成功後註冊，防止部分初始化狀態下關閉）
+            final FranciumLoader finalLoader = loader;
             Thread shutdownHook = new Thread(() -> {
                 LOGGER.info("Shutting down Francium...");
-                loader.shutdown();
+                if (finalLoader != null) {
+                    finalLoader.shutdown();
+                }
             }, "FranciumShutdownHook");
-            Runtime.getRuntime().addShutdownHook(shutdownHook);
+            try {
+                Runtime.getRuntime().addShutdownHook(shutdownHook);
+            } catch (IllegalStateException e) {
+                LOGGER.warn("Cannot register shutdown hook: JVM is shutting down");
+            }
 
         } catch (Exception e) {
             LOGGER.warn("");

@@ -187,6 +187,19 @@ public class ServerSyncProtocol {
     public SyncResult compare(ServerModList serverList, Map<String, String> clientMods) {
         SyncResult result = new SyncResult();
         
+        // ★ BUG FIX: 防禦性 null 檢查 — serverList.mods 可能為 null
+        if (serverList == null) {
+            result.warnings.add("Server mod list is null");
+            return result;
+        }
+        if (serverList.mods == null) {
+            result.warnings.add("Server mod list contains no mods");
+            return result;
+        }
+        if (clientMods == null) {
+            clientMods = Map.of();
+        }
+        
         Set<String> serverModIds = new HashSet<>();
         
         for (ServerModEntry serverMod : serverList.mods) {
@@ -259,17 +272,22 @@ public class ServerSyncProtocol {
      * 不包含 signature（當時為 null），但驗證時 JSON 中已有 signature。
      */
     public boolean verifyModList(ServerModList list, PublicKey publicKey) {
-        if (list.signature == null) return false;
+        if (list == null || list.signature == null) return false;
         
         try {
             Signature sig = Signature.getInstance("SHA256withECDSA");
             sig.initVerify(publicKey);
-            // 簽名時 signature=null → toJson() 不包含 signature 欄位，
-            // 驗證時 signature 已從 JSON 解析回來，需暫設為 null 以使用相同 payload
-            String storedSig = list.signature;
-            list.signature = null;
-            sig.update(list.toJson());
-            list.signature = storedSig;
+            // ★ BUG FIX: 使用副本而非直接修改 list 物件，確保線程安全
+            //   建立臨時副本並將 signature 設為 null 以匹配簽名時的 payload
+            ServerModList copy = new ServerModList();
+            copy.serverId = list.serverId;
+            copy.serverName = list.serverName;
+            copy.mcVersion = list.mcVersion;
+            copy.franciumVersion = list.franciumVersion;
+            copy.timestamp = list.timestamp;
+            copy.mods = list.mods;
+            copy.signature = null; // 簽名時 signature=null → toJson() 不包含 signature 欄位
+            sig.update(copy.toJson());
             return sig.verify(Base64.getDecoder().decode(list.signature));
         } catch (Exception e) {
             return false;

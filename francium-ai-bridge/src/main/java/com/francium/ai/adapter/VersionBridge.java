@@ -27,6 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @PublicApi
 public class VersionBridge {
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(VersionBridge.class);
+
     private final String sourceVersion;   // mod 目標版本 (如 1.20.4)
     private final String targetVersion;   // 當前 MC 版本 (如 1.21)
     private final MappingDatabase mappingDb;
@@ -68,29 +70,37 @@ public class VersionBridge {
         int unresolvable = 0;
         
         for (MethodSignature call : externalCalls) {
-            if (mappingDb.existsInVersion(call, targetVersion)) {
-                directMatch++;
-            } else {
-                // 嘗試尋找對應的目標方法
-                List<MethodSignature> candidates = mappingDb.findMapping(call, sourceVersion, targetVersion);
-                
-                if (!candidates.isEmpty()) {
-                    // 用 ML 模型排序候選
-                    MethodSignature best = predictor.rankCandidates(call, candidates, sourceVersion, targetVersion);
+            try {
+                if (mappingDb.existsInVersion(call, targetVersion)) {
+                    directMatch++;
+                } else {
+                    // 嘗試尋找對應的目標方法
+                    List<MethodSignature> candidates = mappingDb.findMapping(call, sourceVersion, targetVersion);
                     
-                    if (best != null && predictor.confidence(call, best) >= confidenceThreshold) {
-                        report.mappings.add(new MethodMapping(call, best, predictor.confidence(call, best)));
-                        needMapping++;
+                    if (!candidates.isEmpty()) {
+                        // 用 ML 模型排序候選
+                        MethodSignature best = predictor.rankCandidates(call, candidates, sourceVersion, targetVersion);
+                        
+                        if (best != null && predictor.confidence(call, best) >= confidenceThreshold) {
+                            report.mappings.add(new MethodMapping(call, best, predictor.confidence(call, best)));
+                            needMapping++;
+                        } else {
+                            report.unmappedCalls.add(call);
+                            unresolvable++;
+                        }
                     } else {
+                        // ★ BUG FIX: findMapping 已在內部調用 structuralSearchResults，
+                        // 此處無需重複調用，直接標記為無法解析
                         report.unmappedCalls.add(call);
                         unresolvable++;
                     }
-                } else {
-                    // ★ BUG FIX: findMapping 已在內部調用 structuralSearchResults，
-                    // 此處無需重複調用，直接標記為無法解析
-                    report.unmappedCalls.add(call);
-                    unresolvable++;
                 }
+            } catch (Exception e) {
+                // ★ BUG FIX: 單一方法分析失敗不應影響整個 mod 的分析
+                //   記錄錯誤後繼續分析其他方法
+                LOGGER.warn("Failed to analyze method call {}: {}", call, e.getMessage());
+                report.unmappedCalls.add(call);
+                unresolvable++;
             }
         }
         

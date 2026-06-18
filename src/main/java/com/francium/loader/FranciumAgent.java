@@ -6,8 +6,8 @@ import com.francium.manager.mixin.MixinConfigProcessor;
 import java.io.File;
 import java.lang.instrument.Instrumentation;
 import java.util.jar.JarFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Java Agent entry point for Francium Loader.
@@ -20,7 +20,7 @@ public class FranciumAgent {
     /** Prevent instantiation — static entry point only. */
     private FranciumAgent() {}
 
-    private static final Logger LOG = Logger.getLogger(FranciumAgent.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(FranciumAgent.class);
 
     /**
      * Java Agent entry point. Invoked by the JVM before the main method.
@@ -57,7 +57,7 @@ public class FranciumAgent {
                     inst.appendToSystemClassLoaderSearch(new JarFile(jarFile));
                     LOG.info("[FranciumAgent] Added to classpath: " + jarFile.getName());
                 } catch (Exception e) {
-                    LOG.warning("[FranciumAgent] Failed to add " + jarFile.getName() + ": " + e.getMessage());
+                    LOG.warn("[FranciumAgent] Failed to add " + jarFile.getName() + ": " + e.getMessage());
                 }
             }
 
@@ -67,13 +67,13 @@ public class FranciumAgent {
                 int configs = processor.discoverAndRegister(modsDirectory);
                 LOG.info("[FranciumAgent] Registered " + configs + " Mixin configuration(s)");
             } catch (Exception e) {
-                LOG.log(Level.WARNING, "[FranciumAgent] Mixin processing error: " + e.getMessage(), e);
+                LOG.warn("[FranciumAgent] Mixin processing error: {}", e.getMessage(), e);
             }
 
             LOG.info("[FranciumAgent] Agent initialization complete");
 
         } catch (Exception e) {
-            LOG.log(Level.SEVERE, "[FranciumAgent] Failed to initialize: " + e.getMessage(), e);
+            LOG.error("[FranciumAgent] Failed to initialize: " + e.getMessage(), e);
         }
     }
 

@@ -268,7 +268,15 @@ public class FranciumLoader {
         for (var manifest : discovered.found) {
             SemanticVersion sv = SemanticVersion.tryParse(manifest.version());
             if (sv != null) {
-                resolver.registerVersions(manifest.modId(), List.of(sv));
+                // ★ BUG FIX: 為 SAT 求解器註冊多個候選版本（當前版本+上下微調版本）
+                //   讓求解器有真正的選擇空間，而不是只有唯一選項。
+                List<SemanticVersion> candidateVersions = new ArrayList<>();
+                candidateVersions.add(sv);
+                // 加入附近的版本作為候選，讓 SAT 求解器有選擇餘地
+                if (sv.patch() > 0) candidateVersions.add(new SemanticVersion(sv.major(), sv.minor(), sv.patch() - 1));
+                if (sv.minor() > 0) candidateVersions.add(new SemanticVersion(sv.major(), sv.minor() - 1, sv.patch()));
+                candidateVersions.add(sv.nextPatch());
+                resolver.registerVersions(manifest.modId(), candidateVersions);
             }
 
             // 註冊依賴關係（防禦性 null 檢查）

@@ -157,8 +157,16 @@ public class BytecodeAnalyzer {
     private boolean isInternalClass(String className, Set<String> internalClasses) {
         // ★ BUG FIX: startsWith 必須以 "." 為分隔，否則 "ModA" 會誤匹配 "ModABuilder"
         //   正確的包前綴比對應該用 internal + "." 作為前綴
-        return internalClasses.contains(className) 
-            || internalClasses.stream().anyMatch(internal -> className.startsWith(internal + "."));
+        //   同時支援 / 和 . 兩種分隔符（JVM 內部使用 /，外部使用 .）
+        if (internalClasses.contains(className)) return true;
+        String dotSep = className.replace('/', '.');
+        String slashSep = className.replace('.', '/');
+        for (String internal : internalClasses) {
+            String normalized = internal.replace('/', '.');
+            if (dotSep.equals(normalized) || dotSep.startsWith(normalized + ".")) return true;
+            if (dotSep.startsWith(internal + "/")) return true;
+        }
+        return false;
     }
 
     private boolean isJavaStdLib(String className) {

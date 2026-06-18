@@ -63,65 +63,108 @@ public class DependencyConstraint {
         if (this.raw.equals("*") || this.ranges.isEmpty()) return other;
         if (other.raw.equals("*") || other.ranges.isEmpty()) return this;
         
-        // 取最嚴格的範圍
-        SemanticVersion maxMin = ranges.stream()
-            .map(r -> r.min)
-            .filter(Objects::nonNull)
-            .max(Comparator.naturalOrder())
-            .orElse(null);
+        // ★ BUG FIX: 對所有 range 組合做笛卡爾積交集，不只是取全局最大 min / 最小 max
+        //   因為不同範圍可能來自 OR 語義（如 !=），對互斥範圍做全局 min/max 會得到錯誤結果。
+        //   正確做法：對每一對 (thisRange, otherRange) 計算交集，再 OR 合併。
+        List<Range> intersections = new ArrayList<>();
         
-        SemanticVersion maxMinOther = other.ranges.stream()
-            .map(r -> r.min)
-            .filter(Objects::nonNull)
-            .max(Comparator.naturalOrder())
-            .orElse(null);
+        for (Range thisRange : ranges) {
+            for (Range otherRange : other.ranges) {
+                // 計算兩個 Range 的交集
+                SemanticVersion interMin = null;
+                boolean interMinInc = false;
+                SemanticVersion interMax = null;
+                boolean interMaxInc = false;
+                
+                // 取較大的下限
+                if (thisRange.min != null && otherRange.min != null) {
+                    int cmp = thisRange.min.compareTo(otherRange.min);
+                    if (cmp > 0) {
+                        interMin = thisRange.min;
+                        interMinInc = thisRange.minInclusive;
+                    } else if (cmp < 0) {
+                        interMin = otherRange.min;
+                        interMinInc = otherRange.minInclusive;
+                    } else {
+                        interMin = thisRange.min;
+                        interMinInc = thisRange.minInclusive && otherRange.minInclusive;
+                    }
+                } else if (thisRange.min != null) {
+                    interMin = thisRange.min;
+                    interMinInc = thisRange.minInclusive;
+                } else if (otherRange.min != null) {
+                    interMin = otherRange.min;
+                    interMinInc = otherRange.minInclusive;
+                }
+                
+                // 取較小的上限
+                if (thisRange.max != null && otherRange.max != null) {
+                    int cmp = thisRange.max.compareTo(otherRange.max);
+                    if (cmp < 0) {
+                        interMax = thisRange.max;
+                        interMaxInc = thisRange.maxInclusive;
+                    } else if (cmp > 0) {
+                        interMax = otherRange.max;
+                        interMaxInc = otherRange.maxInclusive;
+                    } else {
+                        interMax = thisRange.max;
+                        interMaxInc = thisRange.maxInclusive && otherRange.maxInclusive;
+                    }
+                } else if (thisRange.max != null) {
+                    interMax = thisRange.max;
+                    interMaxInc = thisRange.maxInclusive;
+                } else if (otherRange.max != null) {
+                    interMax = otherRange.max;
+                    interMaxInc = otherRange.maxInclusive;
+                }
+                
+                // 檢查交集是否有效
+                if (interMin != null && interMax != null) {
+                    int cmp = interMin.compareTo(interMax);
+                    if (cmp > 0 || (cmp == 0 && (!interMinInc || !interMaxInc))) {
+                        continue; // 無效交集
+                    }
+                }
+                
+                intersections.add(new Range(interMin, interMinInc, interMax, interMaxInc));
+            }
+        }
         
-        SemanticVersion minMax = ranges.stream()
-            .map(r -> r.max)
-            .filter(Objects::nonNull)
-            .min(Comparator.naturalOrder())
-            .orElse(null);
-        
-        SemanticVersion minMaxOther = other.ranges.stream()
-            .map(r -> r.max)
-            .filter(Objects::nonNull)
-            .min(Comparator.naturalOrder())
-            .orElse(null);
-        
-        SemanticVersion finalMin = maxMin != null && maxMinOther != null 
-            ? (maxMin.compareTo(maxMinOther) > 0 ? maxMin : maxMinOther)
-            : (maxMin != null ? maxMin : maxMinOther);
-        
-        SemanticVersion finalMax = minMax != null && minMaxOther != null
-            ? (minMax.compareTo(minMaxOther) < 0 ? minMax : minMaxOther)
-            : (minMax != null ? minMax : minMaxOther);
-        
-        if (finalMin != null && finalMax != null && finalMin.compareTo(finalMax) > 0) {
+        if (intersections.isEmpty()) {
             return null; // 無交集
         }
         
-        // ★ BUG FIX: 交集時 inclusivity 邏輯取最嚴格（both must be inclusive）
-        // 即 minInclusive = finalMin 來自的兩個範圍都包含 min（AND 語義）
+        // 合併所有有效交集為一個 Constraint
+        // 取全域最小下限和最大上限（OR 語義）
+        SemanticVersion finalMin = intersections.stream()
+            .map(r -> r.min)
+            .filter(Objects::nonNull)
+            .min(Comparator.naturalOrder())
+            .orElse(null);
+        
+        SemanticVersion finalMax = intersections.stream()
+            .map(r -> r.max)
+            .filter(Objects::nonNull)
+            .max(Comparator.naturalOrder())
+            .orElse(null);
+        
+        // 計算最終 inclusivity：取最嚴格
         boolean finalMinInc = true;
         if (finalMin != null) {
-            boolean thisMinInc = ranges.stream()
-                .filter(r -> r.min != null && r.min.equals(finalMin))
-                .findFirst().map(r -> r.minInclusive).orElse(true);
-            boolean otherMinInc = other.ranges.stream()
-                .filter(r -> r.min != null && r.min.equals(finalMin))
-                .findFirst().map(r -> r.minInclusive).orElse(true);
-            finalMinInc = thisMinInc && otherMinInc;
+            for (Range r : intersections) {
+                if (r.min != null && r.min.equals(finalMin)) {
+                    finalMinInc = finalMinInc && r.minInclusive;
+                }
+            }
         }
         
         boolean finalMaxInc = true;
         if (finalMax != null) {
-            boolean thisMaxInc = ranges.stream()
-                .filter(r -> r.max != null && r.max.equals(finalMax))
-                .findFirst().map(r -> r.maxInclusive).orElse(true);
-            boolean otherMaxInc = other.ranges.stream()
-                .filter(r -> r.max != null && r.max.equals(finalMax))
-                .findFirst().map(r -> r.maxInclusive).orElse(true);
-            finalMaxInc = thisMaxInc && otherMaxInc;
+            for (Range r : intersections) {
+                if (r.max != null && r.max.equals(finalMax)) {
+                    finalMaxInc = finalMaxInc && r.maxInclusive;
+                }
+            }
         }
         
         return new ConstraintBuilder()
