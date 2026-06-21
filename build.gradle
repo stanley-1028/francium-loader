@@ -83,6 +83,13 @@ subprojects {
             html.required = true
         }
     }
+
+    jar {
+        manifest {
+            attributes 'Implementation-Title': project.name,
+                       'Implementation-Version': project.version
+        }
+    }
 }
 
 // Root project depends on all subprojects so shadowJar bundles transitive deps (SLF4J, Logback, Gson, Netty, Mixin, etc.)

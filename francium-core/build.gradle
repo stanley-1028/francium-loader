@@ -26,7 +26,7 @@ test {
     useJUnitPlatform()
     
     // 真實世界測試: 傳遞根目錄給測試
-    def rootDir = rootProject.projectDir.toString()
+    def rootDir = projectDir.parentFile.toString()
     def mcJar = rootDir + '/minecraft_server.jar'
     
     jvmArgs '-Dfrancium.test.rootdir=' + rootDir
