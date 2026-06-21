@@ -143,6 +143,16 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
+      - name: Validate release tag matches project version
+        shell: bash
+        run: |
+          project_version=$(./gradlew properties -q --no-daemon | awk -F': ' '/^version:/ { print $2; exit }')
+          tag_version="${GITHUB_REF_NAME#v}"
+          if [ "$project_version" != "$tag_version" ]; then
+            echo "Release tag ${GITHUB_REF_NAME} does not match Gradle project version ${project_version}"
+            exit 1
+          fi
+
       - name: Install jpackage system dependencies
         shell: bash
         run: |
@@ -218,7 +228,7 @@ jobs:
         run: |
           mkdir -p release
           # Move all distributable files to release/
-          find . -name "*.jar" -path "*/francium-jar-*" -exec cp {} release/ \;
+          find . -path "*/build/libs/*-all.jar" -exec cp {} release/ \;
           find . -name "*.exe" -exec cp {} release/ \;
           find . -name "*.dmg" -exec cp {} release/ \;
           find . -name "*.deb" -exec cp {} release/ \;

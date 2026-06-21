@@ -1,8 +1,6 @@
 package com.francium.manager;
 
 import com.francium.api.PublicApi;
-import com.francium.manager.CurseForgeAdapter;
-import com.francium.manager.ModrinthAdapter;
 import java.io.IOException;
 import java.io.File;
 import java.nio.file.*;
@@ -54,8 +52,6 @@ public class PackageManager {
             .build();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.registries = new ArrayList<>();
-        // ★ BUG FIX: 移除重複的 registry URL
-        this.registries.add("https://api.modrinth.com/v2"); // Modrinth API v2 (官方)
         this.registries.add("https://registry.francium.dev/v1"); // Francium 官方 registry (開發中)
         this.cache = new HashMap<>();
         this.modrinth = new ModrinthAdapter();
@@ -146,8 +142,14 @@ public class PackageManager {
             }
         }
 
-        // Step 5: 寫入鎖定檔案
-        writeLockFile(resolved);
+        // Step 5: 全部下載成功後才寫入鎖定檔案，避免 lock file 記錄未安裝完成的 mod
+        if (report.errors.isEmpty()) {
+            try {
+                writeLockFile(resolved);
+            } catch (IOException e) {
+                report.errors.add("Failed to write lock file: " + e.getMessage());
+            }
+        }
 
         report.success = report.errors.isEmpty();
         return report;
@@ -253,6 +255,7 @@ public class PackageManager {
 
         if (response.statusCode() == 200) {
             RegistryIndex index = gson.fromJson(response.body(), RegistryIndex.class);
+            if (index == null || index.mods == null) return;
             for (RegistryMod mod : index.mods) {
                 cache.computeIfAbsent(mod.modId, k -> new ArrayList<>()).add(mod);
             }
@@ -265,6 +268,25 @@ public class PackageManager {
             return cache.get(modId).get(0);
         }
 
+        RegistryMod registryMod = fetchFromFranciumRegistries(modId);
+        if (registryMod != null) {
+            return cacheAndReturn(registryMod);
+        }
+
+        RegistryMod modrinthMod = modrinth.fetchProject(modId);
+        if (modrinthMod != null && hasInstallableVersions(modrinthMod)) {
+            return cacheAndReturn(modrinthMod);
+        }
+
+        RegistryMod curseForgeMod = fetchFromCurseForge(modId);
+        if (curseForgeMod != null && hasInstallableVersions(curseForgeMod)) {
+            return cacheAndReturn(curseForgeMod);
+        }
+
+        return null;
+    }
+
+    private RegistryMod fetchFromFranciumRegistries(String modId) {
         for (String registry : registries) {
             try {
                 HttpRequest request = HttpRequest.newBuilder()
@@ -277,7 +299,6 @@ public class PackageManager {
 
                 if (response.statusCode() == 200) {
                     RegistryMod mod = gson.fromJson(response.body(), RegistryMod.class);
-                    cache.put(modId, List.of(mod));
                     return mod;
                 }
             } catch (Exception e) {
@@ -285,6 +306,38 @@ public class PackageManager {
             }
         }
         return null;
+    }
+
+    private RegistryMod fetchFromCurseForge(String modId) {
+        if (!curseForge.isAvailable()) return null;
+
+        try {
+            Long curseForgeId = parseLongOrNull(modId);
+            if (curseForgeId == null) {
+                curseForgeId = curseForge.resolveModId(modId);
+            }
+            return curseForgeId != null ? curseForge.fetchProject(curseForgeId) : null;
+        } catch (Exception e) {
+            LOGGER.warn("CurseForge lookup failed for {}: {}", modId, e.getMessage());
+            return null;
+        }
+    }
+
+    private Long parseLongOrNull(String value) {
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private RegistryMod cacheAndReturn(RegistryMod mod) {
+        cache.put(mod.modId, List.of(mod));
+        return mod;
+    }
+
+    private boolean hasInstallableVersions(RegistryMod mod) {
+        return mod.versions != null && !mod.versions.isEmpty();
     }
 
     private RegistryMod.ModVersion selectBestVersion(RegistryMod mod, String constraint) {
@@ -395,6 +448,10 @@ public class PackageManager {
     }
 
     private void downloadMod(String url, Path dest, String expectedSha256) throws Exception {
+        if (url == null || url.isBlank()) {
+            throw new IOException("Missing download URL");
+        }
+
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .GET()
@@ -417,6 +474,10 @@ public class PackageManager {
             }
         }
 
+        Path parent = dest.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
+        }
         Files.write(dest, data);
     }
 

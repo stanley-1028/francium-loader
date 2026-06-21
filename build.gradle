@@ -53,6 +53,39 @@ allprojects {
     }
 }
 
+tasks.register('verifyReleaseMetadata') {
+    group = 'verification'
+    description = 'Verify release metadata matches the Gradle project version.'
+
+    doLast {
+        def projectVersion = project.version.toString()
+
+        def metadataFile = file('francium-core/src/main/resources/francium-loader.properties')
+        def metadata = new Properties()
+        metadataFile.withInputStream { metadata.load(it) }
+        def metadataVersion = metadata.getProperty('francium.version')
+        if (metadataVersion != projectVersion) {
+            throw new GradleException(
+                "francium.version (${metadataVersion}) must match Gradle version (${projectVersion})"
+            )
+        }
+
+        def readme = file('README.md').getText('UTF-8')
+        def expectedJitPack = "francium-loader:v${projectVersion}"
+        def expectedMaven = "francium-loader:${projectVersion}"
+        def expectedJavadocs = "/francium-loader/v${projectVersion}/javadoc/"
+        [expectedJitPack, expectedMaven, expectedJavadocs].each { expected ->
+            if (!readme.contains(expected)) {
+                throw new GradleException("README.md is missing release metadata: ${expected}")
+            }
+        }
+    }
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('verifyReleaseMetadata')
+}
+
 // Common configuration for all subprojects
 subprojects {
     apply plugin: 'java'
