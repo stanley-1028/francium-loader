@@ -107,7 +107,7 @@ public class QuickStart {
 }
 ```
 
-完整的 API 文檔請參閱 [Javadoc](https://jitpack.io/com/github/stanley-1028/francium-loader/v2.2.0/javadoc/)。
+完整的 API 文檔請參閱 [Javadoc](https://jitpack.io/com/github/stanley-1028/francium-loader/v2.3.0/javadoc/)。
 
 ---
 

@@ -6,8 +6,16 @@ REM ============================================
 setlocal enabledelayedexpansion
 
 set PROJECT_DIR=%~dp0
-set VERSION=1.2.0
 set DIST_DIR=%PROJECT_DIR%build\dist
+
+for /f "tokens=2 delims=:" %%v in ('call "%PROJECT_DIR%gradlew.bat" properties -q --no-daemon ^| findstr /b "version:"') do (
+    set "VERSION=%%v"
+)
+set "VERSION=!VERSION: =!"
+if not defined VERSION (
+    echo FAILED: Unable to determine Gradle project version
+    exit /b 1
+)
 
 echo ==========================================
 echo   Francium Loader v%VERSION% - Distribution
