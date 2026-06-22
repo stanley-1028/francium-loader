@@ -128,6 +128,7 @@ public class FranciumLoader {
 
             // 初始化 AI 版本橋接器
             this.versionBridge = new VersionBridge("auto", "auto");
+            this.versionBridge.setCacheDir(cacheDir);
             this.versionBridge.setConfidenceThreshold(config.aiConfidenceThreshold);
             this.versionBridge.setAutoFix(config.aiBridgeEnabled);
             this.versionBridge.setDryRun(config.aiBridgeReportOnly);

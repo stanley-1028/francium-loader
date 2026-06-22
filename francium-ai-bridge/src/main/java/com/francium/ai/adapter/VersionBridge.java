@@ -5,8 +5,11 @@ import com.francium.ai.analysis.BytecodeAnalyzer;
 import com.francium.ai.mapping.MappingDatabase;
 import com.francium.ai.mapping.MethodSignature;
 import com.francium.ai.predictor.CompatibilityPredictor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.nio.file.Path;
+import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,6 +45,32 @@ public class VersionBridge {
     private float confidenceThreshold = 0.85f;
     private boolean autoFix = true;
     private boolean dryRun = false;
+    private Path cacheDir;
+
+    public void setCacheDir(Path cacheDir) {
+        this.cacheDir = cacheDir;
+    }
+
+    public Path getCacheDir() {
+        return cacheDir;
+    }
+
+    private String calculateSHA256(Path file) throws Exception {
+        java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
+        try (InputStream fis = Files.newInputStream(file)) {
+            byte[] byteArray = new byte[1024];
+            int bytesCount;
+            while ((bytesCount = fis.read(byteArray)) != -1) {
+                digest.update(byteArray, 0, bytesCount);
+            }
+        }
+        byte[] bytes = digest.digest();
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
 
     public VersionBridge(String sourceVersion, String targetVersion) {
         this.sourceVersion = sourceVersion;
@@ -124,7 +153,23 @@ public class VersionBridge {
     }
 
     /**
-     * 批量分析並生成修補。
+     * AI Bridge Cache Metadata for a mod.
+     */
+    public static class CacheMetadata {
+        public String jarHash;
+        public String sourceVersion;
+        public String targetVersion;
+        public int totalExternalCalls;
+        public int directMatchCount;
+        public int mappedCount;
+        public int unresolvableCount;
+        public float compatibilityScore;
+        public List<MethodMapping> mappings = new ArrayList<>();
+        public List<MethodSignature> unmappedCalls = new ArrayList<>();
+    }
+
+    /**
+     * 批量分析並生成修補，支援極速快取。
      * 
      * @param mods 所有需要橋接的模組
      * @return 整體兼容性報告
@@ -134,14 +179,100 @@ public class VersionBridge {
         summary.sourceVersion = sourceVersion;
         summary.targetVersion = targetVersion;
         
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
         for (var entry : mods.entrySet()) {
-            BridgeReport report = analyze(entry.getValue());
+            String modId = entry.getKey();
+            Path modJar = entry.getValue();
+            boolean cacheHit = false;
+            BridgeReport report = null;
+            byte[] adapterBytes = null;
+
+            if (cacheDir != null && Files.exists(cacheDir)) {
+                Path metaPath = cacheDir.resolve(modId + "_bridge_meta.json");
+                Path jarPath = cacheDir.resolve(modId + "_bridge.jar");
+
+                if (Files.exists(metaPath)) {
+                    try {
+                        String currentHash = calculateSHA256(modJar);
+                        String metaJson = Files.readString(metaPath, java.nio.charset.StandardCharsets.UTF_8);
+                        CacheMetadata meta = gson.fromJson(metaJson, CacheMetadata.class);
+
+                        if (meta != null && currentHash.equals(meta.jarHash)
+                                && sourceVersion.equals(meta.sourceVersion)
+                                && targetVersion.equals(meta.targetVersion)) {
+                            
+                            // Cache Hit!
+                            report = new BridgeReport(modJar.getFileName().toString());
+                            report.totalExternalCalls = meta.totalExternalCalls;
+                            report.directMatchCount = meta.directMatchCount;
+                            report.mappedCount = meta.mappedCount;
+                            report.unresolvableCount = meta.unresolvableCount;
+                            report.compatibilityScore = meta.compatibilityScore;
+                            report.mappings = meta.mappings != null ? meta.mappings : new ArrayList<>();
+                            report.unmappedCalls = meta.unmappedCalls != null ? meta.unmappedCalls : new ArrayList<>();
+
+                            if (report.needsAdapter()) {
+                                if (Files.exists(jarPath)) {
+                                    adapterBytes = Files.readAllBytes(jarPath);
+                                    cacheHit = true;
+                                    LOGGER.info("[VersionBridge] Cache HIT for mod: {} (reusing generated adapter)", modId);
+                                } else {
+                                    LOGGER.warn("[VersionBridge] Cache metadata found but adapter jar is missing for: {}", modId);
+                                }
+                            } else {
+                                cacheHit = true;
+                                LOGGER.info("[VersionBridge] Cache HIT for mod: {} (fully compatible, no adapter needed)", modId);
+                            }
+                        }
+                    } catch (Exception e) {
+                        LOGGER.warn("[VersionBridge] Failed to read/verify cache for mod {}: {}", modId, e.getMessage());
+                    }
+                }
+            }
+
+            if (!cacheHit) {
+                report = analyze(modJar);
+                if (report.needsAdapter() && autoFix && !dryRun) {
+                    adapterBytes = generateAdapter(modId, report.mappings);
+                }
+
+                // Write to cache
+                if (cacheDir != null) {
+                    try {
+                        Files.createDirectories(cacheDir);
+                        Path metaPath = cacheDir.resolve(modId + "_bridge_meta.json");
+                        Path jarPath = cacheDir.resolve(modId + "_bridge.jar");
+
+                        CacheMetadata meta = new CacheMetadata();
+                        meta.jarHash = calculateSHA256(modJar);
+                        meta.sourceVersion = sourceVersion;
+                        meta.targetVersion = targetVersion;
+                        meta.totalExternalCalls = report.totalExternalCalls;
+                        meta.directMatchCount = report.directMatchCount;
+                        meta.mappedCount = report.mappedCount;
+                        meta.unresolvableCount = report.unresolvableCount;
+                        meta.compatibilityScore = report.compatibilityScore;
+                        meta.mappings = report.mappings;
+                        meta.unmappedCalls = report.unmappedCalls;
+
+                        Files.writeString(metaPath, gson.toJson(meta), java.nio.charset.StandardCharsets.UTF_8);
+                        if (adapterBytes != null) {
+                            Files.write(jarPath, adapterBytes);
+                        } else {
+                            Files.deleteIfExists(jarPath); // Clean up if no adapter is needed anymore
+                        }
+                        LOGGER.info("[VersionBridge] Cached AI Bridge results for mod: {}", modId);
+                    } catch (Exception e) {
+                        LOGGER.error("[VersionBridge] Failed to write cache for mod {}: {}", modId, e.getMessage());
+                    }
+                }
+            }
+
             summary.reports.add(report);
-            
-            if (report.needsAdapter() && autoFix && !dryRun) {
-                byte[] adapter = generateAdapter(entry.getKey(), report.mappings);
+            if (adapterBytes != null) {
                 summary.adaptersGenerated++;
-                summary.adapterBytes.put(entry.getKey(), adapter);
+                summary.adapterBytes.put(modId, adapterBytes);
             }
         }
         

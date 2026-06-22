@@ -3,6 +3,9 @@ apply plugin: 'java'
 dependencies {
     implementation project(':francium-api')
 
+    // Gson for caching metadata
+    implementation 'com.google.code.gson:gson:2.14.0'
+
     // ASM bytecode manipulation library
     implementation 'org.ow2.asm:asm:9.10.1'
     implementation 'org.ow2.asm:asm-tree:9.10.1'
