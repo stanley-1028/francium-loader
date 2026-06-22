@@ -24,7 +24,7 @@
 | MultiMC/Prism 匯入 | ✅ v2.3.0 新增 |
 | 文件 (DEVELOPER_GUIDE.md) | ✅ |
 | Maven Central 發布 | ❌ |
-| Nova Launcher 整合 | ❌ |
+| Nova Launcher 整合 | ✅ |
 
 ---
 
@@ -45,13 +45,13 @@
 
 ## 🟡 P1：開發者體驗
 
-- [ ] Nova Launcher 整合端到端驗證
+- [x] Nova Launcher 整合端到端驗證 ✅
 - [x] 範例模組 (Hello World Francium Mod) ✅ v2.3.0
 - [x] 預編譯 example-mod JAR ✅ v2.3.0
 - [x] Gradle 模板專案 (francium-mod-template) ✅
 - [x] 模組開發者文件 (DEVELOPER_GUIDE.md) ✅
 - [x] `francium.json` 完整欄位說明 ✅
-- [ ] API Javadoc 上線
+- [x] API Javadoc 上線 ✅
 
 ---
 
@@ -89,7 +89,5 @@ v2.3.0 (2026-06-18):
 
 下一步:
   ├── Mapping 數據庫繼續擴充至 60 類 / 800+ 方法
-  ├── Nova Launcher 整合驗證
-  ├── Maven Central 發布
-  └── API Javadoc 上線
+  └── Maven Central 發布
 ```

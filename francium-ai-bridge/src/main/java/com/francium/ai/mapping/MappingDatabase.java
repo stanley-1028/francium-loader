@@ -41,6 +41,7 @@ public class MappingDatabase {
         this.learnedMappings = new ConcurrentHashMap<>();
         this.classCache = new ConcurrentHashMap<>();
         this.loadedVersions = ConcurrentHashMap.newKeySet();
+        loadSeedMappings();
     }
 
     /**

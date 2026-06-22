@@ -6,7 +6,7 @@ REM ============================================
 setlocal enabledelayedexpansion
 
 set PROJECT_DIR=%~dp0
-set VERSION=1.2.0
+set VERSION=2.3.0
 set DIST_DIR=%PROJECT_DIR%build\dist
 
 echo ==========================================

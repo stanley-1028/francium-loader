@@ -327,6 +327,23 @@ tasks.register('buildNative') {
 }
 
 // ══════════════════════════════════════════════════
+//  Aggregated Javadoc (for API Javadoc publication)
+// ══════════════════════════════════════════════════
+tasks.register('aggregatedJavadoc', Copy) {
+    description = 'Aggregates Javadoc from all subprojects'
+    group = 'documentation'
+    
+    subprojects.each { subproject ->
+        dependsOn "${subproject.path}:javadoc"
+        from(subproject.tasks.named('javadoc').map { it.destinationDir }) {
+            into subproject.name
+        }
+    }
+    
+    into "${buildDir}/docs/javadoc"
+}
+
+// ══════════════════════════════════════════════════
 //  Publishing — JitPack & Maven Central
 // ══════════════════════════════════════════════════
 

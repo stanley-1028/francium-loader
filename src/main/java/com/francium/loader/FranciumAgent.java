@@ -89,6 +89,6 @@ public class FranciumAgent {
 
     private static String getVersion() {
         String v = FranciumAgent.class.getPackage().getImplementationVersion();
-        return v != null ? v : "1.7.0";
+        return v != null ? v : "2.3.0";
     }
 }
