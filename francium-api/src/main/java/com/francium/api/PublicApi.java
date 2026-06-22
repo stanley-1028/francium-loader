@@ -19,13 +19,13 @@ import java.lang.annotation.Target;
  * time without notice. Consumers should avoid depending on them directly.
  * </p>
  *
- * <h3>Usage</h3>
+ * <h2>Usage</h2>
  * <pre>{@code
  * @PublicApi
  * public class FranciumLoader { ... }
  * }</pre>
  *
- * <h3>Stability guarantees</h3>
+ * <h2>Stability guarantees</h2>
  * <ul>
  *   <li>Patch version: bug fixes only, no API changes</li>
  *   <li>Minor version: additions only, no removals or backward-incompatible changes</li>
