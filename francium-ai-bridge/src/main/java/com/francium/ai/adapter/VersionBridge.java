@@ -7,6 +7,8 @@ import com.francium.ai.mapping.MethodSignature;
 import com.francium.ai.predictor.CompatibilityPredictor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.*;
@@ -30,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @PublicApi
 public class VersionBridge {
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(VersionBridge.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VersionBridge.class);
 
     private final String sourceVersion;   // mod 目標版本 (如 1.20.4)
     private final String targetVersion;   // 當前 MC 版本 (如 1.21)

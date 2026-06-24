@@ -18,8 +18,11 @@ rmdir /s /q "%PROJECT_DIR%build" 2>nul
 mkdir "%BUILD_DIR%" 2>nul
 mkdir "%TEST_DIR%" 2>nul
 
-echo Compiling 13 core source files...
+echo Compiling 15 core source files...
 javac -d "%BUILD_DIR%" --release 21 -Xlint:-unchecked ^
+    francium-api\src\main\java\com\francium\api\PublicApi.java ^
+    build-stubs\org\slf4j\Logger.java ^
+    build-stubs\org\slf4j\LoggerFactory.java ^
     francium-resolver\src\main\java\com\francium\resolver\model\SemanticVersion.java ^
     francium-resolver\src\main\java\com\francium\resolver\model\DependencyConstraint.java ^
     francium-resolver\src\main\java\com\francium\resolver\sat\SATDependencyResolver.java ^

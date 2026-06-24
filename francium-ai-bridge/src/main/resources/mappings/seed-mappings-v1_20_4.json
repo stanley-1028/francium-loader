@@ -1908,6 +1908,2115 @@
         "name": "createInstance",
         "desc": "(II)Lnet/minecraft/world/effect/MobEffectInstance;"
       }
+    ],
+    "net/minecraft/client/Minecraft": [
+      {
+        "name": "getInstance",
+        "desc": "()Lnet/minecraft/client/Minecraft;",
+        "obf": "m_91074_"
+      },
+      {
+        "name": "getPlayer",
+        "desc": "()Lnet/minecraft/client/player/LocalPlayer;",
+        "obf": "m_91271_"
+      },
+      {
+        "name": "getLevel",
+        "desc": "()Lnet/minecraft/client/multiplayer/ClientLevel;",
+        "obf": "m_91268_"
+      },
+      {
+        "name": "getWindow",
+        "desc": "()Lcom/mojang/blaze3d/platform/Window;",
+        "obf": "m_91273_"
+      },
+      {
+        "name": "getGameMode",
+        "desc": "()Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;",
+        "obf": "m_91269_"
+      },
+      {
+        "name": "getScreen",
+        "desc": "()Lnet/minecraft/client/gui/screens/Screen;",
+        "obf": "m_91267_"
+      },
+      {
+        "name": "setScreen",
+        "desc": "(Lnet/minecraft/client/gui/screens/Screen;)V",
+        "obf": "m_91154_"
+      },
+      {
+        "name": "getTextureManager",
+        "desc": "()Lnet/minecraft/server/packs/resources/TextureManager;",
+        "obf": "m_91272_"
+      },
+      {
+        "name": "getModelManager",
+        "desc": "()Lnet/minecraft/client/resources/model/ModelManager;",
+        "obf": "m_91270_"
+      },
+      {
+        "name": "getEntityRenderDispatcher",
+        "desc": "()Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;",
+        "obf": "m_91266_"
+      },
+      {
+        "name": "getBlockRenderer",
+        "desc": "()Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;",
+        "obf": "m_91265_"
+      },
+      {
+        "name": "getItemRenderer",
+        "desc": "()Lnet/minecraft/client/renderer/entity/ItemRenderer;",
+        "obf": "m_91269_"
+      },
+      {
+        "name": "isPaused",
+        "desc": "()Z",
+        "obf": "m_91274_"
+      },
+      {
+        "name": "pauseGame",
+        "desc": "(Z)V",
+        "obf": "m_91155_"
+      },
+      {
+        "name": "tell",
+        "desc": "(Lnet/minecraft/network/chat/Component;)V",
+        "obf": "m_91162_"
+      }
+    ],
+    "net/minecraft/client/gui/GuiGraphics": [
+      {
+        "name": "drawString",
+        "desc": "(Lnet/minecraft/client/gui/Font;Ljava/lang/String;III)I",
+        "obf": "m_280781_"
+      },
+      {
+        "name": "drawString",
+        "desc": "(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)I",
+        "obf": "m_280782_"
+      },
+      {
+        "name": "drawCenteredString",
+        "desc": "(Lnet/minecraft/client/gui/Font;Ljava/lang/String;III)I",
+        "obf": "m_280777_"
+      },
+      {
+        "name": "drawCenteredString",
+        "desc": "(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)I",
+        "obf": "m_280778_"
+      },
+      {
+        "name": "fill",
+        "desc": "(IIIII)V",
+        "obf": "m_280788_"
+      },
+      {
+        "name": "fillGradient",
+        "desc": "(IIIIII)V",
+        "obf": "m_280789_"
+      },
+      {
+        "name": "blit",
+        "desc": "(Lnet/minecraft/resources/ResourceLocation;IIIIFFIIII)V",
+        "obf": "m_280785_"
+      },
+      {
+        "name": "blit",
+        "desc": "(Lnet/minecraft/resources/ResourceLocation;IIIIIIII)V",
+        "obf": "m_280786_"
+      },
+      {
+        "name": "renderItem",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;II)V",
+        "obf": "m_280791_"
+      },
+      {
+        "name": "renderItem",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;III)V",
+        "obf": "m_280792_"
+      },
+      {
+        "name": "renderItemDecorations",
+        "desc": "(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V",
+        "obf": "m_280793_"
+      },
+      {
+        "name": "renderItemDecorations",
+        "desc": "(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
+        "obf": "m_280794_"
+      },
+      {
+        "name": "pose",
+        "desc": "()Lcom/mojang/blaze3d/vertex/PoseStack;",
+        "obf": "m_280795_"
+      },
+      {
+        "name": "bufferSource",
+        "desc": "()Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;",
+        "obf": "m_280776_"
+      },
+      {
+        "name": "drawOutline",
+        "desc": "(Lnet/minecraft/world/phys/shapes/VoxelShape;III)V",
+        "obf": "m_280783_"
+      }
+    ],
+    "net/minecraft/client/renderer/entity/EntityRenderDispatcher": [
+      {
+        "name": "render",
+        "desc": "(Lnet/minecraft/world/entity/Entity;DDDFFZ)V",
+        "obf": "m_114379_"
+      },
+      {
+        "name": "getRenderer",
+        "desc": "(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;",
+        "obf": "m_114384_"
+      },
+      {
+        "name": "getRenderer",
+        "desc": "(Lnet/minecraft/world/entity/EntityType;)Lnet/minecraft/client/renderer/entity/EntityRenderer;",
+        "obf": "m_114385_"
+      },
+      {
+        "name": "shouldRender",
+        "desc": "(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/client/renderer/culling/Frustum;DDD)Z",
+        "obf": "m_114386_"
+      },
+      {
+        "name": "camera",
+        "desc": "()Lnet/minecraft/client/Camera;",
+        "obf": "m_114382_"
+      },
+      {
+        "name": "getOptions",
+        "desc": "()Lnet/minecraft/client/Options;",
+        "obf": "m_114383_"
+      },
+      {
+        "name": "getLevel",
+        "desc": "()Lnet/minecraft/client/multiplayer/ClientLevel;",
+        "obf": "m_114381_"
+      },
+      {
+        "name": "setLevel",
+        "desc": "(Lnet/minecraft/client/multiplayer/ClientLevel;)V",
+        "obf": "m_114387_"
+      },
+      {
+        "name": "prepare",
+        "desc": "(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/Camera;Lnet/minecraft/world/entity/Entity;)V",
+        "obf": "m_114380_"
+      }
+    ],
+    "net/minecraft/client/renderer/block/BlockRenderDispatcher": [
+      {
+        "name": "renderSingleBlock",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;II)V",
+        "obf": "m_110977_"
+      },
+      {
+        "name": "renderBatched",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/BlockAndTintGetter;Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;ZLjava/util/Random;)V",
+        "obf": "m_110978_"
+      },
+      {
+        "name": "getBlockModel",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/resources/model/BakedModel;",
+        "obf": "m_110979_"
+      },
+      {
+        "name": "getModelRenderer",
+        "desc": "()Lnet/minecraft/client/renderer/block/ModelBlockRenderer;",
+        "obf": "m_110980_"
+      },
+      {
+        "name": "getBlockColors",
+        "desc": "()Lnet/minecraft/client/color/block/BlockColors;",
+        "obf": "m_110981_"
+      }
+    ],
+    "net/minecraft/client/renderer/entity/ItemRenderer": [
+      {
+        "name": "renderStatic",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/entity/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V",
+        "obf": "m_115186_"
+      },
+      {
+        "name": "render",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/entity/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V",
+        "obf": "m_115187_"
+      },
+      {
+        "name": "getModel",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;I)Lnet/minecraft/client/resources/model/BakedModel;",
+        "obf": "m_115188_"
+      },
+      {
+        "name": "getItemModelShaper",
+        "desc": "()Lnet/minecraft/client/renderer/entity/ItemModelShaper;",
+        "obf": "m_115189_"
+      }
+    ],
+    "net/minecraft/client/renderer/RenderType": [
+      {
+        "name": "solid",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110446_"
+      },
+      {
+        "name": "cutout",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110447_"
+      },
+      {
+        "name": "cutoutMipped",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110448_"
+      },
+      {
+        "name": "translucent",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110449_"
+      },
+      {
+        "name": "translucentMovingBlock",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110450_"
+      },
+      {
+        "name": "entitySolid",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110451_"
+      },
+      {
+        "name": "entityCutout",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110452_"
+      },
+      {
+        "name": "entityTranslucent",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110453_"
+      },
+      {
+        "name": "entitySmoothCutout",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110454_"
+      },
+      {
+        "name": "text",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110455_"
+      },
+      {
+        "name": "textSeeThrough",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110456_"
+      },
+      {
+        "name": "itemEntityTranslucentCull",
+        "desc": "()Lnet/minecraft/client/renderer/RenderType;",
+        "obf": "m_110457_"
+      }
+    ],
+    "net/minecraft/client/player/LocalPlayer": [
+      {
+        "name": "sendChatMessage",
+        "desc": "(Ljava/lang/String;)V",
+        "obf": "m_242373_"
+      },
+      {
+        "name": "sendCommand",
+        "desc": "(Ljava/lang/String;)V",
+        "obf": "m_242374_"
+      },
+      {
+        "name": "getAbilities",
+        "desc": "()Lnet/minecraft/world/entity/player/Abilities;",
+        "obf": "m_36136_"
+      },
+      {
+        "name": "getFoodData",
+        "desc": "()Lnet/minecraft/world/food/FoodData;",
+        "obf": "m_36137_"
+      },
+      {
+        "name": "isShiftKeyDown",
+        "desc": "()Z",
+        "obf": "m_36138_"
+      },
+      {
+        "name": "isSprinting",
+        "desc": "()Z",
+        "obf": "m_36139_"
+      },
+      {
+        "name": "setSprinting",
+        "desc": "(Z)V",
+        "obf": "m_36140_"
+      },
+      {
+        "name": "jumpFromGround",
+        "desc": "()V",
+        "obf": "m_36141_"
+      },
+      {
+        "name": "tick",
+        "desc": "()V",
+        "obf": "m_36142_"
+      }
+    ],
+    "net/minecraft/client/gui/screens/Screen": [
+      {
+        "name": "render",
+        "desc": "(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
+        "obf": "m_88315_"
+      },
+      {
+        "name": "init",
+        "desc": "(Lnet/minecraft/client/Minecraft;II)V",
+        "obf": "m_6555_"
+      },
+      {
+        "name": "onClose",
+        "desc": "()V",
+        "obf": "m_7379_"
+      },
+      {
+        "name": "isPauseScreen",
+        "desc": "()Z",
+        "obf": "m_6556_"
+      },
+      {
+        "name": "keyPressed",
+        "desc": "(III)Z",
+        "obf": "m_6803_"
+      },
+      {
+        "name": "keyReleased",
+        "desc": "(III)Z",
+        "obf": "m_6804_"
+      },
+      {
+        "name": "mouseClicked",
+        "desc": "(DDI)Z",
+        "obf": "m_6375_"
+      },
+      {
+        "name": "mouseReleased",
+        "desc": "(DDI)Z",
+        "obf": "m_6376_"
+      },
+      {
+        "name": "mouseDragged",
+        "desc": "(DDIDD)Z",
+        "obf": "m_6377_"
+      },
+      {
+        "name": "mouseScrolled",
+        "desc": "(DDD)Z",
+        "obf": "m_6378_"
+      },
+      {
+        "name": "getTitle",
+        "desc": "()Lnet/minecraft/network/chat/Component;",
+        "obf": "m_6557_"
+      },
+      {
+        "name": "getWidth",
+        "desc": "()I",
+        "obf": "m_6558_"
+      },
+      {
+        "name": "getHeight",
+        "desc": "()I",
+        "obf": "m_6559_"
+      },
+      {
+        "name": "renderBackground",
+        "desc": "(Lnet/minecraft/client/gui/GuiGraphics;)V",
+        "obf": "m_280050_"
+      },
+      {
+        "name": "renderDirtBackground",
+        "desc": "(Lnet/minecraft/client/gui/GuiGraphics;)V",
+        "obf": "m_280051_"
+      }
+    ],
+    "net/minecraft/world/level/biome/Biome": [
+      {
+        "name": "getPrecipitationAt",
+        "desc": "(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;",
+        "obf": "m_47460_"
+      },
+      {
+        "name": "getTemperature",
+        "desc": "(Lnet/minecraft/core/BlockPos;)F",
+        "obf": "m_47461_"
+      },
+      {
+        "name": "getBiomeCategory",
+        "desc": "()Lnet/minecraft/world/level/biome/Biome$BiomeCategory;",
+        "obf": "m_47462_"
+      },
+      {
+        "name": "getSpecialEffects",
+        "desc": "()Lnet/minecraft/world/level/biome/BiomeSpecialEffects;",
+        "obf": "m_47463_"
+      },
+      {
+        "name": "getGenerationSettings",
+        "desc": "()Lnet/minecraft/world/level/biome/BiomeGenerationSettings;",
+        "obf": "m_47464_"
+      },
+      {
+        "name": "getMobSettings",
+        "desc": "()Lnet/minecraft/world/level/biome/MobSpawnSettings;",
+        "obf": "m_47465_"
+      },
+      {
+        "name": "getSkyColor",
+        "desc": "()I",
+        "obf": "m_47466_"
+      },
+      {
+        "name": "getFogColor",
+        "desc": "()I",
+        "obf": "m_47467_"
+      },
+      {
+        "name": "getWaterColor",
+        "desc": "()I",
+        "obf": "m_47468_"
+      },
+      {
+        "name": "getWaterFogColor",
+        "desc": "()I",
+        "obf": "m_47469_"
+      },
+      {
+        "name": "isHumid",
+        "desc": "()Z",
+        "obf": "m_47470_"
+      },
+      {
+        "name": "getBaseTemperature",
+        "desc": "()F",
+        "obf": "m_47471_"
+      }
+    ],
+    "net/minecraft/world/level/levelgen/structure/StructureTemplate": [
+      {
+        "name": "placeInWorld",
+        "desc": "(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructurePlaceSettings;Ljava/util/Random;I)Z",
+        "obf": "m_74610_"
+      },
+      {
+        "name": "getSize",
+        "desc": "()Lnet/minecraft/core/Vec3i;",
+        "obf": "m_74611_"
+      },
+      {
+        "name": "getPalettes",
+        "desc": "()Ljava/util/List;",
+        "obf": "m_74612_"
+      },
+      {
+        "name": "getEntities",
+        "desc": "()Ljava/util/List;",
+        "obf": "m_74613_"
+      },
+      {
+        "name": "getBlocks",
+        "desc": "()Ljava/util/List;",
+        "obf": "m_74614_"
+      },
+      {
+        "name": "save",
+        "desc": "(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Vec3i;ZZ)V",
+        "obf": "m_74615_"
+      },
+      {
+        "name": "load",
+        "desc": "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/resources/ResourceLocation;)Ljava/util/Optional;",
+        "obf": "m_74616_"
+      }
+    ],
+    "net/minecraft/world/level/chunk/ChunkGenerator": [
+      {
+        "name": "getSeaLevel",
+        "desc": "()I",
+        "obf": "m_187746_"
+      },
+      {
+        "name": "getBiomeSource",
+        "desc": "()Lnet/minecraft/world/level/biome/source/BiomeSource;",
+        "obf": "m_187747_"
+      },
+      {
+        "name": "getGenDepth",
+        "desc": "()I",
+        "obf": "m_187748_"
+      },
+      {
+        "name": "buildSurface",
+        "desc": "(Lnet/minecraft/world/level/levelgen/WorldGenerationContext;Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/world/level/levelgen/NoiseChunk;)V",
+        "obf": "m_187749_"
+      },
+      {
+        "name": "applyCarvers",
+        "desc": "(Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/world/level/levelgen/WorldGenerationContext;JLnet/minecraft/world/level/biome/source/BiomeManager;Lnet/minecraft/world/level/levelgen/NoiseChunk;)V",
+        "obf": "m_187750_"
+      },
+      {
+        "name": "findNearestMapFeature",
+        "desc": "(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/registries/HolderSet;Lnet/minecraft/core/BlockPos;IZ)Lcom/mojang/datafixers/util/Pair;",
+        "obf": "m_187751_"
+      }
+    ],
+    "net/minecraft/world/level/levelgen/NoiseGeneratorSettings": [
+      {
+        "name": "noiseSettings",
+        "desc": "()Lnet/minecraft/world/level/levelgen/NoiseSettings;",
+        "obf": "m_188704_"
+      },
+      {
+        "name": "defaultBlock",
+        "desc": "()Lnet/minecraft/world/level/block/state/BlockState;",
+        "obf": "m_188705_"
+      },
+      {
+        "name": "defaultFluid",
+        "desc": "()Lnet/minecraft/world/level/block/state/BlockState;",
+        "obf": "m_188706_"
+      },
+      {
+        "name": "spawnTarget",
+        "desc": "()Lnet/minecraft/core/BlockPos;",
+        "obf": "m_188707_"
+      },
+      {
+        "name": "seaLevel",
+        "desc": "()I",
+        "obf": "m_188708_"
+      },
+      {
+        "name": "disableMobGeneration",
+        "desc": "()Z",
+        "obf": "m_188709_"
+      },
+      {
+        "name": "aquifersEnabled",
+        "desc": "()Z",
+        "obf": "m_188710_"
+      },
+      {
+        "name": "oreVeinsEnabled",
+        "desc": "()Z",
+        "obf": "m_188711_"
+      },
+      {
+        "name": "noodleCavesEnabled",
+        "desc": "()Z",
+        "obf": "m_188712_"
+      }
+    ],
+    "net/minecraft/world/item/crafting/Recipe": [
+      {
+        "name": "matches",
+        "desc": "(Lnet/minecraft/world/inventory/Inventory;Lnet/minecraft/world/level/Level;)Z",
+        "obf": "m_5818_"
+      },
+      {
+        "name": "assemble",
+        "desc": "(Lnet/minecraft/world/inventory/Inventory;Lnet/minecraft/core/RegistryAccess;)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_5815_"
+      },
+      {
+        "name": "getResultItem",
+        "desc": "(Lnet/minecraft/core/RegistryAccess;)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_5820_"
+      },
+      {
+        "name": "canCraftInDimensions",
+        "desc": "(II)Z",
+        "obf": "m_5816_"
+      },
+      {
+        "name": "getSerializer",
+        "desc": "()Lnet/minecraft/world/item/crafting/RecipeSerializer;",
+        "obf": "m_5819_"
+      },
+      {
+        "name": "getType",
+        "desc": "()Lnet/minecraft/world/item/crafting/RecipeType;",
+        "obf": "m_5821_"
+      },
+      {
+        "name": "getGroup",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_5817_"
+      },
+      {
+        "name": "isSpecial",
+        "desc": "()Z",
+        "obf": "m_5822_"
+      },
+      {
+        "name": "getToastSymbol",
+        "desc": "()Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_5823_"
+      }
+    ],
+    "net/minecraft/world/item/crafting/CraftingRecipe": [
+      {
+        "name": "matches",
+        "desc": "(Lnet/minecraft/world/inventory/CraftingContainer;Lnet/minecraft/world/level/Level;)Z",
+        "obf": "m_5818_"
+      },
+      {
+        "name": "assemble",
+        "desc": "(Lnet/minecraft/world/inventory/CraftingContainer;Lnet/minecraft/core/RegistryAccess;)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_5815_"
+      },
+      {
+        "name": "getResultItem",
+        "desc": "(Lnet/minecraft/core/RegistryAccess;)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_5820_"
+      },
+      {
+        "name": "canCraftInDimensions",
+        "desc": "(II)Z",
+        "obf": "m_5816_"
+      },
+      {
+        "name": "getSerializer",
+        "desc": "()Lnet/minecraft/world/item/crafting/RecipeSerializer;",
+        "obf": "m_5819_"
+      },
+      {
+        "name": "getType",
+        "desc": "()Lnet/minecraft/world/item/crafting/RecipeType;",
+        "obf": "m_5821_"
+      },
+      {
+        "name": "getGroup",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_5817_"
+      },
+      {
+        "name": "isSpecial",
+        "desc": "()Z",
+        "obf": "m_5822_"
+      },
+      {
+        "name": "getToastSymbol",
+        "desc": "()Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_5823_"
+      },
+      {
+        "name": "getWidth",
+        "desc": "()I",
+        "obf": "m_5824_"
+      },
+      {
+        "name": "getHeight",
+        "desc": "()I",
+        "obf": "m_5825_"
+      },
+      {
+        "name": "getIngredients",
+        "desc": "()Ljava/util/List;",
+        "obf": "m_5826_"
+      }
+    ],
+    "net/minecraft/world/item/crafting/RecipeManager": [
+      {
+        "name": "getAllRecipesFor",
+        "desc": "(Lnet/minecraft/world/item/crafting/RecipeType;)Ljava/util/List;",
+        "obf": "m_44027_"
+      },
+      {
+        "name": "getRecipeFor",
+        "desc": "(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/inventory/Inventory;Lnet/minecraft/world/level/Level;)Ljava/util/Optional;",
+        "obf": "m_44028_"
+      },
+      {
+        "name": "getRemainingItemsFor",
+        "desc": "(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/inventory/Inventory;Lnet/minecraft/world/level/Level;)Lnet/minecraft/core/NonNullList;",
+        "obf": "m_44029_"
+      },
+      {
+        "name": "byKey",
+        "desc": "(Lnet/minecraft/resources/ResourceLocation;)Ljava/util/Optional;",
+        "obf": "m_44030_"
+      },
+      {
+        "name": "getAllRecipes",
+        "desc": "()Ljava/util/Collection;",
+        "obf": "m_44031_"
+      },
+      {
+        "name": "getRecipes",
+        "desc": "(Lnet/minecraft/world/item/crafting/RecipeType;)Ljava/util/Map;",
+        "obf": "m_44032_"
+      },
+      {
+        "name": "apply",
+        "desc": "(Lnet/minecraft/world/item/crafting/RecipeManager$CachedCheck;)Z",
+        "obf": "m_44033_"
+      }
+    ],
+    "net/minecraft/world/item/crafting/Ingredient": [
+      {
+        "name": "test",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;)Z",
+        "obf": "m_43924_"
+      },
+      {
+        "name": "getItems",
+        "desc": "()[Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_43925_"
+      },
+      {
+        "name": "isEmpty",
+        "desc": "()Z",
+        "obf": "m_43926_"
+      },
+      {
+        "name": "toJson",
+        "desc": "()Lcom/google/gson/JsonElement;",
+        "obf": "m_43927_"
+      },
+      {
+        "name": "fromJson",
+        "desc": "(Lcom/google/gson/JsonElement;)Lnet/minecraft/world/item/crafting/Ingredient;",
+        "obf": "m_43928_"
+      },
+      {
+        "name": "of",
+        "desc": "()Lnet/minecraft/world/item/crafting/Ingredient;",
+        "obf": "m_43929_"
+      },
+      {
+        "name": "of",
+        "desc": "([Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/crafting/Ingredient;",
+        "obf": "m_43930_"
+      },
+      {
+        "name": "of",
+        "desc": "(Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/world/item/crafting/Ingredient;",
+        "obf": "m_43931_"
+      }
+    ],
+    "net/minecraft/world/item/enchantment/Enchantment": [
+      {
+        "name": "getFullname",
+        "desc": "(I)Lnet/minecraft/network/chat/Component;",
+        "obf": "m_44701_"
+      },
+      {
+        "name": "getMinLevel",
+        "desc": "()I",
+        "obf": "m_44702_"
+      },
+      {
+        "name": "getMaxLevel",
+        "desc": "()I",
+        "obf": "m_44703_"
+      },
+      {
+        "name": "getMinCost",
+        "desc": "(I)I",
+        "obf": "m_44704_"
+      },
+      {
+        "name": "getMaxCost",
+        "desc": "(I)I",
+        "obf": "m_44705_"
+      },
+      {
+        "name": "getRarity",
+        "desc": "()Lnet/minecraft/world/item/enchantment/Enchantment$Rarity;",
+        "obf": "m_44706_"
+      },
+      {
+        "name": "getCategory",
+        "desc": "()Lnet/minecraft/world/item/enchantment/EnchantmentCategory;",
+        "obf": "m_44707_"
+      },
+      {
+        "name": "isTreasureOnly",
+        "desc": "()Z",
+        "obf": "m_44708_"
+      },
+      {
+        "name": "isCurse",
+        "desc": "()Z",
+        "obf": "m_44709_"
+      },
+      {
+        "name": "isTradeable",
+        "desc": "()Z",
+        "obf": "m_44710_"
+      },
+      {
+        "name": "isDiscoverable",
+        "desc": "()Z",
+        "obf": "m_44711_"
+      },
+      {
+        "name": "isCompatibleWith",
+        "desc": "(Lnet/minecraft/world/item/enchantment/Enchantment;)Z",
+        "obf": "m_44712_"
+      },
+      {
+        "name": "canEnchant",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;)Z",
+        "obf": "m_44713_"
+      },
+      {
+        "name": "getDamageProtection",
+        "desc": "(ILnet/minecraft/world/damagesource/DamageSource;)I",
+        "obf": "m_44714_"
+      },
+      {
+        "name": "getAttackDamageBonus",
+        "desc": "(ILnet/minecraft/world/entity/MobType;)F",
+        "obf": "m_44715_"
+      }
+    ],
+    "net/minecraft/world/item/enchantment/EnchantmentHelper": [
+      {
+        "name": "getEnchantments",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;)Ljava/util/Map;",
+        "obf": "m_44831_"
+      },
+      {
+        "name": "setEnchantments",
+        "desc": "(Ljava/util/Map;Lnet/minecraft/world/item/ItemStack;)V",
+        "obf": "m_44832_"
+      },
+      {
+        "name": "getItemEnchantmentLevel",
+        "desc": "(Lnet/minecraft/world/item/enchantment/Enchantment;Lnet/minecraft/world/item/ItemStack;)I",
+        "obf": "m_44833_"
+      },
+      {
+        "name": "getDamageProtection",
+        "desc": "(Ljava/lang/Iterable;Lnet/minecraft/world/damagesource/DamageSource;)I",
+        "obf": "m_44834_"
+      },
+      {
+        "name": "getAttackDamageBonus",
+        "desc": "(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/MobType;)F",
+        "obf": "m_44835_"
+      },
+      {
+        "name": "getKnockbackBonus",
+        "desc": "(Ljava/lang/Iterable;)I",
+        "obf": "m_44836_"
+      },
+      {
+        "name": "getFireAspect",
+        "desc": "(Ljava/lang/Iterable;)I",
+        "obf": "m_44837_"
+      },
+      {
+        "name": "hasAquaAffinity",
+        "desc": "(Lnet/minecraft/world/entity/LivingEntity;)Z",
+        "obf": "m_44838_"
+      },
+      {
+        "name": "hasDepthStrider",
+        "desc": "(Lnet/minecraft/world/entity/LivingEntity;)Z",
+        "obf": "m_44839_"
+      },
+      {
+        "name": "hasFrostWalker",
+        "desc": "(Lnet/minecraft/world/entity/LivingEntity;)Z",
+        "obf": "m_44840_"
+      },
+      {
+        "name": "getEnchantmentLevelFromItem",
+        "desc": "(Lnet/minecraft/world/item/enchantment/Enchantment;Lnet/minecraft/world/item/ItemStack;)I",
+        "obf": "m_44841_"
+      },
+      {
+        "name": "getAvailableEnchantmentResults",
+        "desc": "(ILnet/minecraft/world/item/ItemStack;Z)Ljava/util/List;",
+        "obf": "m_44842_"
+      },
+      {
+        "name": "selectEnchantment",
+        "desc": "(Ljava/util/Random;Lnet/minecraft/world/item/ItemStack;IZ)Ljava/util/List;",
+        "obf": "m_44843_"
+      }
+    ],
+    "net/minecraft/world/level/GameRules": [
+      {
+        "name": "getBoolean",
+        "desc": "(Lnet/minecraft/world/level/GameRules$Key;)Z",
+        "obf": "m_46318_"
+      },
+      {
+        "name": "getInt",
+        "desc": "(Lnet/minecraft/world/level/GameRules$Key;)I",
+        "obf": "m_46319_"
+      },
+      {
+        "name": "getRule",
+        "desc": "(Lnet/minecraft/world/level/GameRules$Key;)Lnet/minecraft/world/level/GameRules$Value;",
+        "obf": "m_46320_"
+      },
+      {
+        "name": "setRule",
+        "desc": "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/level/GameRules$Key;Lcom/mojang/brigadier/context/CommandContext;)V",
+        "obf": "m_46321_"
+      },
+      {
+        "name": "assignFrom",
+        "desc": "(Lnet/minecraft/world/level/GameRules;Lnet/minecraft/server/MinecraftServer;)V",
+        "obf": "m_46322_"
+      },
+      {
+        "name": "createGameRules",
+        "desc": "()Lnet/minecraft/world/level/GameRules;",
+        "obf": "m_46323_"
+      },
+      {
+        "name": "visitGameRules",
+        "desc": "(Lnet/minecraft/world/level/GameRules$Visitor;)V",
+        "obf": "m_46324_"
+      },
+      {
+        "name": "getGameRules",
+        "desc": "()Ljava/util/Map;",
+        "obf": "m_46325_"
+      }
+    ],
+    "net/minecraft/world/level/storage/loot/LootTable": [
+      {
+        "name": "getRandomItems",
+        "desc": "(Lnet/minecraft/world/level/storage/loot/LootContext;)Ljava/util/List;",
+        "obf": "m_79093_"
+      },
+      {
+        "name": "getRandomItemsRaw",
+        "desc": "(Lnet/minecraft/world/level/storage/loot/LootContext;Ljava/util/function/Consumer;)V",
+        "obf": "m_79094_"
+      },
+      {
+        "name": "fill",
+        "desc": "(Lnet/minecraft/world/Container;Lnet/minecraft/world/level/storage/loot/LootContext;)V",
+        "obf": "m_79095_"
+      },
+      {
+        "name": "setLootTableId",
+        "desc": "(Lnet/minecraft/resources/ResourceLocation;)V",
+        "obf": "m_79096_"
+      },
+      {
+        "name": "getLootTableId",
+        "desc": "()Lnet/minecraft/resources/ResourceLocation;",
+        "obf": "m_79097_"
+      },
+      {
+        "name": "isBuiltin",
+        "desc": "()Z",
+        "obf": "m_79098_"
+      },
+      {
+        "name": "getParamSet",
+        "desc": "()Lnet/minecraft/world/level/storage/loot/parameters/LootContextParamSet;",
+        "obf": "m_79099_"
+      }
+    ],
+    "net/minecraft/commands/CommandSourceStack": [
+      {
+        "name": "sendSuccess",
+        "desc": "(Ljava/util/function/Supplier;Z)V",
+        "obf": "m_81343_"
+      },
+      {
+        "name": "sendFailure",
+        "desc": "(Lnet/minecraft/network/chat/Component;)V",
+        "obf": "m_81344_"
+      },
+      {
+        "name": "getServer",
+        "desc": "()Lnet/minecraft/server/MinecraftServer;",
+        "obf": "m_81345_"
+      },
+      {
+        "name": "getLevel",
+        "desc": "()Lnet/minecraft/server/level/ServerLevel;",
+        "obf": "m_81346_"
+      },
+      {
+        "name": "getPlayer",
+        "desc": "()Lnet/minecraft/server/level/ServerPlayer;",
+        "obf": "m_81347_"
+      },
+      {
+        "name": "getEntity",
+        "desc": "()Lnet/minecraft/world/entity/Entity;",
+        "obf": "m_81348_"
+      },
+      {
+        "name": "getPosition",
+        "desc": "()Lnet/minecraft/world/phys/Vec3;",
+        "obf": "m_81349_"
+      },
+      {
+        "name": "getRotation",
+        "desc": "()Lnet/minecraft/world/phys/Vec2;",
+        "obf": "m_81350_"
+      },
+      {
+        "name": "hasPermission",
+        "desc": "(I)Z",
+        "obf": "m_81351_"
+      },
+      {
+        "name": "withPermission",
+        "desc": "(I)Lnet/minecraft/commands/CommandSourceStack;",
+        "obf": "m_81352_"
+      },
+      {
+        "name": "withEntity",
+        "desc": "(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/commands/CommandSourceStack;",
+        "obf": "m_81353_"
+      },
+      {
+        "name": "withPosition",
+        "desc": "(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/commands/CommandSourceStack;",
+        "obf": "m_81354_"
+      },
+      {
+        "name": "withRotation",
+        "desc": "(Lnet/minecraft/world/phys/Vec2;)Lnet/minecraft/commands/CommandSourceStack;",
+        "obf": "m_81355_"
+      },
+      {
+        "name": "withLevel",
+        "desc": "(Lnet/minecraft/server/level/ServerLevel;)Lnet/minecraft/commands/CommandSourceStack;",
+        "obf": "m_81356_"
+      },
+      {
+        "name": "getTextWidth",
+        "desc": "()I",
+        "obf": "m_81357_"
+      }
+    ],
+    "net/minecraft/advancements/Advancement": [
+      {
+        "name": "getId",
+        "desc": "()Lnet/minecraft/resources/ResourceLocation;",
+        "obf": "m_12193_"
+      },
+      {
+        "name": "getDisplay",
+        "desc": "()Ljava/util/Optional;",
+        "obf": "m_12194_"
+      },
+      {
+        "name": "rewards",
+        "desc": "()Lnet/minecraft/advancements/AdvancementRewards;",
+        "obf": "m_12195_"
+      },
+      {
+        "name": "requirements",
+        "desc": "()[[Ljava/lang/String;",
+        "obf": "m_12196_"
+      },
+      {
+        "name": "criteria",
+        "desc": "()Ljava/util/Map;",
+        "obf": "m_12197_"
+      },
+      {
+        "name": "getParent",
+        "desc": "()Lnet/minecraft/advancements/Advancement;",
+        "obf": "m_12198_"
+      },
+      {
+        "name": "getChildren",
+        "desc": "()Ljava/util/Collection;",
+        "obf": "m_12199_"
+      },
+      {
+        "name": "isRoot",
+        "desc": "()Z",
+        "obf": "m_12200_"
+      },
+      {
+        "name": "getMaxCriteraRequired",
+        "desc": "()I",
+        "obf": "m_12201_"
+      }
+    ],
+    "net/minecraft/advancements/AdvancementProgress": [
+      {
+        "name": "isDone",
+        "desc": "()Z",
+        "obf": "m_12230_"
+      },
+      {
+        "name": "hasProgress",
+        "desc": "()Z",
+        "obf": "m_12231_"
+      },
+      {
+        "name": "award",
+        "desc": "(Ljava/lang/String;)Z",
+        "obf": "m_12232_"
+      },
+      {
+        "name": "revoke",
+        "desc": "(Ljava/lang/String;)Z",
+        "obf": "m_12233_"
+      },
+      {
+        "name": "getPercent",
+        "desc": "()F",
+        "obf": "m_12234_"
+      },
+      {
+        "name": "getProgressText",
+        "desc": "()Lnet/minecraft/network/chat/Component;",
+        "obf": "m_12235_"
+      },
+      {
+        "name": "update",
+        "desc": "(Lnet/minecraft/advancements/Advancement;)V",
+        "obf": "m_12236_"
+      },
+      {
+        "name": "fromJson",
+        "desc": "(Lcom/google/gson/JsonElement;)Lnet/minecraft/advancements/AdvancementProgress;",
+        "obf": "m_12237_"
+      },
+      {
+        "name": "serializeToJson",
+        "desc": "()Lcom/google/gson/JsonElement;",
+        "obf": "m_12238_"
+      }
+    ],
+    "net/minecraft/CrashReport": [
+      {
+        "name": "forThrowable",
+        "desc": "(Ljava/lang/Throwable;)Lnet/minecraft/CrashReport;",
+        "obf": "m_12753_"
+      },
+      {
+        "name": "forThrowable",
+        "desc": "(Ljava/lang/String;Ljava/lang/Throwable;)Lnet/minecraft/CrashReport;",
+        "obf": "m_12754_"
+      },
+      {
+        "name": "getException",
+        "desc": "()Ljava/lang/Throwable;",
+        "obf": "m_12755_"
+      },
+      {
+        "name": "getTitle",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_12756_"
+      },
+      {
+        "name": "getDetails",
+        "desc": "()Lnet/minecraft/CrashReportCategory;",
+        "obf": "m_12757_"
+      },
+      {
+        "name": "getSystemDetails",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_12758_"
+      },
+      {
+        "name": "getFriendlyReport",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_12759_"
+      },
+      {
+        "name": "saveToFile",
+        "desc": "(Ljava/nio/file/Path;)Z",
+        "obf": "m_12760_"
+      },
+      {
+        "name": "getFile",
+        "desc": "()Ljava/nio/file/Path;",
+        "obf": "m_12761_"
+      },
+      {
+        "name": "addCategory",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/CrashReportCategory;",
+        "obf": "m_12762_"
+      },
+      {
+        "name": "addCategory",
+        "desc": "(Ljava/lang/String;I)Lnet/minecraft/CrashReportCategory;",
+        "obf": "m_12763_"
+      }
+    ],
+    "net/minecraft/Util": [
+      {
+        "name": "getNanos",
+        "desc": "()J",
+        "obf": "m_13742_"
+      },
+      {
+        "name": "getMillis",
+        "desc": "()J",
+        "obf": "m_13743_"
+      },
+      {
+        "name": "getEpochMillis",
+        "desc": "()J",
+        "obf": "m_13744_"
+      },
+      {
+        "name": "uuidToUUID",
+        "desc": "(Ljava/util/UUID;)[B",
+        "obf": "m_13745_"
+      },
+      {
+        "name": "uuidFromUUID",
+        "desc": "([B)Ljava/util/UUID;",
+        "obf": "m_13746_"
+      },
+      {
+        "name": "createNanoStopWatch",
+        "desc": "()Ljava/util/function/LongSupplier;",
+        "obf": "m_13747_"
+      },
+      {
+        "name": "createMillisStopWatch",
+        "desc": "()Ljava/util/function/LongSupplier;",
+        "obf": "m_13748_"
+      },
+      {
+        "name": "getPlatform",
+        "desc": "()Lnet/minecraft/Util$OS;",
+        "obf": "m_13749_"
+      },
+      {
+        "name": "getOperatingSystem",
+        "desc": "()Lnet/minecraft/Util$OS;",
+        "obf": "m_13750_"
+      },
+      {
+        "name": "isBlank",
+        "desc": "(Ljava/lang/CharSequence;)Z",
+        "obf": "m_13751_"
+      },
+      {
+        "name": "shuffle",
+        "desc": "(Ljava/util/List;Ljava/util/Random;)V",
+        "obf": "m_13752_"
+      },
+      {
+        "name": "copyRandom",
+        "desc": "(Ljava/util/Collection;Ljava/util/Random;)Ljava/util/List;",
+        "obf": "m_13753_"
+      },
+      {
+        "name": "getRandom",
+        "desc": "(Ljava/util/Collection;Ljava/util/Random;)Ljava/lang/Object;",
+        "obf": "m_13754_"
+      },
+      {
+        "name": "logAndPauseIfInIde",
+        "desc": "(Ljava/lang/Throwable;)V",
+        "obf": "m_13755_"
+      }
+    ],
+    "net/minecraft/world/food/FoodProperties": [
+      {
+        "name": "getNutrition",
+        "desc": "()I",
+        "obf": "m_41805_"
+      },
+      {
+        "name": "getSaturationModifier",
+        "desc": "()F",
+        "obf": "m_41806_"
+      },
+      {
+        "name": "isMeat",
+        "desc": "()Z",
+        "obf": "m_41807_"
+      },
+      {
+        "name": "canAlwaysEat",
+        "desc": "()Z",
+        "obf": "m_41808_"
+      },
+      {
+        "name": "isFastFood",
+        "desc": "()Z",
+        "obf": "m_41809_"
+      },
+      {
+        "name": "getEffects",
+        "desc": "()Ljava/util/List;",
+        "obf": "m_41810_"
+      }
+    ],
+    "net/minecraft/world/item/Rarity": [
+      {
+        "name": "color",
+        "desc": "()Lnet/minecraft/ChatFormatting;",
+        "obf": "m_41811_"
+      },
+      {
+        "name": "valueOf",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/world/item/Rarity;",
+        "obf": "m_41812_"
+      },
+      {
+        "name": "values",
+        "desc": "()[Lnet/minecraft/world/item/Rarity;",
+        "obf": "m_41813_"
+      }
+    ],
+    "net/minecraft/core/Holder": [
+      {
+        "name": "value",
+        "desc": "()Ljava/lang/Object;",
+        "obf": "m_203383_"
+      },
+      {
+        "name": "is",
+        "desc": "(Lnet/minecraft/resources/ResourceLocation;)Z",
+        "obf": "m_203384_"
+      },
+      {
+        "name": "is",
+        "desc": "(Lnet/minecraft/tags/TagKey;)Z",
+        "obf": "m_203385_"
+      },
+      {
+        "name": "is",
+        "desc": "(Lnet/minecraft/core/Holder;)Z",
+        "obf": "m_203386_"
+      },
+      {
+        "name": "kind",
+        "desc": "()Lnet/minecraft/core/Holder$Kind;",
+        "obf": "m_203387_"
+      },
+      {
+        "name": "unwrapKey",
+        "desc": "()Ljava/util/Optional;",
+        "obf": "m_203388_"
+      },
+      {
+        "name": "unwrap",
+        "desc": "()Lnet/minecraft/core/Holder$Reference;",
+        "obf": "m_203389_"
+      },
+      {
+        "name": "direct",
+        "desc": "(Ljava/lang/Object;)Lnet/minecraft/core/Holder$Direct;",
+        "obf": "m_203390_"
+      }
+    ],
+    "net/minecraft/world/level/biome/BiomeSpecialEffects": [
+      {
+        "name": "getFogColor",
+        "desc": "()I",
+        "obf": "m_47480_"
+      },
+      {
+        "name": "getWaterColor",
+        "desc": "()I",
+        "obf": "m_47481_"
+      },
+      {
+        "name": "getWaterFogColor",
+        "desc": "()I",
+        "obf": "m_47482_"
+      },
+      {
+        "name": "getSkyColor",
+        "desc": "()I",
+        "obf": "m_47483_"
+      },
+      {
+        "name": "getFoliageColorOverride",
+        "desc": "()Ljava/util/OptionalInt;",
+        "obf": "m_47484_"
+      },
+      {
+        "name": "getGrassColorOverride",
+        "desc": "()Ljava/util/OptionalInt;",
+        "obf": "m_47485_"
+      },
+      {
+        "name": "getGrassColorModifier",
+        "desc": "()Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier;",
+        "obf": "m_47486_"
+      },
+      {
+        "name": "getAmbientParticleSettings",
+        "desc": "()Ljava/util/Optional;",
+        "obf": "m_47487_"
+      },
+      {
+        "name": "getAmbientLoopSoundEvent",
+        "desc": "()Ljava/util/Optional;",
+        "obf": "m_47488_"
+      },
+      {
+        "name": "getAmbientMoodSettings",
+        "desc": "()Ljava/util/Optional;",
+        "obf": "m_47489_"
+      },
+      {
+        "name": "getAmbientAdditionsSettings",
+        "desc": "()Ljava/util/Optional;",
+        "obf": "m_47490_"
+      },
+      {
+        "name": "getBackgroundMusic",
+        "desc": "()Ljava/util/Optional;",
+        "obf": "m_47491_"
+      }
+    ],
+    "net/minecraft/world/entity/ai/goal/GoalSelector": [
+      {
+        "name": "addGoal",
+        "desc": "(ILnet/minecraft/world/entity/ai/goal/Goal;)V",
+        "obf": "m_25376_"
+      },
+      {
+        "name": "removeGoal",
+        "desc": "(Lnet/minecraft/world/entity/ai/goal/Goal;)V",
+        "obf": "m_25377_"
+      },
+      {
+        "name": "removeAllGoals",
+        "desc": "()V",
+        "obf": "m_25378_"
+      },
+      {
+        "name": "tick",
+        "desc": "()V",
+        "obf": "m_25379_"
+      },
+      {
+        "name": "getRunningGoals",
+        "desc": "()Ljava/util/Set;",
+        "obf": "m_25380_"
+      },
+      {
+        "name": "isRunning",
+        "desc": "(Lnet/minecraft/world/entity/ai/goal/Goal;)Z",
+        "obf": "m_25381_"
+      },
+      {
+        "name": "disableControl",
+        "desc": "(Lnet/minecraft/world/entity/ai/goal/Goal$Flag;)V",
+        "obf": "m_25382_"
+      },
+      {
+        "name": "enableControl",
+        "desc": "(Lnet/minecraft/world/entity/ai/goal/Goal$Flag;)V",
+        "obf": "m_25383_"
+      }
+    ],
+    "net/minecraft/world/entity/ai/navigation/PathNavigation": [
+      {
+        "name": "moveTo",
+        "desc": "(DDDD)Z",
+        "obf": "m_26576_"
+      },
+      {
+        "name": "moveTo",
+        "desc": "(Lnet/minecraft/world/entity/Entity;D)Z",
+        "obf": "m_26577_"
+      },
+      {
+        "name": "createPath",
+        "desc": "(Lnet/minecraft/core/BlockPos;I)Lnet/minecraft/world/level/pathfinder/Path;",
+        "obf": "m_26578_"
+      },
+      {
+        "name": "createPath",
+        "desc": "(Lnet/minecraft/world/entity/Entity;I)Lnet/minecraft/world/level/pathfinder/Path;",
+        "obf": "m_26579_"
+      },
+      {
+        "name": "isInProgress",
+        "desc": "()Z",
+        "obf": "m_26580_"
+      },
+      {
+        "name": "getPath",
+        "desc": "()Lnet/minecraft/world/level/pathfinder/Path;",
+        "obf": "m_26581_"
+      },
+      {
+        "name": "stop",
+        "desc": "()V",
+        "obf": "m_26582_"
+      },
+      {
+        "name": "recomputePath",
+        "desc": "()Z",
+        "obf": "m_26583_"
+      },
+      {
+        "name": "getMaxDistanceToWaypoint",
+        "desc": "()F",
+        "obf": "m_26584_"
+      },
+      {
+        "name": "setCanFloat",
+        "desc": "(Z)V",
+        "obf": "m_26585_"
+      },
+      {
+        "name": "canFloat",
+        "desc": "()Z",
+        "obf": "m_26586_"
+      }
+    ],
+    "net/minecraft/world/level/levelgen/structure/StructureFeature": [
+      {
+        "name": "findNearestMapFeature",
+        "desc": "(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/registries/HolderSet;Lnet/minecraft/core/BlockPos;IZ)Lcom/mojang/datafixers/util/Pair;",
+        "obf": "m_223094_"
+      },
+      {
+        "name": "generate",
+        "desc": "(Lnet/minecraft/world/level/levelgen/WorldGenerationContext;Lnet/minecraft/world/level/chunk/ChunkGenerator;Lnet/minecraft/world/level/biome/source/BiomeManager;Ljava/util/Random;Lnet/minecraft/world/level/levelgen/structure/StructureSet$StructureSelectionContext;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/structure/StructurePiece;Lnet/minecraft/world/level/levelgen/structure/BoundingBox;Lnet/minecraft/world/level/chunk/ChunkAccess;)Z",
+        "obf": "m_223095_"
+      },
+      {
+        "name": "type",
+        "desc": "()Lnet/minecraft/world/level/levelgen/structure/StructureType;",
+        "obf": "m_223096_"
+      },
+      {
+        "name": "getModifiedStructurePieces",
+        "desc": "(Lnet/minecraft/world/level/levelgen/structure/StructurePiece;)Ljava/util/List;",
+        "obf": "m_223097_"
+      }
+    ],
+    "net/minecraft/network/protocol/Packet": [
+      {
+        "name": "write",
+        "desc": "(Lnet/minecraft/network/FriendlyByteBuf;)V",
+        "obf": "m_13036_"
+      },
+      {
+        "name": "handle",
+        "desc": "(Lnet/minecraft/network/PacketListener;)V",
+        "obf": "m_13037_"
+      },
+      {
+        "name": "isSkippable",
+        "desc": "()Z",
+        "obf": "m_13038_"
+      }
+    ],
+    "net/minecraft/world/Container": [
+      {
+        "name": "getContainerSize",
+        "desc": "()I",
+        "obf": "m_6658_"
+      },
+      {
+        "name": "isEmpty",
+        "desc": "()Z",
+        "obf": "m_6659_"
+      },
+      {
+        "name": "getItem",
+        "desc": "(I)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_6660_"
+      },
+      {
+        "name": "removeItem",
+        "desc": "(II)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_6661_"
+      },
+      {
+        "name": "removeItemNoUpdate",
+        "desc": "(I)Lnet/minecraft/world/item/ItemStack;",
+        "obf": "m_6662_"
+      },
+      {
+        "name": "setItem",
+        "desc": "(ILnet/minecraft/world/item/ItemStack;)V",
+        "obf": "m_6663_"
+      },
+      {
+        "name": "setChanged",
+        "desc": "()V",
+        "obf": "m_6664_"
+      },
+      {
+        "name": "stillValid",
+        "desc": "(Lnet/minecraft/world/entity/player/Player;)Z",
+        "obf": "m_6665_"
+      },
+      {
+        "name": "clearContent",
+        "desc": "()V",
+        "obf": "m_6666_"
+      },
+      {
+        "name": "getMaxStackSize",
+        "desc": "()I",
+        "obf": "m_6667_"
+      },
+      {
+        "name": "canPlaceItem",
+        "desc": "(ILnet/minecraft/world/item/ItemStack;)Z",
+        "obf": "m_6668_"
+      },
+      {
+        "name": "countItem",
+        "desc": "(Lnet/minecraft/world/item/Item;)I",
+        "obf": "m_6669_"
+      },
+      {
+        "name": "hasAnyOf",
+        "desc": "(Ljava/util/Set;)Z",
+        "obf": "m_6670_"
+      }
+    ],
+    "net/minecraft/world/item/equipment/EquipmentSlot": [
+      {
+        "name": "getType",
+        "desc": "()Lnet/minecraft/world/item/equipment/EquipmentSlot$Type;",
+        "obf": "m_14398_"
+      },
+      {
+        "name": "getIndex",
+        "desc": "()I",
+        "obf": "m_14399_"
+      },
+      {
+        "name": "getName",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_14400_"
+      },
+      {
+        "name": "byName",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/world/item/equipment/EquipmentSlot;",
+        "obf": "m_14401_"
+      },
+      {
+        "name": "byTypeAndIndex",
+        "desc": "(Lnet/minecraft/world/item/equipment/EquipmentSlot$Type;I)Lnet/minecraft/world/item/equipment/EquipmentSlot;",
+        "obf": "m_14402_"
+      },
+      {
+        "name": "valueOf",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/world/item/equipment/EquipmentSlot;",
+        "obf": "m_14403_"
+      },
+      {
+        "name": "values",
+        "desc": "()[Lnet/minecraft/world/item/equipment/EquipmentSlot;",
+        "obf": "m_14404_"
+      }
+    ],
+    "net/minecraft/world/damagesource/DamageSource": [
+      {
+        "name": "getMsgId",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_7605_"
+      },
+      {
+        "name": "getEntity",
+        "desc": "()Lnet/minecraft/world/entity/Entity;",
+        "obf": "m_7606_"
+      },
+      {
+        "name": "getDirectEntity",
+        "desc": "()Lnet/minecraft/world/entity/Entity;",
+        "obf": "m_7607_"
+      },
+      {
+        "name": "getLocalizedDeathMessage",
+        "desc": "(Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/network/chat/Component;",
+        "obf": "m_7608_"
+      },
+      {
+        "name": "isBypassInvul",
+        "desc": "()Z",
+        "obf": "m_7609_"
+      },
+      {
+        "name": "isBypassArmor",
+        "desc": "()Z",
+        "obf": "m_7610_"
+      },
+      {
+        "name": "isBypassMagic",
+        "desc": "()Z",
+        "obf": "m_7611_"
+      },
+      {
+        "name": "isBypassEnchantments",
+        "desc": "()Z",
+        "obf": "m_7612_"
+      },
+      {
+        "name": "isFire",
+        "desc": "()Z",
+        "obf": "m_7613_"
+      },
+      {
+        "name": "isProjectile",
+        "desc": "()Z",
+        "obf": "m_7614_"
+      },
+      {
+        "name": "isExplosion",
+        "desc": "()Z",
+        "obf": "m_7615_"
+      },
+      {
+        "name": "isFall",
+        "desc": "()Z",
+        "obf": "m_7616_"
+      },
+      {
+        "name": "isMagic",
+        "desc": "()Z",
+        "obf": "m_7617_"
+      },
+      {
+        "name": "getFoodExhaustion",
+        "desc": "()F",
+        "obf": "m_7618_"
+      },
+      {
+        "name": "isCreativePlayer",
+        "desc": "()Z",
+        "obf": "m_7619_"
+      }
+    ],
+    "net/minecraft/world/entity/player/Abilities": [
+      {
+        "name": "mayfly",
+        "desc": "()Z",
+        "obf": "m_36150_"
+      },
+      {
+        "name": "setMayfly",
+        "desc": "(Z)V",
+        "obf": "m_36151_"
+      },
+      {
+        "name": "flying",
+        "desc": "()Z",
+        "obf": "m_36152_"
+      },
+      {
+        "name": "setFlying",
+        "desc": "(Z)V",
+        "obf": "m_36153_"
+      },
+      {
+        "name": "instabuild",
+        "desc": "()Z",
+        "obf": "m_36154_"
+      },
+      {
+        "name": "setInstabuild",
+        "desc": "(Z)V",
+        "obf": "m_36155_"
+      },
+      {
+        "name": "invulnerable",
+        "desc": "()Z",
+        "obf": "m_36156_"
+      },
+      {
+        "name": "setInvulnerable",
+        "desc": "(Z)V",
+        "obf": "m_36157_"
+      },
+      {
+        "name": "mayBuild",
+        "desc": "()Z",
+        "obf": "m_36158_"
+      },
+      {
+        "name": "setMayBuild",
+        "desc": "(Z)V",
+        "obf": "m_36159_"
+      },
+      {
+        "name": "getWalkingSpeed",
+        "desc": "()F",
+        "obf": "m_36160_"
+      },
+      {
+        "name": "setWalkingSpeed",
+        "desc": "(F)V",
+        "obf": "m_36161_"
+      }
+    ],
+    "net/minecraft/world/food/FoodData": [
+      {
+        "name": "getFoodLevel",
+        "desc": "()I",
+        "obf": "m_36170_"
+      },
+      {
+        "name": "setFoodLevel",
+        "desc": "(I)V",
+        "obf": "m_36171_"
+      },
+      {
+        "name": "getSaturationLevel",
+        "desc": "()F",
+        "obf": "m_36172_"
+      },
+      {
+        "name": "setSaturation",
+        "desc": "(F)V",
+        "obf": "m_36173_"
+      },
+      {
+        "name": "getExhaustionLevel",
+        "desc": "()F",
+        "obf": "m_36174_"
+      },
+      {
+        "name": "setExhaustion",
+        "desc": "(F)V",
+        "obf": "m_36175_"
+      },
+      {
+        "name": "addExhaustion",
+        "desc": "(F)V",
+        "obf": "m_36176_"
+      },
+      {
+        "name": "eat",
+        "desc": "(IF)V",
+        "obf": "m_36177_"
+      },
+      {
+        "name": "needsFood",
+        "desc": "()Z",
+        "obf": "m_36178_"
+      },
+      {
+        "name": "isStarving",
+        "desc": "()Z",
+        "obf": "m_36179_"
+      },
+      {
+        "name": "tick",
+        "desc": "(Lnet/minecraft/world/entity/player/Player;)V",
+        "obf": "m_36180_"
+      }
+    ],
+    "net/minecraft/stats/Stats": [
+      {
+        "name": "valueOf",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/stats/Stats;",
+        "obf": "m_13090_"
+      },
+      {
+        "name": "values",
+        "desc": "()[Lnet/minecraft/stats/Stats;",
+        "obf": "m_13091_"
+      },
+      {
+        "name": "getDisplayName",
+        "desc": "()Lnet/minecraft/network/chat/Component;",
+        "obf": "m_13092_"
+      },
+      {
+        "name": "getStatType",
+        "desc": "()Lnet/minecraft/stats/StatType;",
+        "obf": "m_13093_"
+      },
+      {
+        "name": "getValue",
+        "desc": "()I",
+        "obf": "m_13094_"
+      },
+      {
+        "name": "byId",
+        "desc": "(I)Lnet/minecraft/stats/Stats;",
+        "obf": "m_13095_"
+      }
+    ],
+    "net/minecraft/world/level/GameType": [
+      {
+        "name": "valueOf",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/world/level/GameType;",
+        "obf": "m_46330_"
+      },
+      {
+        "name": "values",
+        "desc": "()[Lnet/minecraft/world/level/GameType;",
+        "obf": "m_46331_"
+      },
+      {
+        "name": "byId",
+        "desc": "(I)Lnet/minecraft/world/level/GameType;",
+        "obf": "m_46332_"
+      },
+      {
+        "name": "byName",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/world/level/GameType;",
+        "obf": "m_46333_"
+      },
+      {
+        "name": "getShortDisplayName",
+        "desc": "()Lnet/minecraft/network/chat/Component;",
+        "obf": "m_46334_"
+      },
+      {
+        "name": "getLongDisplayName",
+        "desc": "()Lnet/minecraft/network/chat/Component;",
+        "obf": "m_46335_"
+      },
+      {
+        "name": "isCreative",
+        "desc": "()Z",
+        "obf": "m_46336_"
+      },
+      {
+        "name": "isSurvival",
+        "desc": "()Z",
+        "obf": "m_46337_"
+      },
+      {
+        "name": "getId",
+        "desc": "()I",
+        "obf": "m_46338_"
+      },
+      {
+        "name": "getName",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_46339_"
+      }
+    ],
+    "net/minecraft/world/level/block/entity/BlockEntityType": [
+      {
+        "name": "isValid",
+        "desc": "(Lnet/minecraft/world/level/block/state/BlockState;)Z",
+        "obf": "m_15525_"
+      },
+      {
+        "name": "create",
+        "desc": "(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/block/entity/BlockEntity;",
+        "obf": "m_15526_"
+      },
+      {
+        "name": "getValidBlocks",
+        "desc": "()Ljava/util/Set;",
+        "obf": "m_15527_"
+      },
+      {
+        "name": "toString",
+        "desc": "()Ljava/lang/String;",
+        "obf": "m_15528_"
+      },
+      {
+        "name": "valueOf",
+        "desc": "(Ljava/lang/String;)Lnet/minecraft/world/level/block/entity/BlockEntityType;",
+        "obf": "m_15529_"
+      },
+      {
+        "name": "values",
+        "desc": "()[Lnet/minecraft/world/level/block/entity/BlockEntityType;",
+        "obf": "m_15530_"
+      }
+    ],
+    "net/minecraft/world/entity/projectile/AbstractArrow": [
+      {
+        "name": "tick",
+        "desc": "()V",
+        "obf": "m_36700_"
+      },
+      {
+        "name": "getPierceLevel",
+        "desc": "()B",
+        "obf": "m_36701_"
+      },
+      {
+        "name": "setPierceLevel",
+        "desc": "(B)V",
+        "obf": "m_36702_"
+      },
+      {
+        "name": "isCritArrow",
+        "desc": "()Z",
+        "obf": "m_36703_"
+      },
+      {
+        "name": "setCritArrow",
+        "desc": "(Z)V",
+        "obf": "m_36704_"
+      },
+      {
+        "name": "getBaseDamage",
+        "desc": "()D",
+        "obf": "m_36705_"
+      },
+      {
+        "name": "setBaseDamage",
+        "desc": "(D)V",
+        "obf": "m_36706_"
+      },
+      {
+        "name": "getShotFromCrossbow",
+        "desc": "()Z",
+        "obf": "m_36707_"
+      },
+      {
+        "name": "setShotFromCrossbow",
+        "desc": "(Z)V",
+        "obf": "m_36708_"
+      },
+      {
+        "name": "getDamageSource",
+        "desc": "()Lnet/minecraft/world/damagesource/DamageSource;",
+        "obf": "m_36709_"
+      },
+      {
+        "name": "getOwner",
+        "desc": "()Lnet/minecraft/world/entity/Entity;",
+        "obf": "m_36710_"
+      },
+      {
+        "name": "setOwner",
+        "desc": "(Lnet/minecraft/world/entity/Entity;)V",
+        "obf": "m_36711_"
+      },
+      {
+        "name": "isNoPhysics",
+        "desc": "()Z",
+        "obf": "m_36712_"
+      },
+      {
+        "name": "setNoPhysics",
+        "desc": "(Z)V",
+        "obf": "m_36713_"
+      },
+      {
+        "name": "getWaterInertia",
+        "desc": "()F",
+        "obf": "m_36714_"
+      }
     ]
   }
 }

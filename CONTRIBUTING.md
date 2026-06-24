@@ -87,11 +87,29 @@ We love ambitious ideas! Open an issue with the `enhancement` tag. Describe:
 | Area | Priority | Description |
 |------|----------|-------------|
 | **AI Bridge** | 🔴 High | TensorFlow/ONNX integration for ML-based mapping prediction |
+| **Mapping Database** | 🔴 High | Expand seed mappings to cover more Minecraft API classes |
 | **Package Registry** | 🔴 High | Web-based registry server with CI/CD integration |
 | **Forge API Adapter** | 🟡 Medium | Full Forge/NeoForge mod compatibility layer |
 | **Sandbox Mode** | 🟡 Medium | Per-mod SecurityManager for behavior analysis |
 | **IDE Plugin** | 🟢 Nice-to-have | IntelliJ/VSCode plugin for compatibility checking |
 | **Documentation** | 🟢 Always | Translations, tutorials, API docs |
+
+### Contributing Mappings
+
+The mapping database is the heart of the AI version bridge. If you're familiar with Minecraft API, contributing mappings is a great way to help!
+
+**Quick Start:**
+1. Read the [Mapping Contribution Guide](docs/MAPPING_CONTRIBUTION_GUIDE.md)
+2. Find a class or method that's missing from the seed mappings
+3. Add it to the appropriate JSON file
+4. Submit a PR with your changes
+
+**Current Goals:**
+- Expand from 80 classes to 100+ classes
+- Cover more niche but useful APIs
+- Add more Minecraft version support
+
+Even adding a single method helps improve cross-version compatibility for all mods!
 
 ## Design Principles
 

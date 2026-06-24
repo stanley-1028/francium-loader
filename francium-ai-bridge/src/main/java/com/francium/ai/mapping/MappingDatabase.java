@@ -1,6 +1,8 @@
 package com.francium.ai.mapping;
 
 import com.francium.api.PublicApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -22,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @PublicApi
 public class MappingDatabase {
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(MappingDatabase.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MappingDatabase.class);
 
     // version -> (sourceKey -> [targetSignatures])
     private final Map<String, Map<String, List<MethodSignature>>> mappings;

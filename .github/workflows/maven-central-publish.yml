@@ -1,0 +1,88 @@
+name: Publish to Maven Central
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 2.4.0)'
+        required: false
+
+env:
+  PROJECT_NAME: francium-loader
+  JAVA_VERSION: '21'
+
+jobs:
+  publish-maven-central:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Import GPG key
+        run: |
+          echo "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}" | gpg --batch --import
+          # Verify key was imported
+          gpg --list-secret-keys --keyid-format=SHORT
+
+      - name: Publish to Maven Central (Root + all subprojects)
+        env:
+          mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          signing.keyId: ${{ secrets.MAVEN_GPG_KEY_ID }}
+          signing.password: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          signing.secretKeyRingFile: ${{ github.workspace }}/secring.gpg
+        run: |
+          # Export GPG key to file for Gradle signing plugin
+          gpg --export-secret-keys --batch --passphrase "${{ secrets.MAVEN_GPG_PASSPHRASE }}" ${{ secrets.MAVEN_GPG_KEY_ID }} > secring.gpg
+          
+          # Publish root project
+          ./gradlew publish --no-daemon
+          
+          # Publish all subprojects
+          for subproject in francium-api francium-core francium-resolver francium-manager francium-ai-bridge francium-profiler francium-server; do
+            echo "Publishing $subproject..."
+            ./gradlew :$subproject:publish --no-daemon
+          done
+
+      - name: Verify published artifacts
+        run: |
+          echo "=== Published artifacts ==="
+          find ~/.m2/repository/com/francium -name "*.jar" -o -name "*.pom" | sort
+          echo ""
+          echo "=== Maven Central Publication ==="
+          echo "Artifacts have been uploaded to Maven Central Portal."
+          echo "They will be available on Maven Central after validation (usually within 30 minutes)."
+          echo ""
+          echo "Coordinates:"
+          echo "  com.francium:francium-loader:${{ github.ref_name }}"
+          echo "  com.francium:francium-api:${{ github.ref_name }}"
+          echo "  com.francium:francium-core:${{ github.ref_name }}"
+          echo "  com.francium:francium-resolver:${{ github.ref_name }}"
+          echo "  com.francium:francium-manager:${{ github.ref_name }}"
+          echo "  com.francium:francium-ai-bridge:${{ github.ref_name }}"
+          echo "  com.francium:francium-profiler:${{ github.ref_name }}"
+          echo "  com.francium:francium-server:${{ github.ref_name }}"
+
+      - name: Cleanup GPG key
+        if: always()
+        run: |
+          rm -f secring.gpg
+          gpg --batch --yes --delete-secret-keys ${{ secrets.MAVEN_GPG_KEY_ID }} 2>/dev/null || true
+          gpg --batch --yes --delete-keys ${{ secrets.MAVEN_GPG_KEY_ID }} 2>/dev/null || true

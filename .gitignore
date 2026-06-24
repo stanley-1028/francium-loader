@@ -12,6 +12,18 @@ bin/
 .gradle/
 gradle-app.setting
 
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
 # IDE
 .idea/
 *.iml
@@ -19,10 +31,14 @@ gradle-app.setting
 *.swp
 *.swo
 *~
+*.ipr
+*.iws
 
 # OS
 .DS_Store
 Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # Java
 *.class
@@ -30,9 +46,14 @@ Thumbs.db
 !gradle/wrapper/gradle-wrapper.jar
 *.war
 !**/src/**/*.war
+*.jar
+!**/libs/**/*.jar
+!**/test-mods/**/*.jar
+!gradle/wrapper/gradle-wrapper.jar
 
 # Dependencies & libs
 francium-*/lib/
+lib/
 
 # Cache
 .francium-cache/
@@ -43,6 +64,7 @@ francium-lock.json
 # Logs
 logs/
 *.log
+hs_err_pid*
 
 # Temporary build artifacts
 sources.txt
@@ -50,3 +72,65 @@ tests.txt
 
 # Package manager cache
 pkg-cache/
+
+# Jpackage / Native installers
+jpackage-output/
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.deb
+*.rpm
+
+# Maven Central / GPG
+*.asc
+*.sig
+secret-keys.gpg
+public-keys.gpg
+
+# Javadoc
+javadoc/
+javadoc_output.txt
+
+# Coverage reports
+coverage/
+.coverage/
+*.lcov
+
+# Profiler
+*.hprof
+*.jfr
+
+# Local config
+gradle.properties
+local.properties
+.env
+.env.*
+!.env.example
+
+# Mods directory (local testing)
+mods/
+config/
+saves/
+resourcepacks/
+texturepacks/
+shaderpacks/
+
+# Minecraft related
+.minecraft/
+libraries/
+assets/
+versions/
+natives/
+
+# Documentation build
+docs/_site/
+docs/.jekyll-cache/
+site/
+
+# CI/CD artifacts
+dist/
+artifacts/
+*.zip
+*.tar.gz
+*.tar.bz2
