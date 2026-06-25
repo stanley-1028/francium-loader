@@ -203,4 +203,73 @@ public class ForgeRegistryManager {
     
     /** 村莊職業註冊表名稱 */
     public static final String VILLAGER_PROFESSIONS = "villager_professions";
+    
+    /** 流體註冊表名稱 */
+    public static final String FLUIDS = "fluids";
+    
+    /** 藥水註冊表名稱 */
+    public static final String POTIONS = "potions";
+    
+    /** 物品分組註冊表名稱 */
+    public static final String CREATIVE_MODE_TABS = "creative_mode_tabs";
+    
+    /** 地物特徵註冊表名稱 */
+    public static final String FEATURES = "features";
+    
+    /** 結構處理器註冊表名稱 */
+    public static final String STRUCTURE_PROCESSORS = "structure_processors";
+    
+    /** 規則測試註冊表名稱 */
+    public static final String RULE_TESTS = "rule_tests";
+    
+    /** 處理器處理器註冊表名稱 */
+    public static final String PROCESSOR_LIST = "processor_list";
+    
+    /** 模板池註冊表名稱 */
+    public static final String TEMPLATE_POOLS = "template_pools";
+    
+    /** 結構集註冊表名稱 */
+    public static final String STRUCTURE_SETS = "structure_sets";
+    
+    /** 放置修飾器註冊表名稱 */
+    public static final String PLACEMENT_MODIFIERS = "placement_modifiers";
+    
+    /** 樹裝飾器註冊表名稱 */
+    public static final String TREE_DECORATORS = "tree_decorators";
+    
+    /** 方塊實體渲染器註冊表名稱 */
+    public static final String BLOCK_ENTITY_RENDERERS = "block_entity_renderers";
+    
+    /** 實體渲染器註冊表名稱 */
+    public static final String ENTITY_RENDERERS = "entity_renderers";
+    
+    /** 顏色處理器註冊表名稱 */
+    public static final String ITEM_COLORS = "item_colors";
+    
+    /** 方塊顏色註冊表名稱 */
+    public static final String BLOCK_COLORS = "block_colors";
+    
+    /** 畫面類型註冊表名稱 */
+    public static final String SCREEN_TYPES = "screen_types";
+    
+    /** 容器類型註冊表名稱 */
+    public static final String CONTAINER_TYPES = "container_types";
+    
+    /** 交易類型註冊表名稱 */
+    public static final String VILLAGER_TYPES = "villager_types";
+    
+    /** 記憶體模組類型註冊表名稱 */
+    public static final String MEMORY_MODULE_TYPES = "memory_module_types";
+    
+    /** 感官類型註冊表名稱 */
+    public static final String SENSOR_TYPES = "sensor_ttypes";
+    
+    /** 排程類型註冊表名稱 */
+    public static final String SCHEDULES = "schedules";
+    
+    /** 活動類型註冊表名稱 */
+    public static final String ACTIVITIES = "activities";
+    
+    /** 目標類型註冊表名稱 */
+    public static final String GOAL_TYPES = "goal_types";
 }
