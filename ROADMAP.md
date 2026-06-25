@@ -160,7 +160,11 @@
   - Capability 類別
   - CapabilityManager 管理員
   - EnergyCapabilityProvider 能量能力範例
-- [ ] 更多能力整合（物品、流體等）
+- [x] 物品能力系統基礎 ✅ v2.5.0-dev
+  - ItemStack 物品堆疊
+  - IItemHandler 物品處理器介面
+  - ItemStackHandler 基本實作
+- [ ] 更多能力整合（流體能力等）
 - [ ] 大部分 Forge 模組可正常執行
 
 ### 第四階段：最佳化與完善（v3.5+）
