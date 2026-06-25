@@ -64,6 +64,7 @@ public class DeferredRegister<T> {
      * @param <I> 項目的具體類型
      * @return 註冊物件的參考
      */
+    @SuppressWarnings("unchecked")
     public <I extends T> RegistryObject<I> register(String name, Supplier<I> supplier) {
         if (registered) {
             throw new IllegalStateException("Already registered");
@@ -72,7 +73,7 @@ public class DeferredRegister<T> {
         String fullKey = modId + ":" + name;
         entries.put(name, supplier);
         
-        return new RegistryObject<>(fullKey, type);
+        return new RegistryObject<>(fullKey, (Class<I>) type);
     }
     
     /**

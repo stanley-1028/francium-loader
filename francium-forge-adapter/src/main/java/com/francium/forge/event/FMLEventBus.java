@@ -170,6 +170,7 @@ public class FMLEventBus {
                 Class<? extends FMLEvent> eventClass = 
                     (Class<? extends FMLEvent>) method.getParameterTypes()[0];
                 
+                @SuppressWarnings("unchecked")
                 EventHandler<FMLEvent> handler = event -> {
                     try {
                         method.invoke(subscriber, event);
@@ -178,7 +179,9 @@ public class FMLEventBus {
                     }
                 };
                 
-                addListener(eventClass, handler);
+                @SuppressWarnings("unchecked")
+                Class<FMLEvent> typedEventClass = (Class<FMLEvent>) eventClass;
+                addListener(typedEventClass, handler);
             }
         }
     }
