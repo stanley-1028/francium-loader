@@ -147,9 +147,14 @@
 - [ ] 側邊（Client/Server）支援
 - [ ] 更多事件類型（用戶端事件、渲染事件等）
 
-### 第三階段：內容 API（v3.0）
-- [ ] 能量系統（FE/RF）
-- [ ] 流體系統
+### 第三階段：內容 API（v3.0，進行中）
+- [x] 能量系統（FE/RF）基礎 ✅ v2.5.0-dev
+  - IEnergyStorage 介面
+  - EnergyStorage 基本實作
+- [x] 流體系統基礎 ✅ v2.5.0-dev
+  - FluidStack 流體堆疊
+  - IFluidHandler 介面
+  - MultiFluidTank 多槽儲存
 - [ ] 能力（Capability）系統
 - [ ] 大部分 Forge 模組可正常執行
 
