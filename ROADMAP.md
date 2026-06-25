@@ -96,7 +96,7 @@
 
 **目標：實現對 Forge 模組的基礎支援**
 
-### 第一階段：基礎架構（進行中）
+### 第一階段：基礎架構（進行中，約 80% 完成）
 - [x] Forge 模組格式偵測 ✅ v2.5.0-dev
   - 支援 mcmod.info（舊版）
   - 支援 mods.toml（新版 1.13+）
@@ -115,9 +115,17 @@
   - FMLEvent 事件基底類別
   - FMLEventBus 事件匯流排
   - 支援優先級和取消
-- [ ] 與 Francium 核心整合
+- [x] 模組轉換工具 ✅ v2.5.0-dev
+  - ForgeModConverter 轉換器
+  - Forge → Francium ModManifest 轉換
+- [x] 演示與測試程式 ✅ v2.5.0-dev
+  - ForgeAdapterDemo 演示程式
+  - 6 個測試場景
+- [x] 核心程式碼編譯通過 ✅ v2.5.0-dev
+  - 14 個核心 Java 檔案
+- [ ] 與 Francium 核心深度整合
 - [ ] Mixin 整合驗證
-- [ ] 測試模組驗證
+- [ ] 真實模組測試驗證
 
 ### 第二階段：事件與配置（v2.6）
 - [ ] 完整的 Forge 事件系統
