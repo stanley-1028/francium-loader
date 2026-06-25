@@ -53,7 +53,7 @@ Next-generation Minecraft mod loader with AI-powered cross-version bridging and 
 |:-:|:-:|:-:|
 | **🔗 DAG 並行加載**<br>依賴圖拓撲分層，同層模組 ForkJoin 並行加載，100 mods 僅需 20-30 秒 | **🤖 AI 版本橋接**<br>基於 ASM 位元組碼分析 + 多維相似度計算，自動生成跨版本配接器 | **🧩 SAT 依賴求解**<br>DPLL 回溯 + MRV/LCV 啟發式，自動偵測並解決衝突 |
 | **🗺️ Mapping 資料庫**<br>**80 類別 / 805 方法**，全面覆蓋 Minecraft 常用 API | **📦 套件管理器**<br>`francium install/search/update`，npm-like 體驗 | **💾 記憶體分析器**<br>洩漏偵測、物件池、自適應 GC 策略 |
-| **🔄 伺服器同步協定**<br>自動 mod 清單同步 + 安全驗證 | **🌐 雙生態相容**<br>同時支援 Forge 和 Fabric 模組 | **🔌 Mixin 整合**<br>內建 SpongePowered Mixin 0.8.7 |
+| **🔄 伺服器同步協定**<br>自動 mod 清單同步 + 安全驗證 | **🌐 雙生態相容**<br>同時支援 Forge 和 Fabric 模組<br>Forge 適配層 v2.5 開發中 | **🔌 Mixin 整合**<br>內建 SpongePowered Mixin 0.8.7 |
 | **☕ Java Agent 支援**<br>可作為 `-javaagent` 參數注入 | **🔒 獨立 ClassLoader**<br>每模組隔離加載，防止衝突 | **🧪 完整測試覆蓋**<br>153 項測試，100% 通過率 |
 
 </div>
@@ -180,6 +180,25 @@ francium-loader/
 │
 ├── francium-api/                # 公共 API
 │   └── PublicApi.java           # 公共 API 註解
+│
+├── francium-forge-adapter/      # Forge 適配層（v2.5 開發中）
+│   ├── ForgeAdapter.java        # Forge 適配器主類別
+│   ├── adapter/                 # 模組格式偵測
+│   │   ├── ForgeModMetadata.java    # Forge 模組中繼資料
+│   │   └── ForgeModDetector.java    # Forge 模組偵測器
+│   ├── lifecycle/               # FML 生命週期
+│   │   ├── FMLLifecycle.java        # 生命週期階段
+│   │   ├── FMLLifecycleEvent.java   # 生命週期事件
+│   │   ├── FMLLifecycleManager.java # 生命週期管理器
+│   │   └── ForgeModContainer.java   # 模組容器
+│   ├── registry/                # 註冊系統
+│   │   ├── ForgeRegistry.java       # 註冊表基底類別
+│   │   ├── ForgeRegistryManager.java # 註冊表管理器
+│   │   ├── DeferredRegister.java    # 延遲註冊工具
+│   │   └── RegistryEvent.java       # 註冊事件
+│   └── event/                   # 事件系統
+│       ├── FMLEvent.java           # 事件基底類別
+│       └── FMLEventBus.java        # 事件匯流排
 │
 └── francium-mod-template/       # 模組開發模板
 ```

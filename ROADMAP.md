@@ -92,6 +92,53 @@
 
 ---
 
+## 🟣 P4：Forge 適配層（v2.5.0 開發中）
+
+**目標：實現對 Forge 模組的基礎支援**
+
+### 第一階段：基礎架構（進行中）
+- [x] Forge 模組格式偵測 ✅ v2.5.0-dev
+  - 支援 mcmod.info（舊版）
+  - 支援 mods.toml（新版 1.13+）
+  - 從 MANIFEST.MF 和檔名推斷模組資訊
+- [x] FML 生命週期基本實現 ✅ v2.5.0-dev
+  - 生命週期階段列舉（CONSTRUCTION → LOAD_COMPLETE）
+  - 生命週期事件系統
+  - 生命週期管理器
+  - 模組容器
+- [x] 基本註冊系統 ✅ v2.5.0-dev
+  - ForgeRegistry 註冊表基底類別
+  - ForgeRegistryManager 註冊表管理器
+  - DeferredRegister 延遲註冊工具
+  - RegistryEvent 註冊事件
+- [x] 事件系統基礎 ✅ v2.5.0-dev
+  - FMLEvent 事件基底類別
+  - FMLEventBus 事件匯流排
+  - 支援優先級和取消
+- [ ] 與 Francium 核心整合
+- [ ] Mixin 整合驗證
+- [ ] 測試模組驗證
+
+### 第二階段：事件與配置（v2.6）
+- [ ] 完整的 Forge 事件系統
+- [ ] Forge 配置系統支援
+- [ ] 更多註冊表類型
+- [ ] 側邊（Client/Server）支援
+
+### 第三階段：內容 API（v3.0）
+- [ ] 能量系統（FE/RF）
+- [ ] 流體系統
+- [ ] 能力（Capability）系統
+- [ ] 大部分 Forge 模組可正常執行
+
+### 第四階段：最佳化與完善（v3.5+）
+- [ ] 近乎完整的 Forge API 覆蓋
+- [ ] Forge 和 Fabric 模組深度整合
+- [ ] 效能最佳化
+- [ ] 完整的除錯和開發工具
+
+---
+
 ## 📋 執行紀錄
 
 ```

@@ -1,0 +1,46 @@
+/*
+ * Francium Forge Adapter - Forge 模組適配層
+ * 
+ * 提供對 Forge 模組的支援，包括：
+ * - Forge 模組格式偵測和解析
+ * - FML 生命週期模擬
+ * - 註冊系統
+ * - 事件系統
+ */
+
+dependencies {
+    // 依賴核心模組
+    api project(':francium-core')
+    api project(':francium-api')
+    
+    // 依賴 AI Bridge（用於跨版本適配）
+    implementation project(':francium-ai-bridge')
+    
+    // ASM 位元組碼操作
+    implementation 'org.ow2.asm:asm:9.6'
+    implementation 'org.ow2.asm:asm-tree:9.6'
+    implementation 'org.ow2.asm:asm-util:9.6'
+    
+    // SLF4J 日誌
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    
+    // 測試
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+}
+
+// Javadoc 設定
+javadoc {
+    options.encoding = 'UTF-8'
+    options.docEncoding = 'UTF-8'
+    options.charSet = 'UTF-8'
+    title = "Francium Forge Adapter ${version} API"
+}
+
+// 測試設定
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
