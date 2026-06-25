@@ -129,7 +129,7 @@ docs/.jekyll-cache/
 site/
 
 # CI/CD artifacts
-dist/
+/dist/
 artifacts/
 *.zip
 *.tar.gz
