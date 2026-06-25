@@ -155,7 +155,12 @@
   - FluidStack 流體堆疊
   - IFluidHandler 介面
   - MultiFluidTank 多槽儲存
-- [ ] 能力（Capability）系統
+- [x] 能力（Capability）系統基礎 ✅ v2.5.0-dev
+  - ICapabilityProvider 介面
+  - Capability 類別
+  - CapabilityManager 管理員
+  - EnergyCapabilityProvider 能量能力範例
+- [ ] 更多能力整合（物品、流體等）
 - [ ] 大部分 Forge 模組可正常執行
 
 ### 第四階段：最佳化與完善（v3.5+）
