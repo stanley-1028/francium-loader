@@ -36,8 +36,18 @@ public class DeferredRegister<T> {
      * @param registryName 註冊表名稱
      * @param modId 模組 ID
      * @param type 註冊表類型
+     * @throws IllegalArgumentException 如果任何參數為 null/空
      */
     public DeferredRegister(String registryName, String modId, Class<T> type) {
+        if (registryName == null || registryName.isEmpty()) {
+            throw new IllegalArgumentException("Registry name cannot be null or empty");
+        }
+        if (modId == null || modId.isEmpty()) {
+            throw new IllegalArgumentException("Mod ID cannot be null or empty");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Registry type cannot be null");
+        }
         this.registryName = registryName;
         this.modId = modId;
         this.type = type;
@@ -63,11 +73,19 @@ public class DeferredRegister<T> {
      * @param supplier 項目供應商
      * @param <I> 項目的具體類型
      * @return 註冊物件的參考
+     * @throws IllegalStateException 如果已經註冊
+     * @throws IllegalArgumentException 如果 name 或 supplier 為 null/空
      */
     @SuppressWarnings("unchecked")
     public <I extends T> RegistryObject<I> register(String name, Supplier<I> supplier) {
         if (registered) {
             throw new IllegalStateException("Already registered");
+        }
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Registry name cannot be null or empty");
+        }
+        if (supplier == null) {
+            throw new IllegalArgumentException("Supplier cannot be null");
         }
         
         String fullKey = modId + ":" + name;
@@ -80,11 +98,15 @@ public class DeferredRegister<T> {
      * 執行註冊，將所有待註冊項目註冊到對應的註冊表
      * 
      * @param registryManager 註冊表管理器
+     * @throws IllegalArgumentException 如果 registryManager 為 null
      */
     @SuppressWarnings("unchecked")
     public void registerAll(ForgeRegistryManager registryManager) {
         if (registered) {
             return;
+        }
+        if (registryManager == null) {
+            throw new IllegalArgumentException("Registry manager cannot be null");
         }
         
         ForgeRegistry<T> registry = registryManager.getOrCreateRegistry(registryName, type);
@@ -93,6 +115,10 @@ public class DeferredRegister<T> {
             String name = entry.getKey();
             String fullKey = modId + ":" + name;
             T value = entry.getValue().get();
+            
+            if (value == null) {
+                throw new IllegalStateException("Supplier returned null for: " + fullKey);
+            }
             
             registry.register(fullKey, value);
         }

@@ -19,6 +19,9 @@ public class FMLEventBus {
     /** 事件處理器映射：事件類別 -> 處理器列表 */
     private final Map<Class<? extends FMLEvent>, List<EventHandlerEntry>> handlers = new ConcurrentHashMap<>();
     
+    /** 訂閱者追蹤：物件 -> 處理器列表 */
+    private final Map<Object, List<EventHandlerEntry>> subscriberTrackers = new ConcurrentHashMap<>();
+    
     /** 事件匯流排名稱 */
     private final String name;
     
@@ -65,8 +68,15 @@ public class FMLEventBus {
      * @param eventClass 事件類別
      * @param handler 事件處理器
      * @param <T> 事件類型
+     * @throws IllegalArgumentException 如果 eventClass 或 handler 為 null
      */
     public <T extends FMLEvent> void addListener(Class<T> eventClass, EventHandler<T> handler) {
+        if (eventClass == null) {
+            throw new IllegalArgumentException("Event class cannot be null");
+        }
+        if (handler == null) {
+            throw new IllegalArgumentException("Event handler cannot be null");
+        }
         handlers.computeIfAbsent(eventClass, k -> new CopyOnWriteArrayList<>())
             .add(new EventHandlerEntry(handler, 0, false));
     }
@@ -78,8 +88,15 @@ public class FMLEventBus {
      * @param priority 優先級（數字越小越先執行）
      * @param handler 事件處理器
      * @param <T> 事件類型
+     * @throws IllegalArgumentException 如果 eventClass 或 handler 為 null
      */
     public <T extends FMLEvent> void addListener(Class<T> eventClass, int priority, EventHandler<T> handler) {
+        if (eventClass == null) {
+            throw new IllegalArgumentException("Event class cannot be null");
+        }
+        if (handler == null) {
+            throw new IllegalArgumentException("Event handler cannot be null");
+        }
         List<EventHandlerEntry> list = handlers.computeIfAbsent(eventClass, k -> new CopyOnWriteArrayList<>());
         list.add(new EventHandlerEntry(handler, priority, false));
         list.sort(Comparator.comparingInt(h -> h.priority));
@@ -150,39 +167,64 @@ public class FMLEventBus {
      * 註冊物件的所有 @SubscribeEvent 方法
      * 
      * @param subscriber 訂閱者物件
+     * @throws IllegalArgumentException 如果 subscriber 為 null
      */
     public void register(Object subscriber) {
         if (subscriber == null) {
-            return;
+            throw new IllegalArgumentException("Subscriber cannot be null");
         }
+        
+        List<EventHandlerEntry> subscriberHandlers = new ArrayList<>();
         
         Class<?> clazz = subscriber.getClass();
         for (Method method : clazz.getDeclaredMethods()) {
-            // 檢查是否有 SubscribeEvent 註解（模擬）
-            // 實際上應該檢查 @SubscribeEvent 註解
-            // 這裡我們簡單處理：方法名以 "on" 開頭且只有一個參數（事件類型）
-            if (method.getParameterCount() == 1 
-                && FMLEvent.class.isAssignableFrom(method.getParameterTypes()[0])) {
-                
-                method.setAccessible(true);
-                
-                @SuppressWarnings("unchecked")
-                Class<? extends FMLEvent> eventClass = 
-                    (Class<? extends FMLEvent>) method.getParameterTypes()[0];
-                
-                @SuppressWarnings("unchecked")
-                EventHandler<FMLEvent> handler = event -> {
-                    try {
-                        method.invoke(subscriber, event);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        throw new RuntimeException("Error invoking event handler", e);
-                    }
-                };
-                
-                @SuppressWarnings("unchecked")
-                Class<FMLEvent> typedEventClass = (Class<FMLEvent>) eventClass;
-                addListener(typedEventClass, handler);
+            // 檢查是否有 @SubscribeEvent 註解
+            SubscribeEvent annotation = method.getAnnotation(SubscribeEvent.class);
+            if (annotation == null) {
+                continue;
             }
+            
+            // 檢查方法參數
+            if (method.getParameterCount() != 1) {
+                continue;
+            }
+            
+            Class<?> paramType = method.getParameterTypes()[0];
+            if (!FMLEvent.class.isAssignableFrom(paramType)) {
+                continue;
+            }
+            
+            method.setAccessible(true);
+            
+            @SuppressWarnings("unchecked")
+            Class<? extends FMLEvent> eventClass = 
+                (Class<? extends FMLEvent>) paramType;
+            
+            int priority = annotation.priority();
+            boolean receiveCanceled = annotation.receiveCanceled();
+            
+            @SuppressWarnings("unchecked")
+            EventHandler<FMLEvent> handler = event -> {
+                try {
+                    method.invoke(subscriber, event);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException("Error invoking event handler: " + method.getName(), e);
+                }
+            };
+            
+            EventHandlerEntry entry = new EventHandlerEntry(handler, priority, receiveCanceled);
+            subscriberHandlers.add(entry);
+            
+            @SuppressWarnings("unchecked")
+            Class<FMLEvent> typedEventClass = (Class<FMLEvent>) eventClass;
+            
+            List<EventHandlerEntry> list = handlers.computeIfAbsent(typedEventClass, k -> new CopyOnWriteArrayList<>());
+            list.add(entry);
+            list.sort(Comparator.comparingInt(h -> h.priority));
+        }
+        
+        if (!subscriberHandlers.isEmpty()) {
+            subscriberTrackers.put(subscriber, subscriberHandlers);
         }
     }
     
@@ -190,10 +232,22 @@ public class FMLEventBus {
      * 取消註冊物件
      * 
      * @param subscriber 訂閱者物件
+     * @throws IllegalArgumentException 如果 subscriber 為 null
      */
     public void unregister(Object subscriber) {
-        // 簡單實現：移除所有包含該物件的處理器
-        // 實際上需要追蹤訂閱者和處理器的對應關係
+        if (subscriber == null) {
+            throw new IllegalArgumentException("Subscriber cannot be null");
+        }
+        
+        List<EventHandlerEntry> subscriberHandlers = subscriberTrackers.remove(subscriber);
+        if (subscriberHandlers == null) {
+            return;
+        }
+        
+        // 從所有事件處理器列表中移除
+        for (List<EventHandlerEntry> handlerList : handlers.values()) {
+            handlerList.removeAll(subscriberHandlers);
+        }
     }
     
     /**
