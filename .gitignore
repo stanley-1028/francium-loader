@@ -110,7 +110,7 @@ local.properties
 
 # Mods directory (local testing)
 mods/
-config/
+/config/
 saves/
 resourcepacks/
 texturepacks/
