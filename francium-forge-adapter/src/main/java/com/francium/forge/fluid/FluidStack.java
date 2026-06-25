@@ -93,16 +93,13 @@ public class FluidStack {
      * 減少數量
      * 
      * @param amount 要減少的數量
-     * @throws IllegalArgumentException 如果 amount 為負數或超過目前數量
+     * @throws IllegalArgumentException 如果 amount 為負數
      */
     public void shrink(int amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Cannot shrink by negative amount: " + amount);
         }
-        if (amount > this.amount) {
-            throw new IllegalArgumentException("Cannot shrink more than current amount: " + amount + " > " + this.amount);
-        }
-        this.amount -= amount;
+        this.amount = Math.max(0, this.amount - amount);
     }
     
     /**
