@@ -12,13 +12,13 @@ package com.francium.forge.event;
 public abstract class FMLEvent {
     
     /** 事件是否已被取消 */
-    private boolean canceled = false;
+    private volatile boolean canceled = false;
     
     /** 事件是否可取消 */
     private final boolean cancelable;
     
     /** 事件結果（用於可設定結果的事件） */
-    private Result result = Result.DEFAULT;
+    private volatile Result result = Result.DEFAULT;
     
     /**
      * 事件結果列舉

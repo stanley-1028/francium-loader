@@ -30,10 +30,13 @@ public class ForgeRegistry<T> {
     private final List<String> order = new ArrayList<>();
     
     /** 是否凍結（凍結後不能再註冊） */
-    private boolean frozen = false;
+    private volatile boolean frozen = false;
     
     /** 預設值（找不到時傳回） */
-    private T defaultValue;
+    private volatile T defaultValue;
+    
+    /** 註冊鎖 */
+    private final Object registerLock = new Object();
     
     public ForgeRegistry(String name, Class<T> type) {
         this.name = name;
@@ -47,20 +50,33 @@ public class ForgeRegistry<T> {
      * @param value 註冊項目
      * @return 註冊的項目
      * @throws IllegalStateException 如果註冊表已凍結
-     * @throws IllegalArgumentException 如果鍵已存在
+     * @throws IllegalArgumentException 如果鍵已存在或參數為 null
      */
     public T register(String key, T value) {
-        if (frozen) {
-            throw new IllegalStateException("Registry is frozen: " + name);
+        // 參數驗證
+        if (key == null) {
+            throw new IllegalArgumentException("Registry key cannot be null");
+        }
+        if (value == null) {
+            throw new IllegalArgumentException("Registry value cannot be null");
+        }
+        if (key.isEmpty()) {
+            throw new IllegalArgumentException("Registry key cannot be empty");
         }
         
-        if (entries.containsKey(key)) {
-            throw new IllegalArgumentException("Key already registered: " + key);
+        synchronized (registerLock) {
+            if (frozen) {
+                throw new IllegalStateException("Registry is frozen: " + name);
+            }
+            
+            if (entries.containsKey(key)) {
+                throw new IllegalArgumentException("Key already registered: " + key + " in registry " + name);
+            }
+            
+            entries.put(key, value);
+            reverseEntries.put(value, key);
+            order.add(key);
         }
-        
-        entries.put(key, value);
-        reverseEntries.put(value, key);
-        order.add(key);
         
         return value;
     }
@@ -83,9 +99,12 @@ public class ForgeRegistry<T> {
      * 根據項目取得鍵
      * 
      * @param value 註冊項目
-     * @return 資源位置，如果不存在則傳回 null
+     * @return 資源位置，如果不存在或參數為 null 則傳回 null
      */
     public String getKey(T value) {
+        if (value == null) {
+            return null;
+        }
         return reverseEntries.get(value);
     }
     
@@ -93,6 +112,9 @@ public class ForgeRegistry<T> {
      * 檢查鍵是否存在
      */
     public boolean containsKey(String key) {
+        if (key == null) {
+            return false;
+        }
         return entries.containsKey(key);
     }
     
@@ -100,6 +122,9 @@ public class ForgeRegistry<T> {
      * 檢查值是否存在
      */
     public boolean containsValue(T value) {
+        if (value == null) {
+            return false;
+        }
         return reverseEntries.containsKey(value);
     }
     

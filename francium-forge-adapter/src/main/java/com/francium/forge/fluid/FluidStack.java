@@ -21,17 +21,30 @@ public class FluidStack {
      * 建立流體堆疊
      * 
      * @param fluidId 流體 ID
-     * @param amount 數量（mB）
+     * @param amount 數量（mB，必須 >= 0）
+     * @throws IllegalArgumentException 如果 fluidId 為 null/空或 amount 為負數
      */
     public FluidStack(String fluidId, int amount) {
+        if (fluidId == null || fluidId.isEmpty()) {
+            throw new IllegalArgumentException("Fluid ID cannot be null or empty");
+        }
+        if (amount < 0) {
+            throw new IllegalArgumentException("Fluid amount cannot be negative: " + amount);
+        }
         this.fluidId = fluidId;
         this.amount = amount;
     }
     
     /**
      * 建立流體堆疊（複製）
+     * 
+     * @param other 要複製的流體堆疊
+     * @throws IllegalArgumentException 如果 other 為 null
      */
     public FluidStack(FluidStack other) {
+        if (other == null) {
+            throw new IllegalArgumentException("FluidStack to copy cannot be null");
+        }
         this.fluidId = other.fluidId;
         this.amount = other.amount;
     }
@@ -52,22 +65,43 @@ public class FluidStack {
     
     /**
      * 設定數量
+     * 
+     * @param amount 數量（必須 >= 0）
+     * @throws IllegalArgumentException 如果 amount 為負數
      */
     public void setAmount(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Fluid amount cannot be negative: " + amount);
+        }
         this.amount = amount;
     }
     
     /**
      * 增加數量
+     * 
+     * @param amount 要增加的數量
+     * @throws IllegalArgumentException 如果 amount 為負數
      */
     public void grow(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Cannot grow by negative amount: " + amount);
+        }
         this.amount += amount;
     }
     
     /**
      * 減少數量
+     * 
+     * @param amount 要減少的數量
+     * @throws IllegalArgumentException 如果 amount 為負數或超過目前數量
      */
     public void shrink(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Cannot shrink by negative amount: " + amount);
+        }
+        if (amount > this.amount) {
+            throw new IllegalArgumentException("Cannot shrink more than current amount: " + amount + " > " + this.amount);
+        }
         this.amount -= amount;
     }
     

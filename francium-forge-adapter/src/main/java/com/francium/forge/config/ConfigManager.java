@@ -16,10 +16,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ConfigManager {
     
     /** 單例實例 */
-    private static ConfigManager instance;
+    private static volatile ConfigManager instance;
     
     /** 設定檔目錄 */
-    private Path configDir;
+    private volatile Path configDir;
+    
+    /** 是否已初始化 */
+    private volatile boolean initialized = false;
     
     /** 所有設定檔：modId -> (type -> config) */
     private final Map<String, Map<ModConfigType, ModConfig>> configs = new ConcurrentHashMap<>();
@@ -43,14 +46,26 @@ public class ConfigManager {
      * 初始化設定管理員
      * 
      * @param configDir 設定檔目錄
+     * @throws IllegalArgumentException 如果 configDir 為 null
      */
     public void initialize(Path configDir) {
+        if (configDir == null) {
+            throw new IllegalArgumentException("Config directory cannot be null");
+        }
         this.configDir = configDir;
         try {
             Files.createDirectories(configDir);
         } catch (Exception e) {
             // 忽略，目錄可能已存在
         }
+        this.initialized = true;
+    }
+    
+    /**
+     * 檢查是否已初始化
+     */
+    public boolean isInitialized() {
+        return initialized;
     }
     
     /**
@@ -67,8 +82,23 @@ public class ConfigManager {
      * @param type 設定類型
      * @param spec 設定規格
      * @return 設定檔實例
+     * @throws IllegalStateException 如果管理員尚未初始化
+     * @throws IllegalArgumentException 如果任何參數為 null
      */
     public ModConfig registerConfig(String modId, ModConfigType type, ModConfigSpec spec) {
+        if (!initialized) {
+            throw new IllegalStateException("ConfigManager not initialized");
+        }
+        if (modId == null || modId.isEmpty()) {
+            throw new IllegalArgumentException("Mod ID cannot be null or empty");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Config type cannot be null");
+        }
+        if (spec == null) {
+            throw new IllegalArgumentException("Config spec cannot be null");
+        }
+        
         ModConfig config = new ModConfig(type, modId, spec);
         
         // 設定檔案路徑

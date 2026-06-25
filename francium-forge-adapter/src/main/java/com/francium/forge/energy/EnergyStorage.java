@@ -58,21 +58,29 @@ public class EnergyStorage implements IEnergyStorage {
     /**
      * 建立能量儲存
      * 
-     * @param capacity 最大儲存能量
+     * @param capacity 最大儲存能量（必須 >= 0）
      * @param maxReceive 最大接收速率
      * @param maxExtract 最大提取速率
      * @param energy 初始能量
+     * @throws IllegalArgumentException 如果 capacity 為負數
      */
     public EnergyStorage(int capacity, int maxReceive, int maxExtract, int energy) {
+        if (capacity < 0) {
+            throw new IllegalArgumentException("Capacity cannot be negative: " + capacity);
+        }
         this.capacity = capacity;
-        this.maxReceive = maxReceive;
-        this.maxExtract = maxExtract;
+        this.maxReceive = Math.max(0, maxReceive);
+        this.maxExtract = Math.max(0, maxExtract);
         this.energy = Math.max(0, Math.min(capacity, energy));
     }
     
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         if (!canReceive()) {
+            return 0;
+        }
+        
+        if (maxReceive <= 0) {
             return 0;
         }
         
@@ -86,6 +94,10 @@ public class EnergyStorage implements IEnergyStorage {
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
         if (!canExtract()) {
+            return 0;
+        }
+        
+        if (maxExtract <= 0) {
             return 0;
         }
         
