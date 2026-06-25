@@ -17,7 +17,7 @@ import java.util.function.*;
 public class FMLEventBus {
     
     /** 事件處理器映射：事件類別 -> 處理器列表 */
-    private final Map<Class<? extends FMLEvent>, List<EventHandler>> handlers = new ConcurrentHashMap<>();
+    private final Map<Class<? extends FMLEvent>, List<EventHandlerEntry>> handlers = new ConcurrentHashMap<>();
     
     /** 事件匯流排名稱 */
     private final String name;
@@ -68,7 +68,7 @@ public class FMLEventBus {
      */
     public <T extends FMLEvent> void addListener(Class<T> eventClass, EventHandler<T> handler) {
         handlers.computeIfAbsent(eventClass, k -> new CopyOnWriteArrayList<>())
-            .add(new EventHandler(handler, 0, false));
+            .add(new EventHandlerEntry(handler, 0, false));
     }
     
     /**
@@ -80,8 +80,8 @@ public class FMLEventBus {
      * @param <T> 事件類型
      */
     public <T extends FMLEvent> void addListener(Class<T> eventClass, int priority, EventHandler<T> handler) {
-        List<EventHandler> list = handlers.computeIfAbsent(eventClass, k -> new CopyOnWriteArrayList<>());
-        list.add(new EventHandler(handler, priority, false));
+        List<EventHandlerEntry> list = handlers.computeIfAbsent(eventClass, k -> new CopyOnWriteArrayList<>());
+        list.add(new EventHandlerEntry(handler, priority, false));
         list.sort(Comparator.comparingInt(h -> h.priority));
     }
     
@@ -93,7 +93,7 @@ public class FMLEventBus {
      * @param <T> 事件類型
      */
     public <T extends FMLEvent> void removeListener(Class<T> eventClass, EventHandler<T> handler) {
-        List<EventHandler> list = handlers.get(eventClass);
+        List<EventHandlerEntry> list = handlers.get(eventClass);
         if (list != null) {
             list.removeIf(h -> h.handler.equals(handler));
         }
@@ -110,7 +110,7 @@ public class FMLEventBus {
             return false;
         }
         
-        List<EventHandler> eventHandlers = handlers.get(event.getClass());
+        List<EventHandlerEntry> eventHandlers = handlers.get(event.getClass());
         if (eventHandlers == null || eventHandlers.isEmpty()) {
             return event.isCanceled();
         }
@@ -130,7 +130,7 @@ public class FMLEventBus {
             });
         } else {
             // 循序處理
-            for (EventHandler handler : eventHandlers) {
+            for (EventHandlerEntry handler : eventHandlers) {
                 try {
                     if (event.isCanceled() && !handler.receiveCanceled) {
                         continue;
@@ -197,7 +197,7 @@ public class FMLEventBus {
      * 取得事件處理器數量
      */
     public int getHandlerCount(Class<? extends FMLEvent> eventClass) {
-        List<EventHandler> list = handlers.get(eventClass);
+        List<EventHandlerEntry> list = handlers.get(eventClass);
         return list != null ? list.size() : 0;
     }
     
@@ -226,13 +226,13 @@ public class FMLEventBus {
     /**
      * 內部事件處理器包裝
      */
-    private static class EventHandler<T extends FMLEvent> {
+    private static class EventHandlerEntry<T extends FMLEvent> {
         final EventHandler<T> handler;
         final int priority;
         final boolean receiveCanceled;
         
         @SuppressWarnings("unchecked")
-        EventHandler(EventHandler<?> handler, int priority, boolean receiveCanceled) {
+        EventHandlerEntry(EventHandler<?> handler, int priority, boolean receiveCanceled) {
             this.handler = (EventHandler<T>) handler;
             this.priority = priority;
             this.receiveCanceled = receiveCanceled;
