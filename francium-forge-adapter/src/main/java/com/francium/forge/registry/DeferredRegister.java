@@ -28,7 +28,7 @@ public class DeferredRegister<T> {
     private final Map<String, Supplier<? extends T>> entries = new LinkedHashMap<>();
     
     /** 是否已註冊 */
-    private boolean registered = false;
+    private volatile boolean registered = false;
     
     /**
      * 建立延遲註冊工具
@@ -191,10 +191,10 @@ public class DeferredRegister<T> {
         private final Class<I> type;
         
         /** 快取的物件實例 */
-        private I cached;
+        private volatile I cached;
         
         /** 是否已快取 */
-        private boolean cachedFlag = false;
+        private volatile boolean cachedFlag = false;
         
         RegistryObject(String key, Class<I> type) {
             this.key = key;

@@ -20,7 +20,10 @@ public class ForgeRegistryManager {
     private final Map<String, ForgeRegistry<?>> registries = new ConcurrentHashMap<>();
     
     /** 是否凍結所有註冊表 */
-    private boolean allFrozen = false;
+    private volatile boolean allFrozen = false;
+    
+    /** 建立註冊表的鎖 */
+    private final Object createLock = new Object();
     
     private ForgeRegistryManager() {
         // 私有建構子，單例模式
@@ -76,7 +79,12 @@ public class ForgeRegistryManager {
     public <T> ForgeRegistry<T> getOrCreateRegistry(String name, Class<T> type) {
         ForgeRegistry<T> registry = (ForgeRegistry<T>) registries.get(name);
         if (registry == null) {
-            registry = createRegistry(name, type);
+            synchronized (createLock) {
+                registry = (ForgeRegistry<T>) registries.get(name);
+                if (registry == null) {
+                    registry = createRegistry(name, type);
+                }
+            }
         }
         return registry;
     }

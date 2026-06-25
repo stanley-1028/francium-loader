@@ -1,7 +1,7 @@
 package com.francium.forge.capability;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 能力管理員
@@ -18,10 +18,10 @@ public class CapabilityManager {
     private static final CapabilityManager INSTANCE = new CapabilityManager();
     
     /** 已註冊的能力 */
-    private final Map<String, Capability<?>> capabilities = new HashMap<>();
+    private final Map<String, Capability<?>> capabilities = new ConcurrentHashMap<>();
     
     /** 是否已初始化 */
-    private boolean initialized = false;
+    private volatile boolean initialized = false;
     
     /**
      * 私有建構子
