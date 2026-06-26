@@ -147,7 +147,7 @@
 - [ ] 側邊（Client/Server）支援
 - [ ] 更多事件類型（用戶端事件、渲染事件等）
 
-### 第三階段：內容 API（v3.0，進行中，約 90% 完成）
+### 第三階段：內容 API（v3.0，進行中，約 95% 完成）
 - [x] 能量系統（FE/RF）基礎 ✅ v2.5.0-dev
   - IEnergyStorage 介面
   - EnergyStorage 基本實作
@@ -191,8 +191,15 @@
   - BlockEntityType 方塊實體類型（Builder 模式）
 - [x] 內容 API 與註冊系統整合 ✅ v2.5.0-dev
   - ForgeContentRegistries 內容註冊輔助類別
-- [ ] 網路系統基礎
-- [ ] 食譜系統基礎
+- [x] 網路系統基礎 ✅ v2.5.0-dev
+  - Packet 封包基底類別
+  - PacketListener 封包監聽器介面
+  - NetworkChannel 網路通道
+- [x] 食譜系統基礎 ✅ v2.5.0-dev
+  - Ingredient 材料
+  - Recipe 配方基底類別
+  - RecipeType 配方類型（7 種內建類型）
+  - RecipeManager 配方管理員
 - [ ] 大部分 Forge 模組可正常執行
 
 ### 第四階段：最佳化與完善（v3.5+）
