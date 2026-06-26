@@ -9,7 +9,7 @@ Next-generation Minecraft mod loader with AI-powered cross-version bridging and 
 [![License](https://img.shields.io/badge/License-MIT-green)]()
 [![Java](https://img.shields.io/badge/Java-21%2B-orange)]()
 [![Architecture](https://img.shields.io/badge/Architecture-DAG%20%2B%20SAT%20%2B%20AI-blue)]()
-[![Tests](https://img.shields.io/badge/Tests-153%20%2F%20100%25-brightgreen)]()
+[![Tests](https://img.shields.io/badge/Tests-238%20%2F%20100%25-brightgreen)]()
 [![Mapping](https://img.shields.io/badge/Mappings-80%20classes%20%7C%20805%20methods-purple)]()
 [![Release](https://img.shields.io/github/v/release/stanley-1028/francium-loader?label=Release&color=brightgreen)](https://github.com/stanley-1028/francium-loader/releases/latest)
 [![JitPack](https://img.shields.io/badge/JitPack-com.francium%3Afrancium--loader-blue)](https://jitpack.io/#stanley-1028/francium-loader)
@@ -53,8 +53,8 @@ Next-generation Minecraft mod loader with AI-powered cross-version bridging and 
 |:-:|:-:|:-:|
 | **🔗 DAG 並行加載**<br>依賴圖拓撲分層，同層模組 ForkJoin 並行加載，100 mods 僅需 20-30 秒 | **🤖 AI 版本橋接**<br>基於 ASM 位元組碼分析 + 多維相似度計算，自動生成跨版本配接器 | **🧩 SAT 依賴求解**<br>DPLL 回溯 + MRV/LCV 啟發式，自動偵測並解決衝突 |
 | **🗺️ Mapping 資料庫**<br>**80 類別 / 805 方法**，全面覆蓋 Minecraft 常用 API | **📦 套件管理器**<br>`francium install/search/update`，npm-like 體驗 | **💾 記憶體分析器**<br>洩漏偵測、物件池、自適應 GC 策略 |
-| **🔄 伺服器同步協定**<br>自動 mod 清單同步 + 安全驗證 | **🌐 雙生態相容**<br>同時支援 Forge 和 Fabric 模組<br>Forge 適配層 v2.5 開發中<br>✅ 生命週期/註冊/事件/配置<br>✅ 能量/流體系統基礎 | **🔌 Mixin 整合**<br>內建 SpongePowered Mixin 0.8.7 |
-| **☕ Java Agent 支援**<br>可作為 `-javaagent` 參數注入 | **🔒 獨立 ClassLoader**<br>每模組隔離加載，防止衝突 | **🧪 完整測試覆蓋**<br>153 項測試，100% 通過率 |
+| **🔄 伺服器同步協定**<br>自動 mod 清單同步 + 安全驗證 | **🌐 雙生態相容**<br>同時支援 Forge 和 Fabric 模組<br>Forge 適配層 v2.5 開發中<br>✅ 生命週期/註冊/事件/配置<br>✅ 能量/流體/物品/能力系統<br>✅ 方塊狀態/屬性/附魔/藥水<br>✅ 85 項測試 100% 通過 | **🔌 Mixin 整合**<br>內建 SpongePowered Mixin 0.8.7 |
+| **☕ Java Agent 支援**<br>可作為 `-javaagent` 參數注入 | **🔒 獨立 ClassLoader**<br>每模組隔離加載，防止衝突 | **🧪 完整測試覆蓋**<br>238 項測試，100% 通過率 |
 
 </div>
 
