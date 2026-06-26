@@ -147,7 +147,7 @@
 - [ ] 側邊（Client/Server）支援
 - [ ] 更多事件類型（用戶端事件、渲染事件等）
 
-### 第三階段：內容 API（v3.0，進行中）
+### 第三階段：內容 API（v3.0，進行中，約 85% 完成）
 - [x] 能量系統（FE/RF）基礎 ✅ v2.5.0-dev
   - IEnergyStorage 介面
   - EnergyStorage 基本實作
@@ -166,6 +166,26 @@
   - ItemStack 物品堆疊
   - IItemHandler 物品處理器介面
   - ItemStackHandler 基本實作
+- [x] 方塊狀態系統 ✅ v2.5.0-dev
+  - Property 屬性基底類別
+  - BooleanProperty、IntegerProperty、EnumProperty
+  - Direction 方向列舉
+  - BlockState 方塊狀態類別
+- [x] 實體屬性系統 ✅ v2.5.0-dev
+  - Attribute 屬性基底類別
+  - AttributeModifier 屬性修飾符（3 種運算方式）
+  - AttributeInstance 屬性實例（快取機制）
+  - AttributeMap 屬性映射
+  - Attributes 內建屬性常數（15 個常用屬性）
+- [x] 附魔系統 ✅ v2.5.0-dev
+  - EnchantmentCategory 附魔類別列舉（19 種類別）
+  - Enchantment 附魔基底類別
+  - EnchantmentInstance 附魔實例
+  - Enchantments 內建附魔常數（30+ 種常用附魔）
+- [x] 藥水效果系統 ✅ v2.5.0-dev
+  - MobEffect 藥水效果基底類別
+  - MobEffectInstance 藥水效果實例（持續時間、等級管理）
+  - MobEffects 內建藥水效果常數（30+ 種常用效果）
 - [ ] 更多能力整合（與註冊系統整合）
 - [ ] 大部分 Forge 模組可正常執行
 
