@@ -4,6 +4,92 @@ All notable changes to francium-loader will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.5.0] — 2026-06-26
+
+### 🚀 重大更新
+
+#### 🎮 Forge 適配層基礎架構完成（第一階段）
+- 新增 Forge 模組格式偵測（支援 mcmod.info 和 mods.toml）
+- 實現 FML 生命週期系統（10 個階段）
+- 實現基本註冊系統（50+ 種註冊表）
+- 實現基本事件系統（FMLEvent + FMLEventBus）
+- 實現模組轉換工具（Forge → Francium）
+- 新增 Forge 適配層演示程式
+- 核心程式碼全部編譯通過（14 個核心 Java 檔案）
+
+#### ⚡ Forge 適配層事件與配置完成（第二階段）
+- 實現 Forge 配置系統（ModConfigType、ConfigValue、ModConfigSpec、ModConfig、ConfigManager）
+- 實現完整的 Forge 事件系統：
+  - 玩家事件（7 個子事件）
+  - 方塊事件（5 個子事件）
+  - 實體事件（6 個子事件）
+  - 物品事件（6 個子事件）
+  - 世界事件（7 個子事件）
+  - 伺服器事件（8 個子事件）
+  - 客戶端事件（9 個子事件）
+- 擴充註冊表類型（從 20 種擴充到 50+ 種）
+- 實現 IForgeRegistryEntry 介面
+- 實現側邊（Dist）支援（Dist、DistManager、@OnlyIn）
+- 實現 @SubscribeEvent 註解
+
+#### 🧩 Forge 適配層內容 API 大幅推進（第三階段，85% 完成）
+- **能量系統（FE/RF）**：IEnergyStorage + EnergyStorage
+- **流體系統**：FluidStack + IFluidHandler + MultiFluidTank
+- **能力（Capability）系統**：ICapabilityProvider + Capability + CapabilityManager
+  - EnergyCapabilityProvider 能量能力
+  - ItemCapabilityProvider 物品能力
+  - FluidCapabilityProvider 流體能力
+- **物品系統**：ItemStack + IItemHandler + ItemStackHandler
+- **方塊狀態系統**：Property + BooleanProperty + IntegerProperty + EnumProperty + Direction + BlockState
+- **實體屬性系統**：Attribute + AttributeModifier + AttributeInstance + AttributeMap + Attributes（15 個內建屬性）
+- **附魔系統**：EnchantmentCategory + Enchantment + EnchantmentInstance + Enchantments（30+ 個內建附魔）
+- **藥水效果系統**：MobEffect + MobEffectInstance + MobEffects（30+ 個內建效果）
+- **內容 API 與註冊系統整合**：ForgeContentRegistries 內容註冊輔助類別
+
+#### 🧪 單元測試體系建立（85 項測試全部通過）
+- 新增 11 個測試類別，85 項測試，100% 通過率
+- 測試涵蓋：
+  - ItemStack 物品堆疊（9 項）
+  - ItemStackHandler 物品處理器（8 項）
+  - EnergyStorage 能量儲存（7 項）
+  - FluidStack 流體堆疊（7 項）
+  - ForgeRegistry 註冊表（6 項）
+  - FMLEventBus 事件匯流排（6 項）
+  - ModConfigSpec 設定檔規格（10 項）
+  - BlockState 方塊狀態（9 項）
+  - Attribute 實體屬性（11 項）
+  - Enchantment 附魔（7 項）
+  - MobEffect 藥水效果（5 項）
+- 總測試數從 153 項提升到 **238 項**
+
+#### 🔒 程式碼品質強化
+- 核心類別添加完整的參數驗證（null 檢查、空字串檢查、負數檢查）
+- 執行緒安全強化（volatile 關鍵字、synchronized、ConcurrentHashMap）
+- 邊界條件檢查（陣列邊界、數值範圍）
+- 修復 FMLEventBus 重複定義問題
+- 修復 DeferredRegister 泛型類型推斷問題
+- 修復 FluidStack.shrink() 行為與 ItemStack 一致
+- 修復 .gitignore config/ 和 dist/ 規則
+
+### 📄 文件
+- 更新 `README.md` - 更新測試數量統計、Forge 適配層進度說明
+- 更新 `ROADMAP.md` - 記錄第三階段進展，更新測試數量
+- 新增 `docs/FORGE_ADAPTER_PLAN.md` - Forge 適配規劃文件
+- 新增 `docs/TESTING_PLAN.md` - 真實模組測試計劃
+- 新增 `FAQ.md` - 常見問題
+- 新增 `CODESTYLE.md` - 程式碼風格指南
+- 新增 `RELEASE_CHECKLIST.md` - 發布檢查清單
+- 新增 `MAPPING_OBFUSCATION_GUIDE.md` - 混淆名說明文件
+
+### 🎮 範例與演示
+- 新增 `ForgeAdapterDemo.java` - Forge 適配層演示程式
+- 6 個測試場景：初始化、生命週期、註冊系統、事件系統、延遲註冊、模組元數據
+
+### 🔧 構建與 CI
+- 新增 `francium-forge-adapter` 模組
+- 更新 `settings.gradle` - 添加 forge-adapter 模組
+- Forge 適配層核心程式碼全部編譯通過（65+ 個 Java 檔案）
+
 ## [2.4.0] — 2026-06-24
 
 ### 🚀 重大更新
