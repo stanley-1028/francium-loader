@@ -147,7 +147,7 @@
 - [ ] 側邊（Client/Server）支援
 - [ ] 更多事件類型（用戶端事件、渲染事件等）
 
-### 第三階段：內容 API（v3.0，進行中，約 85% 完成）
+### 第三階段：內容 API（v3.0，進行中，約 90% 完成）
 - [x] 能量系統（FE/RF）基礎 ✅ v2.5.0-dev
   - IEnergyStorage 介面
   - EnergyStorage 基本實作
@@ -186,7 +186,13 @@
   - MobEffect 藥水效果基底類別
   - MobEffectInstance 藥水效果實例（持續時間、等級管理）
   - MobEffects 內建藥水效果常數（30+ 種常用效果）
-- [ ] 更多能力整合（與註冊系統整合）
+- [x] 方塊實體系統 ✅ v2.5.0-dev
+  - BlockEntity 方塊實體基底類別
+  - BlockEntityType 方塊實體類型（Builder 模式）
+- [x] 內容 API 與註冊系統整合 ✅ v2.5.0-dev
+  - ForgeContentRegistries 內容註冊輔助類別
+- [ ] 網路系統基礎
+- [ ] 食譜系統基礎
 - [ ] 大部分 Forge 模組可正常執行
 
 ### 第四階段：最佳化與完善（v3.5+）
