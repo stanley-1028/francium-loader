@@ -53,7 +53,7 @@ Next-generation Minecraft mod loader with AI-powered cross-version bridging and 
 |:-:|:-:|:-:|
 | **🔗 DAG 並行加載**<br>依賴圖拓撲分層，同層模組 ForkJoin 並行加載，100 mods 僅需 20-30 秒 | **🤖 AI 版本橋接**<br>基於 ASM 位元組碼分析 + 多維相似度計算，自動生成跨版本配接器 | **🧩 SAT 依賴求解**<br>DPLL 回溯 + MRV/LCV 啟發式，自動偵測並解決衝突 |
 | **🗺️ Mapping 資料庫**<br>**80 類別 / 805 方法**，全面覆蓋 Minecraft 常用 API | **📦 套件管理器**<br>`francium install/search/update`，npm-like 體驗 | **💾 記憶體分析器**<br>洩漏偵測、物件池、自適應 GC 策略 |
-| **🔄 伺服器同步協定**<br>自動 mod 清單同步 + 安全驗證 | **🌐 雙生態相容**<br>同時支援 Forge 和 Fabric 模組<br>Forge 適配層 v2.5 開發中<br>✅ 生命週期/註冊/事件/配置<br>✅ 能量/流體/物品/能力系統<br>✅ 方塊狀態/屬性/附魔/藥水<br>✅ 85 項測試 100% 通過 | **🔌 Mixin 整合**<br>內建 SpongePowered Mixin 0.8.7 |
+| **🔄 伺服器同步協定**<br>自動 mod 清單同步 + 安全驗證 | **🌐 雙生態相容**<br>同時支援 Forge 和 Fabric 模組<br>✅ Forge 適配層 v2.5 基本完成<br>✅ 生命週期/註冊/事件/配置<br>✅ 能量/流體/物品/能力系統<br>✅ 方塊狀態/屬性/附魔/藥水<br>✅ 方塊實體/網路/食譜系統<br>✅ 核心加載器整合<br>✅ 85 項測試 100% 通過 | **🔌 Mixin 整合**<br>內建 SpongePowered Mixin 0.8.7 |
 | **☕ Java Agent 支援**<br>可作為 `-javaagent` 參數注入 | **🔒 獨立 ClassLoader**<br>每模組隔離加載，防止衝突 | **🧪 完整測試覆蓋**<br>238 項測試，100% 通過率 |
 
 </div>
@@ -181,7 +181,7 @@ francium-loader/
 ├── francium-api/                # 公共 API
 │   └── PublicApi.java           # 公共 API 註解
 │
-├── francium-forge-adapter/      # Forge 適配層（v2.5 開發中）
+├── francium-forge-adapter/      # Forge 適配層（v2.5 基本完成）
 │   ├── ForgeAdapter.java        # Forge 適配器主類別
 │   ├── adapter/                 # 模組格式偵測與轉換
 │   │   ├── ForgeModMetadata.java    # Forge 模組中繼資料
@@ -197,7 +197,8 @@ francium-loader/
 │   │   ├── ForgeRegistryManager.java # 註冊表管理器
 │   │   ├── DeferredRegister.java    # 延遲註冊工具
 │   │   ├── RegistryEvent.java       # 註冊事件
-│   │   └── IForgeRegistryEntry.java # 註冊項目介面
+│   │   ├── IForgeRegistryEntry.java # 註冊項目介面
+│   │   └── ForgeContentRegistries.java # 內容註冊輔助
 │   ├── event/                   # 事件系統（7 大類 / 48 子事件）
 │   │   ├── FMLEvent.java           # 事件基底類別
 │   │   ├── FMLEventBus.java        # 事件匯流排
@@ -221,10 +222,57 @@ francium-loader/
 │   ├── energy/                  # 能量系統（FE/RF）
 │   │   ├── IEnergyStorage.java    # 能量儲存介面
 │   │   └── EnergyStorage.java     # 能量儲存實作
-│   └── fluid/                   # 流體系統
-│       ├── FluidStack.java        # 流體堆疊
-│       ├── IFluidHandler.java     # 流體處理器介面
-│       └── MultiFluidTank.java    # 多槽流體儲存
+│   ├── fluid/                   # 流體系統
+│   │   ├── FluidStack.java        # 流體堆疊
+│   │   ├── IFluidHandler.java     # 流體處理器介面
+│   │   └── MultiFluidTank.java    # 多槽流體儲存
+│   ├── item/                    # 物品系統（含附魔）
+│   │   ├── ItemStack.java         # 物品堆疊
+│   │   ├── IItemHandler.java      # 物品處理器介面
+│   │   ├── ItemStackHandler.java  # 物品處理器實作
+│   │   └── enchantment/           # 附魔系統
+│   │       ├── EnchantmentCategory.java
+│   │       ├── Enchantment.java
+│   │       ├── EnchantmentInstance.java
+│   │       └── Enchantments.java  # 30+ 內建附魔
+│   ├── capability/              # 能力（Capability）系統
+│   │   ├── ICapabilityProvider.java
+│   │   ├── Capability.java
+│   │   ├── CapabilityManager.java
+│   │   ├── EnergyCapabilityProvider.java
+│   │   ├── ItemCapabilityProvider.java
+│   │   └── FluidCapabilityProvider.java
+│   ├── block/                   # 方塊狀態系統（含方塊實體）
+│   │   ├── Property.java
+│   │   ├── BooleanProperty.java
+│   │   ├── IntegerProperty.java
+│   │   ├── EnumProperty.java
+│   │   ├── Direction.java
+│   │   ├── BlockState.java
+│   │   └── entity/                # 方塊實體系統
+│   │       ├── BlockEntity.java
+│   │       └── BlockEntityType.java
+│   ├── entity/                  # 實體屬性系統
+│   │   ├── Attribute.java
+│   │   ├── AttributeModifier.java
+│   │   ├── AttributeInstance.java
+│   │   ├── AttributeMap.java
+│   │   └── Attributes.java        # 15 個內建屬性
+│   ├── effect/                  # 藥水效果系統
+│   │   ├── MobEffect.java
+│   │   ├── MobEffectInstance.java
+│   │   └── MobEffects.java        # 30+ 內建效果
+│   ├── network/                 # 網路系統
+│   │   ├── Packet.java
+│   │   ├── PacketListener.java
+│   │   └── NetworkChannel.java
+│   ├── recipe/                  # 食譜系統
+│   │   ├── Ingredient.java
+│   │   ├── Recipe.java
+│   │   ├── RecipeType.java        # 7 種內建類型
+│   │   └── RecipeManager.java
+│   └── integration/             # 核心整合
+│       └── ForgeIntegration.java  # 與核心加載器整合
 │
 └── francium-mod-template/       # 模組開發模板
 ```
@@ -315,7 +363,9 @@ v2.4.0 將資料庫從 38 類別大幅擴充至 **80 類別 / 805 方法**，超
 
 ## 🧪 測試
 
-核心模組測試通過率 **153 項測試 (100%)**：
+總測試數 **238 項 (100% 通過率)**：
+
+### 核心模組測試（153 項）
 
 | 模組 | 測試類 | 斷言數 | 狀態 |
 |------|--------|--------|------|
@@ -325,6 +375,22 @@ v2.4.0 將資料庫從 38 類別大幅擴充至 **80 類別 / 805 方法**，超
 | CompatibilityPredictor | 10 項測試 | 10 | ✅ |
 | SATDependencyResolver | 7 項測試 | 7 | ✅ |
 | MappingDatabase | **83 項測試** | **83** | ✅ |
+
+### Forge 適配層測試（85 項）
+
+| 模組 | 測試數 | 狀態 |
+|------|--------|------|
+| ItemStack 物品堆疊 | 9 個 | ✅ |
+| ItemStackHandler 物品處理器 | 8 個 | ✅ |
+| Enchantment 附魔 | 7 個 | ✅ |
+| EnergyStorage 能量存儲 | 7 個 | ✅ |
+| FluidStack 流體堆疊 | 7 個 | ✅ |
+| ForgeRegistry 註冊表 | 6 個 | ✅ |
+| FMLEventBus 事件匯流排 | 6 個 | ✅ |
+| ModConfigSpec 配置規格 | 10 個 | ✅ |
+| BlockState 方塊狀態 | 9 個 | ✅ |
+| Attribute 實體屬性 | 11 個 | ✅ |
+| MobEffect 藥水效果 | 5 個 | ✅ |
 
 > **Mapping 資料庫測試** 為 v2.3.0 新增，逐類別驗證每個方法 ID→名稱 映射正確性
 
@@ -443,12 +509,16 @@ java TestRunner.java
 - [x] v2.4 - Mapping 資料庫大幅擴充（80 類 / 805 方法）
 - [x] v2.4 - Maven Central 發布配置
 - [x] v2.4 - 完整文件體系（21+ 篇文件）
+- [x] v2.5 - Forge 適配層基本完成 ✅
+  - [x] 基礎架構（生命週期、註冊、事件、配置）
+  - [x] 內容 API（能量、流體、物品、能力）
+  - [x] 方塊狀態、實體屬性、附魔、藥水效果
+  - [x] 方塊實體、網路、食譜系統
+  - [x] 與核心加載器整合
+  - [x] 85 項單元測試 100% 通過
 
 ### 🚧 進行中 / 計劃中
-- [x] v2.5 - Forge 適配基礎架構 ✅ 開發中
-- [x] v2.6 - Forge 事件與配置系統 ✅ 開發中
-- [x] v3.0 - Forge 內容 API（能量、流體）🔄 進行中
-- [ ] v3.0 - Forge 能力（Capability）系統
+- [ ] v2.6 - Forge 適配層最佳化與完善
 - [ ] v3.0 - TensorFlow/ONNX 深度學習整合
 - [ ] v3.5 - Web 套件註冊表伺服器
 - [ ] v3.5 - 效能最佳化與穩定性提升
