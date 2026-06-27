@@ -32,7 +32,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - 實現側邊（Dist）支援（Dist、DistManager、@OnlyIn）
 - 實現 @SubscribeEvent 註解
 
-#### 🧩 Forge 適配層內容 API 大幅推進（第三階段，85% 完成）
+#### 🧩 Forge 適配層內容 API 完成（第三階段，95% 完成）
 - **能量系統（FE/RF）**：IEnergyStorage + EnergyStorage
 - **流體系統**：FluidStack + IFluidHandler + MultiFluidTank
 - **能力（Capability）系統**：ICapabilityProvider + Capability + CapabilityManager
@@ -44,7 +44,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **實體屬性系統**：Attribute + AttributeModifier + AttributeInstance + AttributeMap + Attributes（15 個內建屬性）
 - **附魔系統**：EnchantmentCategory + Enchantment + EnchantmentInstance + Enchantments（30+ 個內建附魔）
 - **藥水效果系統**：MobEffect + MobEffectInstance + MobEffects（30+ 個內建效果）
+- **方塊實體系統**：BlockEntity + BlockEntityType（Builder 模式）
+- **網路系統**：Packet + PacketListener + NetworkChannel（支援註冊、發送、廣播）
+- **食譜系統**：Ingredient + Recipe + RecipeType（7 種內建類型）+ RecipeManager
 - **內容 API 與註冊系統整合**：ForgeContentRegistries 內容註冊輔助類別
+- **核心加載器整合**：ForgeIntegration 整合器類別，與 Francium 核心加載器無縫整合
 
 #### 🧪 單元測試體系建立（85 項測試全部通過）
 - 新增 11 個測試類別，85 項測試，100% 通過率
@@ -88,7 +92,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### 🔧 構建與 CI
 - 新增 `francium-forge-adapter` 模組
 - 更新 `settings.gradle` - 添加 forge-adapter 模組
-- Forge 適配層核心程式碼全部編譯通過（65+ 個 Java 檔案）
+- Forge 適配層核心程式碼全部編譯通過（80+ 個 Java 檔案）
+- 新增 `integration/ForgeIntegration.java` - 與核心加載器整合
 
 ## [2.4.0] — 2026-06-24
 
