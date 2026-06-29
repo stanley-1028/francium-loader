@@ -173,7 +173,7 @@ dependencies {
     //   subprojects 將 SLF4J 宣告為 implementation（非 api），
     //   因此 transive 不會傳遞到 root project
     implementation 'org.slf4j:slf4j-api:2.0.18'
-    runtimeOnly 'ch.qos.logback:logback-classic:1.5.34'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.5.37'
 
     // Mixin: for Fabric mod compatibility (shaded into the fat JAR)
     implementation 'org.spongepowered:mixin:0.8.7'
