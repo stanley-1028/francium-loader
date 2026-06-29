@@ -22,7 +22,7 @@ dependencies {
     implementation 'org.ow2.asm:asm-util:9.6'
     
     // SLF4J 日誌
-    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'org.slf4j:slf4j-api:2.0.18'
     
     // 測試
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
