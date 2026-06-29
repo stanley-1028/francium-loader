@@ -17,9 +17,9 @@ dependencies {
     implementation project(':francium-ai-bridge')
     
     // ASM 位元組碼操作
-    implementation 'org.ow2.asm:asm:9.6'
-    implementation 'org.ow2.asm:asm-tree:9.6'
-    implementation 'org.ow2.asm:asm-util:9.6'
+    implementation 'org.ow2.asm:asm:9.10.1'
+    implementation 'org.ow2.asm:asm-tree:9.10.1'
+    implementation 'org.ow2.asm:asm-util:9.10.1'
     
     // SLF4J 日誌
     implementation 'org.slf4j:slf4j-api:2.0.9'
