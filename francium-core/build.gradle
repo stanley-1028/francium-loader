@@ -19,7 +19,7 @@ dependencies {
     testImplementation 'net.minecraft:launchwrapper:1.12'
 
     // JUnit for testing
-    testImplementation 'org.junit.jupiter:junit-jupiter:6.1.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.1.1'
 }
 
 test {
